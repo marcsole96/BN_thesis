@@ -1,0 +1,486 @@
+---
+title: "Ratios"
+date: ""
+output: 
+  html_document:
+    theme: united
+    code_folding: hide
+    toc: true
+    toc_depth: 2 
+editor_options: 
+  chunk_output_type: console
+---
+
+# Load libraries
+
+```{r, include=FALSE}
+
+library(ggplot2)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+
+knitr::opts_chunk$set(message=FALSE, warning=FALSE, echo = TRUE)
+
+knitr::opts_chunk$set(fig.width=180/25.4)  # width in mm
+knitr::opts_chunk$set(fig.height=100/25.4) # height in mm
+knitr::opts_chunk$set(dpi = 108)
+
+text_base_size   <- 10
+ggplot_text_size <- text_base_size / ggplot2::.pt # Trick to make geom_text etc. same size and theme
+
+theme_set(theme_cowplot(font_size = text_base_size, rel_small = 1, rel_tiny = 1, rel_large = 1))
+
+```
+
+# Load data
+
+```{r}
+#setwd("../workflowr/data")
+
+
+mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+
+ms = list()
+ms$values  <- mdf %>% select(-age, -type, -sample_id, -sample, -batch)
+ms$rowinfo <- mdf %>% select(id = sample_id, age, type)
+ms$rowinfo <- ms$rowinfo %>% 
+  mutate(rowid = row_number()) %>% 
+  mutate(age_class = ifelse(age < 3, "TwoLess", "ThreeMore"))
+```
+
+# Visualization function
+
+## PCA plot
+
+```{r}
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    NULL
+  return(pca_plot)
+}
+
+```
+
+# Impute (zero)
+
+```{r}
+ms$values[is.na(ms$values)] <- 0
+```
+
+# Fourth root transformation (0)
+
+Transform data to dampen the skew
+
+```{r}
+
+raw     <- ms$values^0.25 %>% as_tibble()
+rowinfo <- ms$rowinfo
+
+ms$rowinfo0 <- rowinfo
+ms$values0  <- as_tibble(raw)
+
+
+tmp1        <- ms$rowinfo %>% filter(type %in% c("sample"))
+tmp2        <- ms$values0[tmp1$rowid,] # include samples only
+
+plot_pca(tmp1, tmp2, color_label = "age")
+
+# Plot "histograms" (freqpoly) for 10 random features
+n_features <- 10
+tmp2 %>% 
+  select(sample(1:ncol(.), size = n_features)) %>% 
+  pivot_longer(cols = everything()) %>% 
+  ggplot(aes(x=value, color = name))+
+  geom_freqpoly()
+
+rm(tmp1,tmp2,tmp3)
+
+```
+
+# Remove sample PCA outliers (1)
+
+We use the PCA axes to look for samples that are outliers.
+
+Outliers are defined as more than 1.5\*iqr90 away from the median value on each PCA axis.
+
+```{r}
+
+raw     <-  ms$values0
+rowinfo <- ms$rowinfo0
+
+tmp1 <- ms$rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+  
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, id, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+rm(plotlist)
+
+bad_rows <- tmp1 %>% filter(n>0)
+
+if (nrow(bad_rows) > 0) {
+  ms$values1  <- raw[-bad_rows$rowid,]
+  ms$rowinfo1 <- rowinfo[-bad_rows$rowid,]
+} else {
+  ms$values1  <- raw
+  ms$rowinfo1 <- rowinfo
+}
+
+ms$rowinfo1 <- ms$rowinfo1 %>% 
+  mutate(rowid = row_number()) 
+
+rm(bad_rows, tmp1, tmp2, pd,r)
+
+tmp1 <- ms$rowinfo1 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values1[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+rm(tmp1,tmp2)
+
+```
+
+# Remove features with extreme values (2)
+
+All features with at least 1 extreme value are completely removed.
+
+An extreme value is defined as a value larger than median + 1.5 \* q90
+
+```{r}
+
+raw     <- ms$values1
+rowinfo <- ms$rowinfo1
+
+tmp1 <- tibble(rowid = rowinfo$rowid, type = rowinfo$type) %>%
+  bind_cols(as_tibble(raw))
+
+tmp1 <- tmp1 %>% 
+  pivot_longer(names_to = "compound", values_to = "value",  cols= c(-rowid, -type))
+
+tmp2 <- tmp1 %>%
+ group_by(compound) %>%
+ summarise(n_bad = sum(value > median(value)+1.5*quantile(value,0.90))) %>%
+ {.}
+
+bad_features <- tmp2 %>% 
+  ungroup() %>%
+  filter(n_bad > 0) %>%
+  select(compound) %>%
+  distinct()
+
+ms$values2 <- raw %>% select(-any_of(bad_features$compound))
+ms$rowinfo2 <- rowinfo
+
+rm(bad_features,tmp2,tmp1,raw)
+
+tmp1 <- ms$rowinfo2 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values2[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+rm(tmp1,tmp2)
+
+```
+
+# Optional: Remove features using qc and blind samples (3)
+
+Basically we select features that:
+
+1.  Have higher values in samples than in blinds
+2.  Have higher values in QC samples than in blinds
+3.  Have higher variation in samples than in blinds
+4.  Have higher variation in samples than in QC samples
+
+The logic is that real features in blinds:
+
+-   Have low values
+-   Are quite stable
+
+The logic is that real features in QC samples:
+
+-   Have low or high values
+-   Are very stable
+
+```{r}
+
+raw <- ms$values2
+rowinfo <- ms$rowinfo2
+
+tmp1 <- rowinfo %>% filter(type %in% c("blind", "qc", "sample")) 
+tmp2 <- raw[tmp1$rowid,]
+
+pd1 <- tmp2 %>% 
+  bind_cols(tmp1) %>% 
+  pivot_longer(starts_with("M")) %>% # Convert to tidy format
+  group_by(type, name) %>% 
+  summarise(median = median(value), 
+            variation = mad(value)/median) %>%
+  pivot_wider(names_from = type, values_from=c(median,variation))
+
+ggplot(pd1, aes(x=variation_sample, y=variation_qc, 
+                color=variation_sample > 1.5*variation_qc)) + 
+  geom_point() +
+  geom_abline(slope=1)
+
+good_features <- pd1 %>% 
+  filter(median_qc > 1.5*median_blind) %>%
+  filter(median_sample > 1.5*median_blind) %>%
+  filter(variation_sample > 1.5*variation_qc ) %>%
+  filter(variation_sample > 1.5*variation_blind) %>% 
+  {.}
+
+ms$rowinfo3 <- rowinfo
+ms$values3  <- raw %>% select(any_of(good_features$name))
+rm(tmp1,tmp2,pd1,good_features)
+
+tmp1 <- ms$rowinfo3 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values3[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+rm(tmp1,tmp2)
+
+```
+
+# Robust row normalization (4)
+
+```{r}
+
+target_info   <- ms$rowinfo3
+target_values <- ms$values3 %>% as_tibble()
+
+tmp1 <- target_info %>% filter(type %in% c("qc"))
+tmp2 <- target_values[tmp1$rowid,]
+
+stable_features <- tmp1 %>%
+  bind_cols(tmp2) %>%
+  pivot_longer(starts_with("M")) %>%
+  group_by(id) %>%
+  mutate(rank=rank(value)) %>%
+  ungroup() %>%  
+  group_by(name) %>%
+  summarise(median = median(rank),
+            range = max(rank)-min(rank)) %>%
+  ungroup() %>%
+  slice_min(order_by = median, prop = 0.8) %>%
+  slice_max(order_by = median, prop = 0.8) %>%
+  slice_min(order_by = range, prop = 0.8)
+
+raw    <- target_values
+data.x <- raw
+tmp    <- rowSums(target_values %>% select(any_of(stable_features$name)))
+raw    <- max(raw)*raw / tmp
+
+ms$values4  <- raw
+ms$rowinfo4 <- target_info
+
+rm(raw,data.x,tmp, stable_features)
+rm(target_info, target_values)
+
+tmp1 <- ms$rowinfo4 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values4[tmp1$rowid,]
+plot_pca(tmp1,tmp2, color_label = "age")
+rm(tmp1,tmp2)
+
+```
+
+# Optional: Top 250 ranked features for ML (5)
+
+```{r}
+
+raw <- ms$values4
+rowinfo <- ms$rowinfo4
+
+tmp1 <- rowinfo %>% filter(type %in% c("blind", "qc", "sample"))
+tmp2 <- raw[tmp1$rowid,]
+
+pd1 <- tmp2 %>% 
+  bind_cols(tmp1) %>% 
+  pivot_longer(starts_with("M")) %>% # Convert to tidy format
+  group_by(type, name) %>% 
+  summarise(median = median(value), 
+            variation = mad(value)/median) %>%
+  pivot_wider(names_from = type, values_from=c(median,variation))
+
+ggplot(pd1, aes(x=variation_sample, y=variation_qc, 
+                color=variation_sample > 1.5*variation_qc)) + 
+  geom_point() +
+  geom_abline(slope=1)
+
+good_features <- pd1 %>% 
+  filter(variation_sample > 2.5*variation_qc ) %>%
+  filter(variation_sample > 2.5*variation_blind) %>% 
+  arrange(desc(variation_sample)) %>%
+  {.}
+
+top250      <- good_features %>% slice(1:250)
+ms$rowinfo5 <- rowinfo
+ms$values5  <- raw %>% select(any_of(top250$name))
+
+rm(tmp1,tmp2,pd1,good_features,top250)
+
+tmp1 <- ms$rowinfo5 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values5[tmp1$rowid,]
+plot_pca(tmp1,tmp2, color_label = "age")
+
+rm(tmp1,tmp2)
+
+```
+
+# Caret training
+
+```{r, cache = TRUE}
+
+target_info   <- ms$rowinfo5
+target_values <- ms$values5
+
+run        <- 1
+
+response   <- "age_class"
+tuneLength <- 5
+method     <- "ranger" # "ranger"
+
+set.seed(run)
+
+if (response=="age_regression") {
+  x <- target_info %>% 
+    filter(type=="sample") %>% 
+    mutate(response = as.numeric(age))
+}
+
+if (response=="age_class") {
+  x <- target_info %>% 
+    filter(type=="sample") %>% 
+    mutate(response = factor(age_class)) %>%
+    {.}
+}
+
+training_data <- x %>% 
+  select(response) %>% 
+  bind_cols(target_values[x$rowid,])
+
+input_x <- as.matrix(select(training_data, -response))
+input_y <- training_data$response
+
+rm(training_data,x)
+
+#### trainControl  ####
+
+tune_control <- caret::trainControl(
+         method = "repeatedcv", number = 10, repeats = 5,
+    verboseIter = ifelse(is.null(getOption('knitr.in.progress')), TRUE, FALSE),
+  allowParallel = F,
+     classProbs = ifelse(is.factor(input_y), TRUE, FALSE),
+savePredictions = "final")
+  
+#### Train ####
+
+model_cv <- caret::train(
+          x = input_x,
+          y = input_y,
+     method = method,
+  trControl = tune_control,
+tuneLength  = tuneLength,
+ importance = "permutation",
+     metric = ifelse(is.factor(input_y), "Kappa", "RMSE")
+)
+
+```
+
+# Machine learning performance
+
+```{r}
+
+library(patchwork)
+
+if(is.factor(input_y)) {
+  confusionMatrix(data = model_cv$pred$pred, reference = model_cv$pred$obs)
+  
+  a <- 
+    ggplot(model_cv$pred, aes(x=ThreeMore, fill = obs)) + 
+    geom_histogram(breaks = seq(0,1,length.out = 100), show.legend = F) + 
+    scale_fill_manual(values = c("#3288bd", "#d53e4f"))
+  
+  b <- 
+    model_cv$pred %>% 
+    arrange(rowIndex) %>% 
+    group_by(rowIndex) %>% 
+    summarise(ThreeMore = mean(ThreeMore), 
+              TwoLess = mean(TwoLess), 
+              obs = unique(obs)) %>% 
+    mutate(pred = ifelse(ThreeMore>0.5, "ThreeMore", "TwoLess")) %>% 
+    bind_cols(target_info %>% filter(type == "sample")) %>% 
+    ggplot(aes(x=age, y=ThreeMore, fill=obs))+
+    geom_hline(yintercept = 0.5, color = "gray90")+
+    geom_point(shape = 21, color = "white")+ #, position = "identity"
+    scale_fill_manual(values = c("#3288bd", "#d53e4f")) +
+    scale_x_continuous(trans='log10')
+  
+  a+b
+}
+
+
+```
+
+```{r}
+if(!is.factor(input_y)) {
+ggplot(data = model_cv$pred, aes(x=obs, y=pred)) + geom_point() + geom_abline()
+}
+```
