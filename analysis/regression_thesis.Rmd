@@ -136,18 +136,35 @@ training_y <- training_DF$age
 ```
 
 ```{r}
-trControl <- trainControl(method = "repeatedcv", number = 5, verboseIter = T)
+trControl <- trainControl(method = "repeatedcv", number = 5, verboseIter = T, savePredictions = "final")
 
-fit <- train(x = training_x, 
+fit1 <- train(x = training_x, 
              y = training_y, 
         method = "lm",
         tuneLength = 2,
      trControl = trControl
     )
 
-fit
-predictions<-extractPrediction(list(my_rf = fit), testX = training_x, testY = training_y)
+fit2 <- train(x = training_x, 
+             y = training_y, 
+        method = "glm",
+        tuneLength = 2,
+     trControl = trControl
+    )
+
+fit1
+fit2
+predictions<-extractPrediction(list(my_rf = fit1), testX = training_x, testY = training_y)
 ```
+
+```{r}
+results <- resamples(list(lm=fit1, glm=fit2))
+summary(results)
+bwplot(results)
+dotplot(results)
+```
+
+
 
 ```{r}
 ggplot(data = predictions, aes(x=obs, y=pred)) + geom_point() + geom_abline()
