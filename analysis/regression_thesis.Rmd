@@ -135,8 +135,8 @@ training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 ```
 
-```{r}
-trControl <- trainControl(method = "repeatedcv", number = 5, verboseIter = T, savePredictions = "final")
+```{r warning=FALSE}
+trControl <- trainControl(method = "repeatedcv", number = 5, verboseIter = F, savePredictions = "final")
 
 fit1 <- train(x = training_x, 
              y = training_y, 
@@ -162,11 +162,5 @@ results <- resamples(list(lm=fit1, glm=fit2))
 summary(results)
 bwplot(results)
 dotplot(results)
-```
-
-
-
-```{r}
-ggplot(data = predictions, aes(x=obs, y=pred)) + geom_point() + geom_abline()
 ```
 
