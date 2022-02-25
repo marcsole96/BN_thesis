@@ -1,0 +1,159 @@
+---
+title: "models_tests"
+author: "Marc"
+date: "25/2/2022"
+output: 
+  html_document:
+    theme: united
+    code_folding: hide
+    toc: true
+    toc_depth: 2 
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+```{r include=FALSE}
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+theme_set(theme_minimal())
+```
+
+# Data loading
+```{r}
+#setwd("../workflowr/data")
+mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+
+#mdf<-mdf %>% gather(key="mz",value="values",6:ncol(mdf)) %>% spread(mz,values)
+```
+
+# Simplest model ever
+
+## No transformation or BN is performed in this data
+
+## PCAs for data visualization
+
+```{r}
+pca_df<-mdf %>% filter(type=="sample")
+pr.out <- prcomp(pca_df[,6:(ncol(mdf))], scale. = TRUE)
+```
+
+### Scree Plot
+```{r}
+summary(pr.out)
+var_explained_df <- data.frame(PC= as.numeric(paste0(1:150)),
+                               var_explained=(pr.out$sdev)^2/sum((pr.out$sdev)^2))
+
+var_explained_df %>%
+  ggplot(aes(x=PC,y=var_explained, group=1))+
+  geom_point()+
+  geom_line()+
+  labs(title="Scree plot: PCA on scaled data")
+
+var_explained_df %>%
+  ggplot(aes(x=PC,y=var_explained))+
+  geom_col()+
+  labs(title="Scree plot: PCA on scaled data")
+
+sum(var_explained_df$var_explained[1:11])
+```
+
+### Plotting the first 12 PCs since they explain ~65% of the data
+
+```{r}
+p1<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 1, y =2)
+p2<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 3, y =4)
+p3<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 5, y =6)
+p4<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 7, y =8)
+p5<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 9, y =10)
+p6<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 11, y =12)
+
+cowplot::plot_grid(p1,p2,p3,p4,p5,p6)
+```
+
+
+### Identifying the possible outliers
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+```
+
+## Make a Training/Test from the data and try regression on age 
+```{r}
+training_DF <- mdf %>% select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+```
+
+```{r warning=FALSE}
+trControl <- trainControl(method = "repeatedcv", number = 5, verboseIter = T, savePredictions = "final")
+
+fit1 <- train(x = training_x, 
+             y = training_y, 
+        method = "glmnet",
+        tuneLength = 15,
+     trControl = trControl
+    )
+fit1
+
+#Store RMSE somehow so I can compare this model with the rest I will do.
+```
+
+

@@ -9,6 +9,8 @@ navbar:
     href: preprocessing_thesis.html
   - text: My preprocess tests
     href: regression_thesis.html
+  - text: Different models tests
+  - href: models_tests.html
   - text: About
     href: about.html
   - text: License
