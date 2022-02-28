@@ -13,6 +13,7 @@ editor_options:
 ---
 
 # Libraries
+
 ```{r include=FALSE}
 library(ggplot2)
 library(ggfortify)
@@ -29,6 +30,7 @@ theme_set(theme_minimal())
 ```
 
 # Data loading
+
 ```{r}
 #setwd("../workflowr/data")
 mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
@@ -48,8 +50,8 @@ pr.out <- prcomp(pca_df[,6:(ncol(mdf))], scale. = TRUE)
 ```
 
 ### Scree Plot
+
 ```{r}
-summary(pr.out)
 var_explained_df <- data.frame(PC= as.numeric(paste0(1:150)),
                                var_explained=(pr.out$sdev)^2/sum((pr.out$sdev)^2))
 
@@ -67,7 +69,7 @@ var_explained_df %>%
 sum(var_explained_df$var_explained[1:11])
 ```
 
-### Plotting the first 12 PCs since they explain ~65% of the data
+### Plotting the first 12 PCs since they explain \~65% of the data
 
 ```{r}
 p1<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 1, y =2)
@@ -78,6 +80,135 @@ p5<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 9
 p6<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 11, y =12)
 
 cowplot::plot_grid(p1,p2,p3,p4,p5,p6)
+```
+
+### Identifying the possible outliers
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+```
+
+## Make a Training/Test from the data and try regression on age
+
+```{r}
+training_DF <- mdf %>% select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+```
+
+## Choosing a good model to make the comparisons and storing the RMSE somehow
+
+```{r warning=FALSE}
+#Making an empty DF
+tunelengths <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
+
+#Making a loop to choose the best tunelength (This method could also be applied if I decide to try different models, and I want to compare them)
+set.seed(1)
+for (i in c(1:15)){
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+  
+fit1 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = i,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+tunelengths[i-1,] = data.frame(getTrainPerf(fit1), Name = paste0("tunelength", i-1), QC = "none")
+}
+
+tunelengths
+```
+
+The tuneLength doesn't make the RMSE change much. I will stay with GLMNET and a tunelength of 5.
+
+## Making a simple model and storing the RMSE
+
+```{r}
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
+
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+
+fit1 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[1,] = data.frame(getTrainPerf(fit1), Name = paste0("fit1"), QC = "none")
+```
+
+# Model with 4th root transformed data
+
+## 4th root transformation
+
+```{r}
+#Imputing zeros
+test_df<-mdf %>% gather(key="mz",value="values",6:ncol(mdf))
+test_df$values[is.na(test_df$values)] <- 0
+#4th root transformation
+
+root_transform <- function(x){
+  return (x^0.25)}
+mdf[6:(ncol(mdf))] <- lapply(mdf[6:(ncol(mdf))],root_transform)
+```
+
+## PCAs for data visualization
+
+```{r}
+pca_df<-mdf %>% filter(type=="sample")
+pr.out <- prcomp(pca_df[,6:(ncol(mdf))], scale. = TRUE)
 ```
 
 
@@ -134,26 +265,32 @@ for(i in 1:(ncol(r$x)/2)) {
 cowplot::plot_grid(plotlist = plotlist)
 ```
 
-## Make a Training/Test from the data and try regression on age 
+## Make a Training/Test from the data and try regression on age
+
 ```{r}
 training_DF <- mdf %>% select(-sample,-batch,-type,-sample_id)
 training_DF[is.na(training_DF)] <- 0
+
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 ```
 
-```{r warning=FALSE}
-trControl <- trainControl(method = "repeatedcv", number = 5, verboseIter = T, savePredictions = "final")
+## Making the model model and storing the RMSE
 
-fit1 <- train(x = training_x, 
-             y = training_y, 
-        method = "glmnet",
-        tuneLength = 15,
-     trControl = trControl
-    )
-fit1
+```{r}
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
 
-#Store RMSE somehow so I can compare this model with the rest I will do...
+fit2 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[2,] = data.frame(getTrainPerf(fit2), Name = paste0("fit1"), QC = "4th_root")
+
+results
 ```
 
-
+# Removing the PCA outliers
