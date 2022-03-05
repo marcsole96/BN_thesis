@@ -475,7 +475,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-03-01
+<strong>Last updated:</strong> 2022-03-05
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -566,16 +566,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree27e1b93ef45e7a5c173c84de4c313082a7be8b39targetblank27e1b93a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/27e1b93ef45e7a5c173c84de4c313082a7be8b39" target="_blank">27e1b93</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreef92b56cb2b6aae66b3de2f9658bb060fd91b722atargetblankf92b56ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/f92b56cb2b6aae66b3de2f9658bb060fd91b722a" target="_blank">f92b56c</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree27e1b93ef45e7a5c173c84de4c313082a7be8b39targetblank27e1b93a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreef92b56cb2b6aae66b3de2f9658bb060fd91b722atargetblankf92b56ca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/27e1b93ef45e7a5c173c84de4c313082a7be8b39" target="_blank">27e1b93</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/f92b56cb2b6aae66b3de2f9658bb060fd91b722a" target="_blank">f92b56c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -627,6 +627,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/f92b56cb2b6aae66b3de2f9658bb060fd91b722a/analysis/models_tests.Rmd" target="_blank">f92b56c</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-05
+</td>
+<td>
+played with models
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/1d9c7250795f19f1b9c7e5658eaad3a3c5c449e6/docs/models_tests.html" target="_blank">1d9c725</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -798,9 +832,7 @@ i Use `spec()` for the full column specifications.</code></pre>
 </div>
 <div id="simplest-model-ever" class="section level1">
 <h1>Simplest model ever</h1>
-<div id="no-transformation-or-bn-is-performed-in-this-data" class="section level2">
-<h2>No transformation or BN is performed in this data</h2>
-</div>
+<p>No transformation or BN is performed in this data</p>
 <div id="pcas-for-data-visualization" class="section level2">
 <h2>PCAs for data visualization</h2>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pca_df<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>)</span>
@@ -895,7 +927,7 @@ Call `lifecycle::last_warnings()` to see where this warning was generated.</code
 </div>
 <div id="make-a-trainingtest-from-the-data-and-try-regression-on-age" class="section level2">
 <h2>Make a Training/Test from the data and try regression on age</h2>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
@@ -995,7 +1027,7 @@ Call `lifecycle::last_warnings()` to see where this warning was generated.</code
 </div>
 <div id="make-a-trainingtest-from-the-data-and-try-regression-on-age-1" class="section level2">
 <h2>Make a Training/Test from the data and try regression on age</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">==</span> <span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
@@ -1017,8 +1049,8 @@ Call `lifecycle::last_warnings()` to see where this warning was generated.</code
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
 <pre><code>  TrainRMSE TrainRsquared TrainMAE method Name       QC
-1  2.986441     0.9757496 1.854416 glmnet fit1     none
-2  3.939657     0.9445388 2.486944 glmnet fit2 4th_root</code></pre>
+1  2.817663     0.9761079 1.773146 glmnet fit1     none
+2  3.282706     0.9718227 2.000463 glmnet fit2 4th_root</code></pre>
 </div>
 </div>
 <div id="model-with-pca-outliers-removed" class="section level1">
@@ -1086,58 +1118,269 @@ Call `lifecycle::last_warnings()` to see where this warning was generated.</code
 <span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  ms<span class="sc">$</span>rowinfo1 <span class="ot">&lt;-</span> rowinfo</span>
 <span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1 <span class="sc">%&gt;%</span> </span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) </span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(bad_rows, tmp1, tmp2,r)</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values1[tmp1<span class="sc">$</span>rowid,]</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2,<span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Overwritting the original DF with the new data</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>ms<span class="sc">$</span>values1</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>ms<span class="sc">$</span>rowinfo1</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1 <span class="sc">%&gt;%</span> </span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) </span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(bad_rows, tmp1, tmp2,r)</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values1[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2,<span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
 <p><img src="figure/models_tests.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tmp1,tmp2)</span></code></pre></div>
 </div>
 <div id="model-code" class="section level2">
 <h2>Model code</h2>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>target_info   <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>target_values <span class="ot">&lt;-</span> ms<span class="sc">$</span>values1</span>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> target_info <span class="sc">%&gt;%</span> </span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
 <span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> </span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age) <span class="sc">%&gt;%</span> </span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(target_values[x<span class="sc">$</span>rowid,])</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>      )</span>
 <span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
-<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
-<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
-<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
-<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
-<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
-<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">3</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit3), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit3&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal&quot;</span>)</span>
-<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">3</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit3), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit3&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal&quot;</span>)</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
 <pre><code>  TrainRMSE TrainRsquared TrainMAE method Name                             QC
-1  2.986441     0.9757496 1.854416 glmnet fit1                           none
-2  3.939657     0.9445388 2.486944 glmnet fit2                       4th_root
+1  2.817663     0.9761079 1.773146 glmnet fit1                           none
+2  3.282706     0.9718227 2.000463 glmnet fit2                       4th_root
 3  2.687467     0.9815183 1.739858 glmnet fit3 4th_root + PCA outlier removal</code></pre>
 </div>
 </div>
 <div id="model-after-removing-extreme-values" class="section level1">
 <h1>Model after removing extreme values</h1>
+<div id="original-method-using-quantiles-to-remove-features-columns" class="section level2">
+<h2>Original method using quantiles to remove features (columns)</h2>
 <p>(values larger than median + 1.5 * q90)</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span> ms<span class="sc">$</span>values1</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">rowid =</span> rowinfo<span class="sc">$</span>rowid, <span class="at">type =</span> rowinfo<span class="sc">$</span>type) <span class="sc">%&gt;%</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">as_tibble</span>(raw))</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> tmp1 <span class="sc">%&gt;%</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;compound&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span>,  <span class="at">cols=</span> <span class="fu">c</span>(<span class="sc">-</span>rowid, <span class="sc">-</span>type))</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> tmp1 <span class="sc">%&gt;%</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a> <span class="fu">group_by</span>(compound) <span class="sc">%&gt;%</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">n_bad =</span> <span class="fu">sum</span>(value <span class="sc">&gt;</span> <span class="fu">median</span>(value)<span class="sc">+</span><span class="fl">1.5</span><span class="sc">*</span><span class="fu">quantile</span>(value,<span class="fl">0.90</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a> {.}</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>bad_features <span class="ot">&lt;-</span> tmp2 <span class="sc">%&gt;%</span></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_bad <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(compound) <span class="sc">%&gt;%</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>values2 <span class="ot">&lt;-</span> raw <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(bad_features<span class="sc">$</span>compound))</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo2 <span class="ot">&lt;-</span> rowinfo</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Overwritting the original DF with the new data</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>ms<span class="sc">$</span>values2</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>ms<span class="sc">$</span>rowinfo2</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(bad_features,tmp2,tmp1,raw)</span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values2[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb36-34"><a href="#cb36-34" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2,<span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
+<p><img src="figure/models_tests.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /> ## Building the model</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">4</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit4), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit4&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal&quot;</span>)</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>  TrainRMSE TrainRsquared TrainMAE method Name
+1  2.817663     0.9761079 1.773146 glmnet fit1
+2  3.282706     0.9718227 2.000463 glmnet fit2
+3  2.687467     0.9815183 1.739858 glmnet fit3
+4  2.764619     0.9818250 1.792897 glmnet fit4
+                                                     QC
+1                                                  none
+2                                              4th_root
+3                        4th_root + PCA outlier removal
+4 4th_root + PCA outlier removal + Bad features removal</code></pre>
+</div>
 </div>
 <div id="model-after-removing-features-using-qc-and-blind-samples." class="section level1">
 <h1>Model after removing features using QC and blind samples.</h1>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> ms<span class="sc">$</span>values2</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo2</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;blind&quot;</span>, <span class="st">&quot;qc&quot;</span>, <span class="st">&quot;sample&quot;</span>)) </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>pd1 <span class="ot">&lt;-</span> tmp2 <span class="sc">%&gt;%</span> </span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(tmp1) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">&quot;M&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type, name) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median =</span> <span class="fu">median</span>(value), </span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">variation =</span> <span class="fu">mad</span>(value)<span class="sc">/</span>median) <span class="sc">%&gt;%</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from=</span><span class="fu">c</span>(median,variation))</span></code></pre></div>
+<pre><code>`summarise()` has grouped output by &#39;type&#39;. You can override using the `.groups` argument.</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>good_features <span class="ot">&lt;-</span> pd1 <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(median_qc <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>median_blind) <span class="sc">%&gt;%</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(median_sample <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>median_blind) <span class="sc">%&gt;%</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variation_sample <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>variation_qc ) <span class="sc">%&gt;%</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variation_sample <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>variation_blind) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  {.}</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo3 <span class="ot">&lt;-</span> rowinfo</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>values3  <span class="ot">&lt;-</span> raw <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">any_of</span>(good_features<span class="sc">$</span>name))</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Overwriting the original DF with the new data</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>ms<span class="sc">$</span>values3</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>ms<span class="sc">$</span>rowinfo3</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tmp1,tmp2,pd1,good_features)</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo3 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values3[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2,<span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
+<p><img src="figure/models_tests.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /> ## Making the model</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>fit5 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">5</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit5), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit5&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + QC and Bind samples&quot;</span>)</span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>  TrainRMSE TrainRsquared TrainMAE method Name
+1  2.817663     0.9761079 1.773146 glmnet fit1
+2  3.282706     0.9718227 2.000463 glmnet fit2
+3  2.687467     0.9815183 1.739858 glmnet fit3
+4  2.764619     0.9818250 1.792897 glmnet fit4
+5  2.994073     0.9796101 2.254559 glmnet fit5
+                                                                           QC
+1                                                                        none
+2                                                                    4th_root
+3                                              4th_root + PCA outlier removal
+4                       4th_root + PCA outlier removal + Bad features removal
+5 4th_root + PCA outlier removal + Bad features removal + QC and Bind samples</code></pre>
+</div>
+<div id="model-after-row-normalization" class="section level1">
+<h1>Model after row normalization</h1>
+<div id="trying-to-use-a-package-i-found" class="section level2">
+<h2>Trying to use a package I found</h2>
+<p>I found this package… Does it do what we want?</p>
+<p><a href="https://www.rdocumentation.org/packages/BBmisc/versions/1.10/topics/normalize" class="uri">https://www.rdocumentation.org/packages/BBmisc/versions/1.10/topics/normalize</a></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BBmisc&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;BBmisc&quot;</span>)</span></code></pre></div>
+<pre><code>Loading required package: BBmisc</code></pre>
+<pre><code>Warning: package &#39;BBmisc&#39; was built under R version 4.0.5</code></pre>
+<pre><code>
+Attaching package: &#39;BBmisc&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:dplyr&#39;:
+
+    coalesce, collapse</code></pre>
+<pre><code>The following object is masked from &#39;package:base&#39;:
+
+    isFALSE</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BBmisc)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>target_info   <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo3</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>target_values <span class="ot">&lt;-</span> ms<span class="sc">$</span>values3 <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span><span class="fu">normalize</span>(target_values, <span class="at">method =</span> <span class="st">&quot;range&quot;</span>, <span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">margin =</span> 1L)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> target_info </span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> values[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> target_info </span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>tmp4 <span class="ot">&lt;-</span> values[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> target_info <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>tmp4 <span class="ot">&lt;-</span> target_values[tmp3<span class="sc">$</span>rowid,]</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp3,tmp4, <span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
+<p><img src="figure/models_tests.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Substituting the original dataframe</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>tmp1</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>tmp2</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span></code></pre></div>
+</div>
+<div id="making-the-model" class="section level2">
+<h2>Making the model</h2>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>fit6 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">6</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit6), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit6&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization&quot;</span>)</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>  TrainRMSE TrainRsquared TrainMAE method Name
+1  2.817663     0.9761079 1.773146 glmnet fit1
+2  3.282706     0.9718227 2.000463 glmnet fit2
+3  2.687467     0.9815183 1.739858 glmnet fit3
+4  2.764619     0.9818250 1.792897 glmnet fit4
+5  2.994073     0.9796101 2.254559 glmnet fit5
+6  2.935189     0.9815311 2.177827 glmnet fit6
+                                                                                               QC
+1                                                                                            none
+2                                                                                        4th_root
+3                                                                  4th_root + PCA outlier removal
+4                                           4th_root + PCA outlier removal + Bad features removal
+5                     4th_root + PCA outlier removal + Bad features removal + QC and Bind samples
+6 4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization</code></pre>
+</div>
+</div>
+<div id="plotting-the-rmse" class="section level1">
+<h1>Plotting the RMSE</h1>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Name, <span class="at">y=</span>TrainRMSE, <span class="at">fill=</span>Name)) <span class="sc">+</span>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,<span class="at">position=</span><span class="fu">position_stack</span>()) <span class="sc">+</span> <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Set3&quot;</span>) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(TrainRMSE,<span class="dv">4</span>)), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="figure/models_tests.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1145,7 +1388,7 @@ Call `lifecycle::last_warnings()` to see where this warning was generated.</code
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>R version 4.0.4 (2021-02-15)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 22000)
@@ -1161,40 +1404,42 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] patchwork_1.1.1  ggrepel_0.9.1    purrr_0.3.4      dplyr_1.0.5     
- [5] tidyr_1.1.3      readr_1.4.0      caret_6.0-86     lattice_0.20-41 
- [9] cowplot_1.1.0    plotly_4.9.3     ggfortify_0.4.11 ggplot2_3.3.3   
+ [1] BBmisc_1.11      patchwork_1.1.1  ggrepel_0.9.1    purrr_0.3.4     
+ [5] dplyr_1.0.5      tidyr_1.1.3      readr_1.4.0      caret_6.0-86    
+ [9] lattice_0.20-41  cowplot_1.1.0    plotly_4.9.3     ggfortify_0.4.11
+[13] ggplot2_3.3.3   
 
 loaded via a namespace (and not attached):
  [1] nlme_3.1-149         fs_1.5.0             lubridate_1.7.10    
- [4] httr_1.4.2           rprojroot_2.0.2      tools_4.0.4         
- [7] bslib_0.2.4          utf8_1.2.1           R6_2.5.0            
-[10] rpart_4.1-15         DBI_1.1.1            lazyeval_0.2.2      
-[13] colorspace_1.4-1     nnet_7.3-14          withr_2.4.2         
-[16] tidyselect_1.1.0     gridExtra_2.3        compiler_4.0.4      
-[19] git2r_0.28.0         glmnet_4.1-1         cli_2.4.0           
-[22] labeling_0.4.2       sass_0.3.1           scales_1.1.1        
-[25] stringr_1.4.0        digest_0.6.25        rmarkdown_2.11      
-[28] pkgconfig_2.0.3      htmltools_0.5.1.1    highr_0.9           
-[31] htmlwidgets_1.5.3    rlang_0.4.10         rstudioapi_0.13     
-[34] shape_1.4.5          jquerylib_0.1.3      generics_0.1.0      
-[37] farver_2.0.3         jsonlite_1.7.2       ModelMetrics_1.2.2.2
-[40] magrittr_2.0.1       Matrix_1.2-18        Rcpp_1.0.7          
-[43] munsell_0.5.0        fansi_0.4.1          lifecycle_1.0.0     
-[46] stringi_1.5.3        whisker_0.4          pROC_1.17.0.1       
-[49] yaml_2.2.1           MASS_7.3-53          plyr_1.8.6          
-[52] recipes_0.1.16       grid_4.0.4           promises_1.2.0.1    
-[55] crayon_1.4.1         splines_4.0.4        hms_1.0.0           
-[58] knitr_1.37           ps_1.6.0             pillar_1.6.0        
-[61] reshape2_1.4.4       codetools_0.2-18     stats4_4.0.4        
-[64] glue_1.4.2           evaluate_0.14        data.table_1.13.0   
-[67] vctrs_0.3.7          httpuv_1.5.5         foreach_1.5.1       
-[70] gtable_0.3.0         assertthat_0.2.1     xfun_0.29           
-[73] gower_0.2.2          prodlim_2019.11.13   later_1.1.0.1       
-[76] class_7.3-17         survival_3.2-7       viridisLite_0.4.0   
-[79] timeDate_3043.102    tibble_3.0.3         iterators_1.0.13    
-[82] workflowr_1.6.2      lava_1.6.9           ellipsis_0.3.1      
-[85] ipred_0.9-10        </code></pre>
+ [4] RColorBrewer_1.1-2   httr_1.4.2           rprojroot_2.0.2     
+ [7] backports_1.1.10     tools_4.0.4          bslib_0.2.4         
+[10] utf8_1.2.1           R6_2.5.0             rpart_4.1-15        
+[13] DBI_1.1.1            lazyeval_0.2.2       colorspace_1.4-1    
+[16] nnet_7.3-14          withr_2.4.2          tidyselect_1.1.0    
+[19] gridExtra_2.3        compiler_4.0.4       git2r_0.28.0        
+[22] glmnet_4.1-1         cli_2.4.0            labeling_0.4.2      
+[25] sass_0.3.1           checkmate_2.0.0      scales_1.1.1        
+[28] stringr_1.4.0        digest_0.6.25        rmarkdown_2.11      
+[31] pkgconfig_2.0.3      htmltools_0.5.1.1    highr_0.9           
+[34] htmlwidgets_1.5.3    rlang_0.4.10         rstudioapi_0.13     
+[37] shape_1.4.5          jquerylib_0.1.3      generics_0.1.0      
+[40] farver_2.0.3         jsonlite_1.7.2       ModelMetrics_1.2.2.2
+[43] magrittr_2.0.1       Matrix_1.2-18        Rcpp_1.0.7          
+[46] munsell_0.5.0        fansi_0.4.1          lifecycle_1.0.0     
+[49] stringi_1.5.3        whisker_0.4          pROC_1.17.0.1       
+[52] yaml_2.2.1           MASS_7.3-53          plyr_1.8.6          
+[55] recipes_0.1.16       grid_4.0.4           promises_1.2.0.1    
+[58] crayon_1.4.1         splines_4.0.4        hms_1.0.0           
+[61] knitr_1.37           ps_1.6.0             pillar_1.6.0        
+[64] reshape2_1.4.4       codetools_0.2-18     stats4_4.0.4        
+[67] glue_1.4.2           evaluate_0.14        data.table_1.13.0   
+[70] vctrs_0.3.7          httpuv_1.5.5         foreach_1.5.1       
+[73] gtable_0.3.0         assertthat_0.2.1     xfun_0.29           
+[76] gower_0.2.2          prodlim_2019.11.13   later_1.1.0.1       
+[79] class_7.3-17         survival_3.2-7       viridisLite_0.4.0   
+[82] timeDate_3043.102    tibble_3.0.3         iterators_1.0.13    
+[85] workflowr_1.6.2      lava_1.6.9           ellipsis_0.3.1      
+[88] ipred_0.9-10        </code></pre>
 </div>
 </div>
 
