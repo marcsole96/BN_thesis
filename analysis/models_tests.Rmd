@@ -29,7 +29,6 @@ library(patchwork)
 theme_set(theme_minimal())
 ```
 
-
 ```{r}
 plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
   
@@ -58,7 +57,6 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 
 ```
 
-
 # Data loading
 
 ```{r}
@@ -70,7 +68,7 @@ mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
 
 # Simplest model ever
 
-## No transformation or BN is performed in this data
+No transformation or BN is performed in this data
 
 ## PCAs for data visualization
 
@@ -168,7 +166,7 @@ cowplot::plot_grid(plotlist = plotlist)
 ## Make a Training/Test from the data and try regression on age
 
 ```{r}
-training_DF <- mdf %>% select(-sample,-batch,-type,-sample_id)
+training_DF <- mdf %>% filter(type == "sample") %>% select(-sample,-batch,-type,-sample_id)
 training_DF[is.na(training_DF)] <- 0
 
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
@@ -241,7 +239,6 @@ pca_df<-mdf %>% filter(type=="sample")
 pr.out <- prcomp(pca_df[,6:(ncol(mdf))], scale. = TRUE)
 ```
 
-
 ### Identifying the possible outliers
 
 ```{r}
@@ -299,7 +296,7 @@ cowplot::plot_grid(plotlist = plotlist)
 ## Make a Training/Test from the data and try regression on age
 
 ```{r}
-training_DF <- mdf %>% select(-sample,-batch,-type,-sample_id)
+training_DF <- mdf %>% filter(type == "sample") %>% select(-sample,-batch,-type,-sample_id)
 training_DF[is.na(training_DF)] <- 0
 
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
@@ -327,8 +324,9 @@ results
 # Model with PCA outliers removed
 
 ## Alternative method using boxplot information
-One method I found of removing PCA outliers without using quantiles is using the boxplot function. 
-https://www.r-bloggers.com/2020/01/how-to-remove-outliers-in-r/
+
+One method I found of removing PCA outliers without using quantiles is using the boxplot function. <https://www.r-bloggers.com/2020/01/how-to-remove-outliers-in-r/>
+
 ```{r}
 #This is a boxplot of the outliers on the PCs
 
@@ -346,8 +344,8 @@ plot(x)
 ```
 
 ## Original method using quantiles
-I haven't found any package that does it automatically, meaning I will have to explain a bit the theory behind this method. 
-https://www.r-bloggers.com/2021/09/how-to-remove-outliers-in-r-3/
+
+I haven't found any package that does it automatically, meaning I will have to explain a bit the theory behind this method. <https://www.r-bloggers.com/2021/09/how-to-remove-outliers-in-r-3/>
 
 ```{r}
 raw     <-  mdf[6:(ncol(mdf))]
@@ -383,6 +381,12 @@ if (nrow(bad_rows) > 0) {
   ms$rowinfo1 <- rowinfo
 }
 
+#Overwritting the original DF with the new data
+values<-ms$values1
+rowinfo<-ms$rowinfo1
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
 ms$rowinfo1 <- ms$rowinfo1 %>% 
   mutate(rowid = row_number()) 
 
@@ -395,17 +399,10 @@ rm(tmp1,tmp2)
 ```
 
 ## Model code
+
 ```{r}
 
-target_info   <- ms$rowinfo1
-target_values <- ms$values1
-
-x <- target_info %>% 
-    filter(type=="sample")
-
-training_DF <- x %>% 
-  select(age) %>% 
-  bind_cols(target_values[x$rowid,])
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
 training_DF[is.na(training_DF)] <- 0
 
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
@@ -426,40 +423,194 @@ results[3,] = data.frame(getTrainPerf(fit3), Name = paste0("fit3"), QC = "4th_ro
 results
 ```
 
-
 # Model after removing extreme values
 
-(values larger than median + 1.5 * q90)
-```{r eval=FALSE, include=FALSE}
-# raw     <- ms$values1
-# rowinfo <- ms$rowinfo1
-# 
-# tmp1 <- tibble(rowid = rowinfo$rowid, type = rowinfo$type) %>%
-#   bind_cols(as_tibble(raw))
-# 
-# tmp1 <- tmp1 %>% 
-#   pivot_longer(names_to = "compound", values_to = "value",  cols= c(-rowid, -type))
-# 
-# tmp2 <- tmp1 %>%
-#  group_by(compound) %>%
-#  summarise(n_bad = sum(value > median(value)+1.5*quantile(value,0.90))) %>%
-#  {.}
-# 
-# bad_features <- tmp2 %>% 
-#   ungroup() %>%
-#   filter(n_bad > 0) %>%
-#   select(compound) %>%
-#   distinct()
-# 
-# ms$values2 <- raw %>% select(-any_of(bad_features$compound))
-# ms$rowinfo2 <- rowinfo
-# 
-# rm(bad_features,tmp2,tmp1,raw)
-# 
-# tmp1 <- ms$rowinfo2 %>% filter(type %in% c("sample"))
-# tmp2 <- ms$values2[tmp1$rowid,]
-# plot_pca(tmp1,tmp2,color_label = "age")
+## Original method using quantiles to remove features (columns)
+(values larger than median + 1.5 \* q90)
+```{r}
+raw     <- ms$values1
+rowinfo <- ms$rowinfo1
+
+tmp1 <- tibble(rowid = rowinfo$rowid, type = rowinfo$type) %>%
+  bind_cols(as_tibble(raw))
+
+tmp1 <- tmp1 %>%
+  pivot_longer(names_to = "compound", values_to = "value",  cols= c(-rowid, -type))
+
+tmp2 <- tmp1 %>%
+ group_by(compound) %>%
+ summarise(n_bad = sum(value > median(value)+1.5*quantile(value,0.90))) %>%
+ {.}
+
+bad_features <- tmp2 %>%
+  ungroup() %>%
+  filter(n_bad > 0) %>%
+  select(compound) %>%
+  distinct()
+
+ms$values2 <- raw %>% select(-any_of(bad_features$compound))
+ms$rowinfo2 <- rowinfo
+
+#Overwritting the original DF with the new data
+values<-ms$values2
+rowinfo<-ms$rowinfo2
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+rm(bad_features,tmp2,tmp1,raw)
+
+tmp1 <- ms$rowinfo2 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values2[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+```
+## Building the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+
+fit4 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[4,] = data.frame(getTrainPerf(fit4), Name = paste0("fit4"), QC = "4th_root + PCA outlier removal + Bad features removal")
+
+results
 ```
 
 
-# Model after removing features using QC and blind samples. 
+# Model after removing features using QC and blind samples.
+```{r}
+raw <- ms$values2
+rowinfo <- ms$rowinfo2
+
+tmp1 <- rowinfo %>% filter(type %in% c("blind", "qc", "sample")) 
+tmp2 <- raw[tmp1$rowid,]
+
+pd1 <- tmp2 %>% 
+  bind_cols(tmp1) %>% 
+  pivot_longer(starts_with("M")) %>%
+  group_by(type, name) %>% 
+  summarise(median = median(value), 
+            variation = mad(value)/median) %>%
+  pivot_wider(names_from = type, values_from=c(median,variation))
+
+
+good_features <- pd1 %>% 
+  filter(median_qc > 1.5*median_blind) %>%
+  filter(median_sample > 1.5*median_blind) %>%
+  filter(variation_sample > 1.5*variation_qc ) %>%
+  filter(variation_sample > 1.5*variation_blind) %>% 
+  {.}
+
+ms$rowinfo3 <- rowinfo
+ms$values3  <- raw %>% select(any_of(good_features$name))
+#Overwriting the original DF with the new data
+values<-ms$values3
+rowinfo<-ms$rowinfo3
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+rm(tmp1,tmp2,pd1,good_features)
+
+tmp1 <- ms$rowinfo3 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values3[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+```
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+
+fit5 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[5,] = data.frame(getTrainPerf(fit5), Name = paste0("fit5"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples")
+
+results
+```
+
+# Model after row normalization
+## Trying to use a package I found
+I found this package... Does it do what we want?
+
+https://www.rdocumentation.org/packages/BBmisc/versions/1.10/topics/normalize
+```{r}
+if (!require("BBmisc")) install.packages("BBmisc")
+library(BBmisc)
+```
+
+```{r}
+target_info   <- ms$rowinfo3
+target_values <- ms$values3 %>% as_tibble()
+values<-normalize(target_values, method = "range", range = c(0, 1), margin = 1L)
+
+tmp1 <- target_info 
+tmp2 <- values[tmp1$rowid,]
+
+tmp3 <- target_info 
+tmp4 <- values[tmp1$rowid,]
+
+tmp3 <- target_info %>% filter(type %in% c("sample"))
+tmp4 <- target_values[tmp3$rowid,]
+plot_pca(tmp3,tmp4, color_label = "age")
+
+
+#Substituting the original dataframe
+rowinfo<-tmp1
+values<-tmp2
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+
+fit6 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[6,] = data.frame(getTrainPerf(fit6), Name = paste0("fit6"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization")
+
+results
+```
+
+
+# Plotting the RMSE
+```{r}
+results %>% ggplot(aes(x=Name, y=TrainRMSE, fill=Name)) +  geom_bar(stat="identity",position=position_stack()) + scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(TrainRMSE,4)), position = position_stack(vjust = 0.5))
+```
+
+
