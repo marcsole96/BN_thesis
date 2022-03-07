@@ -835,6 +835,79 @@ results
 ```
 
 
+
+# Robust row normalization (OG method)
+
+```{r}
+target_info   <- ms$rowinfo3
+target_values <- ms$values3 %>% as_tibble()
+
+tmp1 <- target_info %>% filter(type %in% c("qc"))
+tmp2 <- target_values[tmp1$rowid,]
+
+stable_features <- tmp1 %>%
+  bind_cols(tmp2) %>%
+  pivot_longer(starts_with("M")) %>%
+  group_by(sample_id) %>%
+  mutate(rank=rank(value)) %>%
+  ungroup() %>%  
+  group_by(name) %>%
+  summarise(median = median(rank),
+            range = max(rank)-min(rank)) %>%
+  ungroup() %>%
+  slice_min(order_by = median, prop = 0.8) %>%
+  slice_max(order_by = median, prop = 0.8) %>%
+  slice_min(order_by = range, prop = 0.8)
+
+raw    <- target_values
+data.x <- raw
+tmp    <- rowSums(target_values %>% select(any_of(stable_features$name)))
+raw    <- max(raw)*raw / tmp
+
+ms$values4  <- raw
+ms$rowinfo4 <- target_info
+
+rm(raw,data.x,tmp, stable_features)
+rm(target_info, target_values)
+
+tmp1 <- ms$rowinfo4 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values4[tmp1$rowid,]
+plot_pca(tmp1,tmp2, color_label = "age")
+
+rowinfo<-tmp1
+values<-tmp2
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+rm(tmp1,tmp2)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+
+fit7 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[7,] = data.frame(getTrainPerf(fit7), Name = paste0("fit7"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method")
+
+results
+```
+
+
+
 # Plotting the RMSE
 ```{r}
 results %>% ggplot(aes(x=Name, y=TrainRMSE, fill=Name)) +  geom_bar(stat="identity",position=position_stack()) + scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(TrainRMSE,4)), position = position_stack(vjust = 0.5))
