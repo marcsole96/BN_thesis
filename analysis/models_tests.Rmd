@@ -398,6 +398,63 @@ plot_pca(tmp1,tmp2,color_label = "age")
 rm(tmp1,tmp2)
 ```
 
+### Identifying the possible outliers
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+test<-data.frame(r$x)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+```
+
+
+
+
 ## Model code
 
 ```{r}
@@ -463,6 +520,63 @@ tmp1 <- ms$rowinfo2 %>% filter(type %in% c("sample"))
 tmp2 <- ms$values2[tmp1$rowid,]
 plot_pca(tmp1,tmp2,color_label = "age")
 ```
+
+### Identifying the possible outliers
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+test<-data.frame(r$x)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+```
+
+
+
 ## Building the model
 
 ```{r}
@@ -526,6 +640,63 @@ tmp1 <- ms$rowinfo3 %>% filter(type %in% c("sample"))
 tmp2 <- ms$values3[tmp1$rowid,]
 plot_pca(tmp1,tmp2,color_label = "age")
 ```
+
+### Identifying the possible outliers
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+test<-data.frame(r$x)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+```
+
+
+
 ## Making the model
 
 ```{r}
@@ -582,6 +753,62 @@ values<-tmp2
 mdf <- cbind(rowinfo,values)
 mdf <- mdf %>% select(-rowid)
 ```
+
+### Identifying the possible outliers
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+test<-data.frame(r$x)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+```
+
+
 
 ## Making the model
 
