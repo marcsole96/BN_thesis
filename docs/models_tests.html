@@ -566,16 +566,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreeeca44e863054344678a4a6bd4039ff118666d361targetblankeca44e8a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/eca44e863054344678a4a6bd4039ff118666d361" target="_blank">eca44e8</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree5b897949f0317f3bbc3863df1f10fec33688efe6targetblank5b89794a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/5b897949f0317f3bbc3863df1f10fec33688efe6" target="_blank">5b89794</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreeeca44e863054344678a4a6bd4039ff118666d361targetblankeca44e8a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree5b897949f0317f3bbc3863df1f10fec33688efe6targetblank5b89794a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/eca44e863054344678a4a6bd4039ff118666d361" target="_blank">eca44e8</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/5b897949f0317f3bbc3863df1f10fec33688efe6" target="_blank">5b89794</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -584,6 +584,7 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
     Ignored:    analysis/preprocessing_thesis_cache/
 
 Untracked files:
@@ -627,6 +628,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/5b897949f0317f3bbc3863df1f10fec33688efe6/analysis/models_tests.Rmd" target="_blank">5b89794</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-07
+</td>
+<td>
+added og method
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/2eab8bc69f02b00a066ba570f45c424f9e8caf6e/docs/models_tests.html" target="_blank">2eab8bc</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-07
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1629,10 +1664,92 @@ Attaching package: &#39;BBmisc&#39;</code></pre>
 6 4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization</code></pre>
 </div>
 </div>
+<div id="robust-row-normalization-og-method" class="section level1">
+<h1>Robust row normalization (OG method)</h1>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>target_info   <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo3</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>target_values <span class="ot">&lt;-</span> ms<span class="sc">$</span>values3 <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>()</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> target_info <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;qc&quot;</span>))</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> target_values[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>stable_features <span class="ot">&lt;-</span> tmp1 <span class="sc">%&gt;%</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(tmp2) <span class="sc">%&gt;%</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">&quot;M&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(sample_id) <span class="sc">%&gt;%</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank=</span><span class="fu">rank</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span>  </span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(name) <span class="sc">%&gt;%</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median =</span> <span class="fu">median</span>(rank),</span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">range =</span> <span class="fu">max</span>(rank)<span class="sc">-</span><span class="fu">min</span>(rank)) <span class="sc">%&gt;%</span></span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> median, <span class="at">prop =</span> <span class="fl">0.8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_max</span>(<span class="at">order_by =</span> median, <span class="at">prop =</span> <span class="fl">0.8</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_min</span>(<span class="at">order_by =</span> range, <span class="at">prop =</span> <span class="fl">0.8</span>)</span>
+<span id="cb67-20"><a href="#cb67-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-21"><a href="#cb67-21" aria-hidden="true" tabindex="-1"></a>raw    <span class="ot">&lt;-</span> target_values</span>
+<span id="cb67-22"><a href="#cb67-22" aria-hidden="true" tabindex="-1"></a>data.x <span class="ot">&lt;-</span> raw</span>
+<span id="cb67-23"><a href="#cb67-23" aria-hidden="true" tabindex="-1"></a>tmp    <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(target_values <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">any_of</span>(stable_features<span class="sc">$</span>name)))</span>
+<span id="cb67-24"><a href="#cb67-24" aria-hidden="true" tabindex="-1"></a>raw    <span class="ot">&lt;-</span> <span class="fu">max</span>(raw)<span class="sc">*</span>raw <span class="sc">/</span> tmp</span>
+<span id="cb67-25"><a href="#cb67-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-26"><a href="#cb67-26" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>values4  <span class="ot">&lt;-</span> raw</span>
+<span id="cb67-27"><a href="#cb67-27" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo4 <span class="ot">&lt;-</span> target_info</span>
+<span id="cb67-28"><a href="#cb67-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-29"><a href="#cb67-29" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(raw,data.x,tmp, stable_features)</span>
+<span id="cb67-30"><a href="#cb67-30" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(target_info, target_values)</span>
+<span id="cb67-31"><a href="#cb67-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-32"><a href="#cb67-32" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo4 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
+<span id="cb67-33"><a href="#cb67-33" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values4[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb67-34"><a href="#cb67-34" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2, <span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
+<p><img src="figure/models_tests.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>tmp1</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>tmp2</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tmp1,tmp2)</span></code></pre></div>
+<div id="making-the-model-2" class="section level2">
+<h2>Making the model</h2>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>fit7 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
+<span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">7</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit7), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit7&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method&quot;</span>)</span>
+<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>  TrainRMSE TrainRsquared TrainMAE method Name
+1  2.817663     0.9761079 1.773146 glmnet fit1
+2  3.282706     0.9718227 2.000463 glmnet fit2
+3  2.687467     0.9815183 1.739858 glmnet fit3
+4  2.764619     0.9818250 1.792897 glmnet fit4
+5  2.994073     0.9796101 2.254559 glmnet fit5
+6  2.935189     0.9815311 2.177827 glmnet fit6
+7  3.203472     0.9823186 2.362766 glmnet fit7
+                                                                                                         QC
+1                                                                                                      none
+2                                                                                                  4th_root
+3                                                                            4th_root + PCA outlier removal
+4                                                     4th_root + PCA outlier removal + Bad features removal
+5                               4th_root + PCA outlier removal + Bad features removal + QC and Bind samples
+6           4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization
+7 4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method</code></pre>
+</div>
+</div>
 <div id="plotting-the-rmse" class="section level1">
 <h1>Plotting the RMSE</h1>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Name, <span class="at">y=</span>TrainRMSE, <span class="at">fill=</span>Name)) <span class="sc">+</span>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,<span class="at">position=</span><span class="fu">position_stack</span>()) <span class="sc">+</span> <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Set3&quot;</span>) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(TrainRMSE,<span class="dv">4</span>)), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
-<p><img src="figure/models_tests.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>results <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Name, <span class="at">y=</span>TrainRMSE, <span class="at">fill=</span>Name)) <span class="sc">+</span>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&quot;identity&quot;</span>,<span class="at">position=</span><span class="fu">position_stack</span>()) <span class="sc">+</span> <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Set3&quot;</span>) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span><span class="fu">round</span>(TrainRMSE,<span class="dv">4</span>)), <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="figure/models_tests.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1640,7 +1757,7 @@ Attaching package: &#39;BBmisc&#39;</code></pre>
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>R version 4.0.4 (2021-02-15)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 22000)
