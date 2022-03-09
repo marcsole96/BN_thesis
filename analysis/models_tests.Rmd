@@ -245,10 +245,21 @@ error<-fit1$pred %>%
   filter(alpha == fit1$bestTune$alpha & lambda == fit1$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
-  summarise(rmse = RMSE(pred, obs)) %>% as.data.frame()#aggregate the desired measure
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit1")
+  
 
 error
 ```
+
+Size of the dataframe
+```{r}
+head(mdf)
+dim(mdf)
+```
+
+
 
 Visualizing it:
 ```{r}
@@ -347,7 +358,7 @@ training_y <- training_DF$age
 ## Making the model model and storing the RMSE
 
 ```{r}
-trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = T, savePredictions = "final")
 
 fit2 <- train(x = training_x, 
                y = training_y, 
@@ -361,6 +372,26 @@ results[2,] = data.frame(getTrainPerf(fit2), Name = paste0("fit2"), QC = "4th_ro
 
 results
 ```
+
+## Getting the RMSE for each fold
+```{r}
+error1<-fit2$pred %>%
+  filter(alpha == fit2$bestTune$alpha & lambda == fit2$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit2")
+
+error<-rbind(error,error1)
+```
+
+Size of the dataframe
+```{r}
+head(mdf)
+dim(mdf)
+```
+
 
 # Model with PCA outliers removed
 
@@ -506,7 +537,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
 fit3 <- train(x = training_x, 
                y = training_y, 
@@ -520,6 +551,26 @@ results[3,] = data.frame(getTrainPerf(fit3), Name = paste0("fit3"), QC = "4th_ro
 
 results
 ```
+
+## Getting the RMSE for each fold
+```{r}
+error1<-fit3$pred %>%
+  filter(alpha == fit3$bestTune$alpha & lambda == fit3$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit3")
+
+error<-rbind(error,error1)
+```
+
+Size of the dataframe
+```{r}
+head(mdf)
+dim(mdf)
+```
+
 
 # Model after removing extreme values
 
@@ -627,7 +678,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
 fit4 <- train(x = training_x, 
                y = training_y, 
@@ -640,6 +691,25 @@ fit4 <- train(x = training_x,
 results[4,] = data.frame(getTrainPerf(fit4), Name = paste0("fit4"), QC = "4th_root + PCA outlier removal + Bad features removal")
 
 results
+```
+
+## Getting the RMSE for each fold
+```{r}
+error1<-fit4$pred %>%
+  filter(alpha == fit4$bestTune$alpha & lambda == fit4$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit4")
+
+error<-rbind(error,error1)
+```
+
+Size of the dataframe
+```{r}
+head(mdf)
+dim(mdf)
 ```
 
 
@@ -747,7 +817,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
 fit5 <- train(x = training_x, 
                y = training_y, 
@@ -761,6 +831,27 @@ results[5,] = data.frame(getTrainPerf(fit5), Name = paste0("fit5"), QC = "4th_ro
 
 results
 ```
+
+## Getting the RMSE for each fold
+```{r}
+error1<-fit5$pred %>%
+  filter(alpha == fit5$bestTune$alpha & lambda == fit5$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit5")
+
+error<-rbind(error,error1)
+```
+
+Size of the dataframe
+```{r}
+head(mdf)
+dim(mdf)
+```
+
+
 
 # Robust row normalization (OG method)
 
@@ -819,7 +910,7 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = T, savePredictions = "final")
 
-fit7 <- train(x = training_x, 
+fit6 <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -827,11 +918,29 @@ fit7 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[7,] = data.frame(getTrainPerf(fit7), Name = paste0("fit7"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method")
+results[6,] = data.frame(getTrainPerf(fit6), Name = paste0("fit6"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method")
 
 results
 ```
 
+## Getting the RMSE for each fold
+```{r}
+error1<-fit6$pred %>%
+  filter(alpha == fit6$bestTune$alpha & lambda == fit6$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit6")
+
+error<-rbind(error,error1)
+```
+
+Size of the dataframe
+```{r}
+head(mdf)
+dim(mdf)
+```
 
 
 
@@ -844,4 +953,16 @@ results
 results %>% ggplot(aes(x=Name, y=TrainRMSE, fill=Name)) +  geom_bar(stat="identity",position=position_stack()) + scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(TrainRMSE,4)), position = position_stack(vjust = 0.5))
 ```
 
+```{r}
+error %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
+  scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
+  facet_wrap(~model)
+```
+
+```{r}
+error %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8) +
+  geom_jitter(shape=16, position=position_jitter(0)) +
+  scale_color_brewer(palette="Dark2")
+```
 
