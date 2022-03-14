@@ -255,7 +255,7 @@ error
 
 Size of the dataframe
 ```{r}
-head(mdf)
+
 dim(mdf)
 ```
 
@@ -358,7 +358,7 @@ training_y <- training_DF$age
 ## Making the model model and storing the RMSE
 
 ```{r}
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = T, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
 fit2 <- train(x = training_x, 
                y = training_y, 
@@ -388,32 +388,12 @@ error<-rbind(error,error1)
 
 Size of the dataframe
 ```{r}
-head(mdf)
+
 dim(mdf)
 ```
 
 
 # Model with PCA outliers removed
-
-## Alternative method using boxplot information
-
-One method I found of removing PCA outliers without using quantiles is using the boxplot function. <https://www.r-bloggers.com/2020/01/how-to-remove-outliers-in-r/>
-
-```{r}
-#This is a boxplot of the outliers on the PCs
-
-boxplot(r$x)$out
-
-#We can save the outliers on a vector
-outliers <- boxplot(r$x, plot = F)$out
-
-#This can be easily removed from the PCA file, but I'm not sure how I can get the rowid from them to remove them from the original dataframe
-x<-r$x
-plot(x)
-x<- x[-which(x[,ncol(x)] %in% outliers),]
-#☝️ still I think it doesn't quite work because it removes three rows but when plotted the results look it has removed something, but not the outliers :/
-plot(x)
-```
 
 ## Original method using quantiles
 
@@ -567,7 +547,7 @@ error<-rbind(error,error1)
 
 Size of the dataframe
 ```{r}
-head(mdf)
+
 dim(mdf)
 ```
 
@@ -708,7 +688,7 @@ error<-rbind(error,error1)
 
 Size of the dataframe
 ```{r}
-head(mdf)
+
 dim(mdf)
 ```
 
@@ -847,9 +827,131 @@ error<-rbind(error,error1)
 
 Size of the dataframe
 ```{r}
-head(mdf)
+
 dim(mdf)
 ```
+
+# Row normalization summing to 1 
+
+## My method
+```{r}
+View(mdf)
+
+sumofrows<-mdf %>% select(starts_with("M")) %>% rowSums()
+
+test<-mdf %>% mutate(rowsum=sumofrows) %>% 
+  select(starts_with("M"), "rowsum")
+
+test<-test/test[,ncol(test)]
+
+mdf <- cbind(rowinfo,test)
+mdf <- mdf %>% select(-rowid, -rowsum)
+```
+## PCA
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+pd <- r$x %>% 
+    as_tibble() %>%
+    bind_cols(tmp1) %>%
+    {.}
+
+pd <- pd %>% 
+  mutate(response = ifelse(n>0,"Outlier", "Not outlier")) %>%
+  mutate(response = factor(response))
+
+plotlist <- list()
+
+for(i in 1:(ncol(r$x)/2)) {
+  xvar <- names(pd)[2*i-1]
+  yvar <- names(pd)[2*i]
+  p1 <- ggplot(pd,aes(x=!!ensym(xvar), y=!!ensym(yvar), 
+                      fill=response, label=label))+
+  geom_point(shape=21, color="#FFFFFFFF", size=3) +
+  scale_fill_manual(values = c("#D0D0D0", "#D04040")) +
+  theme(legend.position="none") +
+  NULL
+  
+  plotlist[[length(plotlist)+1]] <- p1
+  rm(p1)
+}
+
+cowplot::plot_grid(plotlist = plotlist)
+```
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+
+fit6 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[6,] = data.frame(getTrainPerf(fit6), Name = paste0("fit6"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization Sum to 1")
+
+results
+```
+
+## Getting the RMSE for each fold
+```{r}
+error1<-fit6$pred %>%
+  filter(alpha == fit6$bestTune$alpha & lambda == fit6$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit6")
+
+error<-rbind(error,error1)
+```
+
+Size of the dataframe
+```{r}
+
+dim(mdf)
+```
+
+
+## Saving the workspace for the BN test:
+```{r}
+rm(bad_rows,p2,p3,p4,p5,p6,pca_df,pd,plotlist,pr.out,r,raw,rowinfo,test,test_df,tmp1,tmp2,training_DF, training_x, trControl, values, var_explained_df, x)
+```
+
+
+```{r eval=FALSE, include=FALSE}
+save.image(file = "data_for_BN.RData")
+```
+
 
 
 
@@ -908,9 +1010,9 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = T, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
 
-fit6 <- train(x = training_x, 
+fit7 <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -918,36 +1020,33 @@ fit6 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[6,] = data.frame(getTrainPerf(fit6), Name = paste0("fit6"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method")
+results[7,] = data.frame(getTrainPerf(fit7), Name = paste0("fit7"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method")
 
 results
 ```
 
 ## Getting the RMSE for each fold
 ```{r}
-error1<-fit6$pred %>%
+error1<-fit7$pred %>%
   filter(alpha == fit6$bestTune$alpha & lambda == fit6$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit6")
+  mutate(model = "fit7")
 
 error<-rbind(error,error1)
 ```
 
 Size of the dataframe
 ```{r}
-head(mdf)
 dim(mdf)
 ```
 
 
 
-# Row normalization summing to 1 
 
 # Batch normalization using the means
-
 # Plotting the RMSE
 ```{r}
 results %>% ggplot(aes(x=Name, y=TrainRMSE, fill=Name)) +  geom_bar(stat="identity",position=position_stack()) + scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(TrainRMSE,4)), position = position_stack(vjust = 0.5))

@@ -1,0 +1,259 @@
+---
+title: "BN tests"
+author: "Marc"
+date: "12/3/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+```{r include=FALSE}
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+theme_set(theme_minimal())
+```
+
+
+# Data loading
+```{r}
+#setwd("../workflowr/data")
+mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+
+#mdf<-mdf %>% gather(key="mz",value="values",6:ncol(mdf)) %>% spread(mz,values)
+
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
+```
+## 4th root transformation
+```{r}
+#Imputing zeros
+test_df<-mdf %>% gather(key="mz",value="values",6:ncol(mdf))
+test_df$values[is.na(test_df$values)] <- 0
+#4th root transformation
+
+root_transform <- function(x){
+  return (x^0.25)}
+mdf[6:(ncol(mdf))] <- lapply(mdf[6:(ncol(mdf))],root_transform)
+```
+
+## PCA outliars removal 
+I haven't found any package that does it automatically, meaning I will have to explain a bit the theory behind this method. <https://www.r-bloggers.com/2021/09/how-to-remove-outliers-in-r-3/>
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+
+bad_rows <- tmp1 %>% filter(n>0)
+ms = list()
+if (nrow(bad_rows) > 0) {
+  ms$values1  <- raw[-bad_rows$rowid,]
+  ms$rowinfo1 <- rowinfo[-bad_rows$rowid,]
+} else {
+  ms$values1  <- raw
+  ms$rowinfo1 <- rowinfo
+}
+
+#Overwritting the original DF with the new data
+values<-ms$values1
+rowinfo<-ms$rowinfo1
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+ms$rowinfo1 <- ms$rowinfo1 %>% 
+  mutate(rowid = row_number()) 
+
+rm(bad_rows, tmp1, tmp2,r)
+
+tmp1 <- ms$rowinfo1 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values1[tmp1$rowid,]
+rm(tmp1,tmp2)
+```
+
+## Removing extreme values (columns)
+(values larger than median + 1.5 \* q90)
+```{r}
+raw     <- ms$values1
+rowinfo <- ms$rowinfo1
+
+tmp1 <- tibble(rowid = rowinfo$rowid, type = rowinfo$type) %>%
+  bind_cols(as_tibble(raw))
+
+tmp1 <- tmp1 %>%
+  pivot_longer(names_to = "compound", values_to = "value",  cols= c(-rowid, -type))
+
+tmp2 <- tmp1 %>%
+ group_by(compound) %>%
+ summarise(n_bad = sum(value > median(value)+1.5*quantile(value,0.90))) %>%
+ {.}
+
+bad_features <- tmp2 %>%
+  ungroup() %>%
+  filter(n_bad > 0) %>%
+  select(compound) %>%
+  distinct()
+
+ms$values2 <- raw %>% select(-any_of(bad_features$compound))
+ms$rowinfo2 <- rowinfo
+
+#Overwritting the original DF with the new data
+values<-ms$values2
+rowinfo<-ms$rowinfo2
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+rm(bad_features,tmp2,tmp1,raw)
+
+tmp1 <- ms$rowinfo2 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values2[tmp1$rowid,]
+```
+
+## Removing features using QC and blind samples.
+```{r}
+raw <- ms$values2
+rowinfo <- ms$rowinfo2
+
+tmp1 <- rowinfo %>% filter(type %in% c("blind", "qc", "sample")) 
+tmp2 <- raw[tmp1$rowid,]
+
+pd1 <- tmp2 %>% 
+  bind_cols(tmp1) %>% 
+  pivot_longer(starts_with("M")) %>%
+  group_by(type, name) %>% 
+  summarise(median = median(value), 
+            variation = mad(value)/median) %>%
+  pivot_wider(names_from = type, values_from=c(median,variation))
+
+
+good_features <- pd1 %>% 
+  filter(median_qc > 1.5*median_blind) %>%
+  filter(median_sample > 1.5*median_blind) %>%
+  filter(variation_sample > 1.5*variation_qc ) %>%
+  filter(variation_sample > 1.5*variation_blind) %>% 
+  {.}
+
+ms$rowinfo3 <- rowinfo
+ms$values3  <- raw %>% select(any_of(good_features$name))
+#Overwriting the original DF with the new data
+values<-ms$values3
+rowinfo<-ms$rowinfo3
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+rm(tmp1,tmp2,pd1,good_features)
+
+tmp1 <- ms$rowinfo3 %>% filter(type %in% c("sample"))
+tmp2 <- ms$values3[tmp1$rowid,]
+```
+
+# Simple BN subsctracting the mean of each batch
+
+## Storing the means of each batch
+```{r}
+meanofbatch1<-mdf %>% 
+  filter(batch==1) %>% 
+  select(starts_with("M")) %>% 
+  as.matrix() %>% 
+  mean()
+meanofbatch2<-mdf %>% 
+  filter(batch==2) %>% 
+  select(starts_with("M")) %>% 
+  as.matrix() %>% 
+  mean()
+meanofbatch3<-mdf %>% 
+  filter(batch==3) %>% 
+  select(starts_with("M")) %>% 
+  as.matrix() %>% 
+  mean()
+meanofbatch2b<-mdf %>% 
+  filter(batch=="2b") %>% 
+  select(starts_with("M")) %>% 
+  as.matrix() %>% 
+  mean()
+meanofbatchb2<-mdf %>% 
+  filter(batch=="b2") %>% 
+  select(starts_with("M")) %>% 
+  as.matrix() %>% 
+  mean()
+meanofbatchb3<-mdf %>% 
+  filter(batch=="b3") %>% 
+  select(starts_with("M")) %>% 
+  as.matrix() %>% 
+  mean()
+meanofbatchb<-mdf %>% 
+  filter(batch=="b") %>% 
+  select(starts_with("M")) %>% 
+  as.matrix() %>% 
+  mean()
+```
+
+## Removing the means of each batch
+
+```{r}
+batch1<-mdf %>% filter(batch==1) %>% select(starts_with("M")) %>% -meanofbatch1
+
+test<-mdf %>% 
+  mutate(meanofbatch = ifelse(batch == "1", meanofbatch1, 
+                              ifelse(batch =="2", meanofbatch2,
+                                     ifelse(batch=="3",meanofbatch3,
+                                            ifelse(batch=="2b", meanofbatch2b,
+                                                   ifelse(batch=="b2", meanofbatchb2,
+                                                          ifelse(batch=="b3", meanofbatchb2,
+                                                                 ifelse(batch=="b", meanofbatch3,0))))))))
+
+test$meanofbatch[is.na(test$meanofbatch)] <- 0
+
+test2<-test %>% select(starts_with("M")) %>% -test$meanofbatch
+
+mdf <- cbind(rowinfo,test2)
+```
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+
+fit1 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[1,] = data.frame(getTrainPerf(fit1), Name = paste0("fit1"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN")
+
+results
+```
