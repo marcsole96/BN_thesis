@@ -22,6 +22,33 @@ library(ggrepel)
 library(patchwork)
 theme_set(theme_minimal())
 ```
+```{r}
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    NULL
+  return(pca_plot)
+}
+
+```
 
 
 # Data loading
@@ -95,6 +122,7 @@ rm(bad_rows, tmp1, tmp2,r)
 
 tmp1 <- ms$rowinfo1 %>% filter(type %in% c("sample"))
 tmp2 <- ms$values1[tmp1$rowid,]
+
 rm(tmp1,tmp2)
 ```
 
@@ -234,8 +262,22 @@ test$meanofbatch[is.na(test$meanofbatch)] <- 0
 test2<-test %>% select(starts_with("M")) %>% -test$meanofbatch
 
 mdf <- cbind(rowinfo,test2)
+mdf <- mdf %>% select(-rowid,-meanofbatch)
+mdf[is.na(mdf)] <- 0
+```
+##PCA
+```{r}
+rm(rowinfo,raw)
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
 ```
 
+##Model
 ```{r}
 training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
 training_DF[is.na(training_DF)] <- 0
@@ -257,3 +299,11 @@ results[1,] = data.frame(getTrainPerf(fit1), Name = paste0("fit1"), QC = "4th_ro
 
 results
 ```
+
+
+
+#Saving the model
+```{r}
+saveRDS(fit1, "bn_test.rds")
+```
+

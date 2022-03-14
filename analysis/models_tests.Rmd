@@ -110,6 +110,32 @@ p6<-autoplot(pr.out, data = pca_df, colour = 'age', shape="batch", size=2, x = 1
 cowplot::plot_grid(p1,p2,p3,p4,p5,p6)
 ```
 
+## Choosing a good model to make the comparisons and storing the RMSE somehow
+
+```{r eval=FALSE, warning=FALSE, include=FALSE}
+#Making an empty DF
+tunelengths <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
+
+#Making a loop to choose the best tunelength (This method could also be applied if I decide to try different models, and I want to compare them)
+set.seed(1)
+for (i in c(1:15)){
+trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
+  
+fit1 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = i,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+tunelengths[i-1,] = data.frame(getTrainPerf(fit1), Name = paste0("tunelength", i-1), QC = "none")
+}
+
+tunelengths
+```
+
+The tuneLength doesn't make the RMSE change much. I will stay with GLMNET and a tunelength of 5.
+
 ### Identifying the possible outliers
 
 ```{r}
@@ -172,32 +198,6 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 ```
-
-## Choosing a good model to make the comparisons and storing the RMSE somehow
-
-```{r eval=FALSE, warning=FALSE, include=FALSE}
-#Making an empty DF
-tunelengths <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
-
-#Making a loop to choose the best tunelength (This method could also be applied if I decide to try different models, and I want to compare them)
-set.seed(1)
-for (i in c(1:15)){
-trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
-  
-fit1 <- train(x = training_x, 
-               y = training_y, 
-          method = "glmnet",
-          tuneLength = i,
-       trControl = trControl,
-       metric = 'RMSE'
-      )
-tunelengths[i-1,] = data.frame(getTrainPerf(fit1), Name = paste0("tunelength", i-1), QC = "none")
-}
-
-tunelengths
-```
-
-The tuneLength doesn't make the RMSE change much. I will stay with GLMNET and a tunelength of 5.
 
 ## Making a simple model and storing the RMSE
 
@@ -835,8 +835,6 @@ dim(mdf)
 
 ## My method
 ```{r}
-View(mdf)
-
 sumofrows<-mdf %>% select(starts_with("M")) %>% rowSums()
 
 test<-mdf %>% mutate(rowsum=sumofrows) %>% 
@@ -897,6 +895,8 @@ for(i in 1:(ncol(r$x)/2)) {
 }
 
 cowplot::plot_grid(plotlist = plotlist)
+
+plot_pca(tmp1,tmp2,color_label = "age")
 ```
 ## Making the model
 
@@ -957,7 +957,7 @@ save.image(file = "data_for_BN.RData")
 
 # Robust row normalization (OG method)
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 target_info   <- ms$rowinfo3
 target_values <- ms$values3 %>% as_tibble()
 
@@ -998,6 +998,7 @@ values<-tmp2
 mdf <- cbind(rowinfo,values)
 mdf <- mdf %>% select(-rowid)
 
+plot_pca(tmp1,tmp2,color_label = "age")
 rm(tmp1,tmp2)
 ```
 
@@ -1028,7 +1029,7 @@ results
 ## Getting the RMSE for each fold
 ```{r}
 error1<-fit7$pred %>%
-  filter(alpha == fit6$bestTune$alpha & lambda == fit6$bestTune$lambda) %>% #subset 
+  filter(alpha == fit7$bestTune$alpha & lambda == fit7$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
@@ -1043,16 +1044,40 @@ Size of the dataframe
 dim(mdf)
 ```
 
-
-
-
-# Batch normalization using the means
-# Plotting the RMSE
+# Comparing the two normalization methods
 ```{r}
-results %>% ggplot(aes(x=Name, y=TrainRMSE, fill=Name)) +  geom_bar(stat="identity",position=position_stack()) + scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(TrainRMSE,4)), position = position_stack(vjust = 0.5))
+error %>% filter(model=="fit6"|model=="fit7") %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
+  scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
+  facet_wrap(~model)
 ```
 
 ```{r}
+error %>% filter(model=="fit6"|model=="fit7") %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8) +
+  geom_jitter(shape=16, position=position_jitter(0)) +
+  scale_color_brewer(palette="Dark2")
+```
+
+# Plotting the RMSE
+## Loading the BN model
+```{r}
+fit8 <- readRDS("bn_test.rds")
+results[8,] = data.frame(getTrainPerf(fit8), Name = paste0("fit8"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN")
+
+error1<-fit8$pred %>%
+  filter(alpha == fit8$bestTune$alpha & lambda == fit8$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit8")
+
+error<-rbind(error,error1)
+```
+
+
+
+```{r, fig.width=10}
 error %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
   scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
   facet_wrap(~model)
