@@ -582,16 +582,16 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec72e31c34efdffae2d6102d2fb43a3aefd727cd5targetblankc72e31ca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/c72e31c34efdffae2d6102d2fb43a3aefd727cd5" target="_blank">c72e31c</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec72e31c34efdffae2d6102d2fb43a3aefd727cd5targetblankc72e31ca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/c72e31c34efdffae2d6102d2fb43a3aefd727cd5" target="_blank">c72e31c</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -600,19 +600,19 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    analysis/preprocessing_thesis_cache/
 
 Untracked files:
-    Untracked:  analysis/combat.Rmd
-    Untracked:  analysis/visualizations.Rmd
-    Untracked:  analysis/waveica2.Rmd
+    Untracked:  data/.Rprofile
+    Untracked:  data/.gitignore
     Untracked:  data/TraceAge_bloodspots_t3_neg_clean.csv
     Untracked:  data/TraceAge_bloodspots_t3_pos_clean.csv
     Untracked:  data/bn_test.rds
     Untracked:  data/data_for_BN.RData
     Untracked:  data/model_tests.rds
     Untracked:  data/models.RData
+    Untracked:  data/packrat/
+    Untracked:  models.RData
 
 </code></pre>
 <p>
@@ -651,6 +651,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/a24a9d19e4db37ab174d7502d6af77dfd71eb630/analysis/bn_tests.Rmd" target="_blank">a24a9d1</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-19
+</td>
+<td>
+many things but nothing important done
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/243f674a5d4cc173c5c0c837e6808371731a769e/docs/bn_tests.html" target="_blank">243f674</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -979,7 +1013,9 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
 <span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)</span>
 <span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>test[<span class="fu">order</span>(test<span class="sc">$</span>sample_id),]  </span>
 <span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>mdf[<span class="fu">is.na</span>(mdf)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div>
-<p>##PCA</p>
+</div>
+<div id="pca" class="section level2">
+<h2>PCA</h2>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rowinfo,raw)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">6</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>]</span>
@@ -989,7 +1025,9 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2,<span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
 <p><img src="figure/bn_tests.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>##Model</p>
+</div>
+<div id="model" class="section level2">
+<h2>Model</h2>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1013,7 +1051,10 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
 1  3.468171     0.9737919 2.692565 glmnet fit1
                                                                                      QC
 1 4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN</code></pre>
-<p>#Saving the model</p>
+</div>
+</div>
+<div id="saving-the-model" class="section level1">
+<h1>Saving the model</h1>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(fit1, <span class="st">&quot;bn_test.rds&quot;</span>)</span></code></pre></div>
 <br>
 <p>
@@ -1066,16 +1107,16 @@ loaded via a namespace (and not attached):
 [61] promises_1.2.0.1     crayon_1.5.0         splines_4.1.3       
 [64] hms_1.1.1            knitr_1.37           pillar_1.7.0        
 [67] future.apply_1.8.1   reshape2_1.4.4       codetools_0.2-18    
-[70] stats4_4.1.3         glue_1.6.2           evaluate_0.15       
-[73] data.table_1.14.2    tzdb_0.2.0           vctrs_0.3.8         
-[76] httpuv_1.6.5         foreach_1.5.2        gtable_0.3.0        
-[79] future_1.24.0        assertthat_0.2.1     xfun_0.30           
-[82] gower_1.0.0          prodlim_2019.11.13   later_1.3.0         
-[85] class_7.3-20         survival_3.2-13      viridisLite_0.4.0   
-[88] timeDate_3043.102    tibble_3.1.6         iterators_1.0.14    
-[91] hardhat_0.2.0        workflowr_1.7.0      lava_1.6.10         
-[94] globals_0.14.0       ellipsis_0.3.2       ipred_0.9-12        </code></pre>
-</div>
+[70] stats4_4.1.3         glue_1.6.2           packrat_0.7.0       
+[73] evaluate_0.15        data.table_1.14.2    tzdb_0.2.0          
+[76] vctrs_0.3.8          httpuv_1.6.5         foreach_1.5.2       
+[79] gtable_0.3.0         future_1.24.0        assertthat_0.2.1    
+[82] xfun_0.30            gower_1.0.0          prodlim_2019.11.13  
+[85] later_1.3.0          class_7.3-20         survival_3.2-13     
+[88] viridisLite_0.4.0    timeDate_3043.102    tibble_3.1.6        
+[91] iterators_1.0.14     hardhat_0.2.0        workflowr_1.7.0     
+[94] lava_1.6.10          globals_0.14.0       ellipsis_0.3.2      
+[97] ipred_0.9-12        </code></pre>
 </div>
 </div>
 
