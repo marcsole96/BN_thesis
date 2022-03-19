@@ -15,6 +15,7 @@ editor_options:
 # Libraries
 
 ```{r include=FALSE}
+set.seed(1234)
 library(ggplot2)
 library(ggfortify)
 library(plotly)
@@ -62,6 +63,8 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 ```{r}
 #setwd("../workflowr/data")
 mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+#Making a waaay smaller df
+#mdf <- mdf[1:250]
 
 #mdf<-mdf %>% gather(key="mz",value="values",6:ncol(mdf)) %>% spread(mz,values)
 ```
@@ -217,22 +220,23 @@ fit1 <- train(x = training_x,
 results[1,] = data.frame(getTrainPerf(fit1), Name = paste0("fit1"), QC = "none")
 ```
 
-
-##Getting the RMSE of each repeat:
-https://stackoverflow.com/questions/56950684/how-to-get-predictions-for-each-fold-in-10-fold-cross-validation-of-the-best-tun/56965881#56965881
+\#\#Getting the RMSE of each repeat: <https://stackoverflow.com/questions/56950684/how-to-get-predictions-for-each-fold-in-10-fold-cross-validation-of-the-best-tun/56965881#56965881>
 
 Looking at the predictions:
+
 ```{r}
 head(fit1$pred)
 ```
 
 Getting the predictions with the best alpha and lambda
+
 ```{r}
 fit1$pred %>%
   filter(alpha == fit1$bestTune$alpha & lambda == fit1$bestTune$lambda) %>% head()
 ```
 
 Separating the folds and the repeats
+
 ```{r}
 fit1$pred %>%
   filter(alpha == fit1$bestTune$alpha & lambda == fit1$bestTune$lambda) %>% #subset 
@@ -240,6 +244,7 @@ fit1$pred %>%
 ```
 
 Measuring the RMSE
+
 ```{r}
 error<-fit1$pred %>%
   filter(alpha == fit1$bestTune$alpha & lambda == fit1$bestTune$lambda) %>% #subset 
@@ -254,20 +259,17 @@ error
 ```
 
 Size of the dataframe
+
 ```{r}
 
 dim(mdf)
 ```
 
-
-
 Visualizing it:
+
 ```{r}
 error %>% ggplot(aes(x=rep, y=rmse, fill=rep)) +  geom_bar(stat="identity",position=position_stack()) + scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5))
 ```
-
-
-
 
 # Model with 4th root transformed data
 
@@ -374,6 +376,7 @@ results
 ```
 
 ## Getting the RMSE for each fold
+
 ```{r}
 error1<-fit2$pred %>%
   filter(alpha == fit2$bestTune$alpha & lambda == fit2$bestTune$lambda) %>% #subset 
@@ -387,11 +390,11 @@ error<-rbind(error,error1)
 ```
 
 Size of the dataframe
+
 ```{r}
 
 dim(mdf)
 ```
-
 
 # Model with PCA outliers removed
 
@@ -504,9 +507,6 @@ for(i in 1:(ncol(r$x)/2)) {
 cowplot::plot_grid(plotlist = plotlist)
 ```
 
-
-
-
 ## Model code
 
 ```{r}
@@ -533,6 +533,7 @@ results
 ```
 
 ## Getting the RMSE for each fold
+
 ```{r}
 error1<-fit3$pred %>%
   filter(alpha == fit3$bestTune$alpha & lambda == fit3$bestTune$lambda) %>% #subset 
@@ -546,16 +547,18 @@ error<-rbind(error,error1)
 ```
 
 Size of the dataframe
+
 ```{r}
 
 dim(mdf)
 ```
 
-
 # Model after removing extreme values
 
 ## Original method using quantiles to remove features (columns)
+
 (values larger than median + 1.5 \* q90)
+
 ```{r}
 raw     <- ms$values1
 rowinfo <- ms$rowinfo1
@@ -647,8 +650,6 @@ for(i in 1:(ncol(r$x)/2)) {
 cowplot::plot_grid(plotlist = plotlist)
 ```
 
-
-
 ## Building the model
 
 ```{r}
@@ -674,6 +675,7 @@ results
 ```
 
 ## Getting the RMSE for each fold
+
 ```{r}
 error1<-fit4$pred %>%
   filter(alpha == fit4$bestTune$alpha & lambda == fit4$bestTune$lambda) %>% #subset 
@@ -687,13 +689,14 @@ error<-rbind(error,error1)
 ```
 
 Size of the dataframe
+
 ```{r}
 
 dim(mdf)
 ```
 
-
 # Model after removing features using QC and blind samples.
+
 ```{r}
 raw <- ms$values2
 rowinfo <- ms$rowinfo2
@@ -786,8 +789,6 @@ for(i in 1:(ncol(r$x)/2)) {
 cowplot::plot_grid(plotlist = plotlist)
 ```
 
-
-
 ## Making the model
 
 ```{r}
@@ -813,6 +814,7 @@ results
 ```
 
 ## Getting the RMSE for each fold
+
 ```{r}
 error1<-fit5$pred %>%
   filter(alpha == fit5$bestTune$alpha & lambda == fit5$bestTune$lambda) %>% #subset 
@@ -826,14 +828,16 @@ error<-rbind(error,error1)
 ```
 
 Size of the dataframe
+
 ```{r}
 
 dim(mdf)
 ```
 
-# Row normalization summing to 1 
+# Row normalization summing to 1
 
 ## My method
+
 ```{r}
 sumofrows<-mdf %>% select(starts_with("M")) %>% rowSums()
 
@@ -845,7 +849,9 @@ test<-test/test[,ncol(test)]
 mdf <- cbind(rowinfo,test)
 mdf <- mdf %>% select(-rowid, -rowsum)
 ```
+
 ## PCA
+
 ```{r}
 raw     <-  mdf[6:(ncol(mdf))]
 rowinfo <- mdf[0:5]
@@ -898,6 +904,7 @@ cowplot::plot_grid(plotlist = plotlist)
 
 plot_pca(tmp1,tmp2,color_label = "age")
 ```
+
 ## Making the model
 
 ```{r}
@@ -907,7 +914,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 50, verboseIter = F, savePredictions = "final")
 
 fit6 <- train(x = training_x, 
                y = training_y, 
@@ -923,6 +930,7 @@ results
 ```
 
 ## Getting the RMSE for each fold
+
 ```{r}
 error1<-fit6$pred %>%
   filter(alpha == fit6$bestTune$alpha & lambda == fit6$bestTune$lambda) %>% #subset 
@@ -936,24 +944,21 @@ error<-rbind(error,error1)
 ```
 
 Size of the dataframe
+
 ```{r}
 
 dim(mdf)
 ```
 
-
 ## Saving the workspace for the BN test:
+
 ```{r}
 rm(bad_rows,p2,p3,p4,p5,p6,pca_df,pd,plotlist,pr.out,r,raw,rowinfo,test,test_df,tmp1,tmp2,training_DF, training_x, trControl, values, var_explained_df, x)
 ```
 
-
 ```{r eval=FALSE, include=FALSE}
 save.image(file = "data_for_BN.RData")
 ```
-
-
-
 
 # Robust row normalization (OG method)
 
@@ -1011,7 +1016,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 50, verboseIter = F, savePredictions = "final")
 
 fit7 <- train(x = training_x, 
                y = training_y, 
@@ -1027,6 +1032,7 @@ results
 ```
 
 ## Getting the RMSE for each fold
+
 ```{r}
 error1<-fit7$pred %>%
   filter(alpha == fit7$bestTune$alpha & lambda == fit7$bestTune$lambda) %>% #subset 
@@ -1040,53 +1046,16 @@ error<-rbind(error,error1)
 ```
 
 Size of the dataframe
+
 ```{r}
 dim(mdf)
 ```
 
-# Comparing the two normalization methods
+
+### Saving all the models
 ```{r}
-error %>% filter(model=="fit6"|model=="fit7") %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
-  scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
-  facet_wrap(~model)
-```
+rm(error1,mdf,ms,rowinfo,training_DF,training_x,trControl,values,i,sumofrows,training_y,xvar,plot_pca,root_transform, yvar)
 
-```{r}
-error %>% filter(model=="fit6"|model=="fit7") %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
-                outlier.size=8) +
-  geom_jitter(shape=16, position=position_jitter(0)) +
-  scale_color_brewer(palette="Dark2")
-```
-
-# Plotting the RMSE
-## Loading the BN model
-```{r}
-fit8 <- readRDS("bn_test.rds")
-results[8,] = data.frame(getTrainPerf(fit8), Name = paste0("fit8"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN")
-
-error1<-fit8$pred %>%
-  filter(alpha == fit8$bestTune$alpha & lambda == fit8$bestTune$lambda) %>% #subset 
-  separate(Resample, c("fold", "rep"), "\\.") %>% 
-  group_by(rep) %>% #group by replicate
-  summarise(rmse = RMSE(obs, pred)) %>% 
-  as.data.frame() %>% 
-  mutate(model = "fit8")
-
-error<-rbind(error,error1)
-```
-
-
-
-```{r, fig.width=10}
-error %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
-  scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
-  facet_wrap(~model)
-```
-
-```{r}
-error %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
-                outlier.size=8) +
-  geom_jitter(shape=16, position=position_jitter(0)) +
-  scale_color_brewer(palette="Dark2")
+save.image(file = "models.RData")
 ```
 

@@ -9,6 +9,7 @@ editor_options:
 
 # Libraries
 ```{r include=FALSE}
+set.seed(1234)
 library(ggplot2)
 library(ggfortify)
 library(plotly)
@@ -204,67 +205,64 @@ tmp2 <- ms$values3[tmp1$rowid,]
 
 # Simple BN subsctracting the mean of each batch
 
-## Storing the means of each batch
+## Removing the means of each batch using the colMeans() function
+
+https://www.gastonsanchez.com/visually-enforced/how-to/2014/01/15/Center-data-in-R/
 ```{r}
-meanofbatch1<-mdf %>% 
-  filter(batch==1) %>% 
-  select(starts_with("M")) %>% 
-  as.matrix() %>% 
-  mean()
-meanofbatch2<-mdf %>% 
-  filter(batch==2) %>% 
-  select(starts_with("M")) %>% 
-  as.matrix() %>% 
-  mean()
-meanofbatch3<-mdf %>% 
-  filter(batch==3) %>% 
-  select(starts_with("M")) %>% 
-  as.matrix() %>% 
-  mean()
-meanofbatch2b<-mdf %>% 
-  filter(batch=="2b") %>% 
-  select(starts_with("M")) %>% 
-  as.matrix() %>% 
-  mean()
-meanofbatchb2<-mdf %>% 
-  filter(batch=="b2") %>% 
-  select(starts_with("M")) %>% 
-  as.matrix() %>% 
-  mean()
-meanofbatchb3<-mdf %>% 
-  filter(batch=="b3") %>% 
-  select(starts_with("M")) %>% 
-  as.matrix() %>% 
-  mean()
-meanofbatchb<-mdf %>% 
-  filter(batch=="b") %>% 
-  select(starts_with("M")) %>% 
-  as.matrix() %>% 
-  mean()
-```
+#Making a function to center the means
+center_colmeans <- function(x) {
+    xcenter = colMeans(x)
+    x - rep(xcenter, rep.int(nrow(x), ncol(x)))
+}
 
-## Removing the means of each batch
 
-```{r}
-batch1<-mdf %>% filter(batch==1) %>% select(starts_with("M")) %>% -meanofbatch1
+batch1<-mdf %>% 
+  filter(batch==1)
+mean_removed<-(center_colmeans(batch1[6:ncol(batch1)]))
+batch1[ , colnames(batch1) %in% colnames(mean_removed)] <- mean_removed
 
-test<-mdf %>% 
-  mutate(meanofbatch = ifelse(batch == "1", meanofbatch1, 
-                              ifelse(batch =="2", meanofbatch2,
-                                     ifelse(batch=="3",meanofbatch3,
-                                            ifelse(batch=="2b", meanofbatch2b,
-                                                   ifelse(batch=="b2", meanofbatchb2,
-                                                          ifelse(batch=="b3", meanofbatchb2,
-                                                                 ifelse(batch=="b", meanofbatch3,0))))))))
+batch2<-mdf %>% 
+  filter(batch==2)
+mean_removed<-(center_colmeans(batch2[6:ncol(batch2)]))
+batch2[ , colnames(batch2) %in% colnames(mean_removed)] <- mean_removed
 
-test$meanofbatch[is.na(test$meanofbatch)] <- 0
+batch3<-mdf %>% 
+  filter(batch==3)
+mean_removed<-(center_colmeans(batch3[6:ncol(batch3)]))
+batch3[ , colnames(batch3) %in% colnames(mean_removed)] <- mean_removed
 
-test2<-test %>% select(starts_with("M")) %>% -test$meanofbatch
+batch2b<-mdf %>% 
+  filter(batch=="2b")
+mean_removed<-(center_colmeans(batch2b[6:ncol(batch2b)]))
+batch2b[ , colnames(batch2b) %in% colnames(mean_removed)] <- mean_removed
 
-mdf <- cbind(rowinfo,test2)
-mdf <- mdf %>% select(-rowid,-meanofbatch)
+batchb2<-mdf %>% 
+  filter(batch=="b2")
+mean_removed<-(center_colmeans(batchb2[6:ncol(batchb2)]))
+batchb2[ , colnames(batchb2) %in% colnames(mean_removed)] <- mean_removed
+
+batchb3<-mdf %>% 
+  filter(batch=="b3")
+mean_removed<-(center_colmeans(batchb3[6:ncol(batchb3)]))
+batchb3[ , colnames(batchb3) %in% colnames(mean_removed)] <- mean_removed
+
+batchb<-mdf %>% 
+  filter(batch=="b")
+mean_removed<-(center_colmeans(batchb[6:ncol(batchb)]))
+batchb[ , colnames(batchb) %in% colnames(mean_removed)] <- mean_removed
+
+batchna<-mdf %>% 
+  filter(is.na(batch))
+mean_removed<-(center_colmeans(batchna[6:ncol(batchna)]))
+batchna[ , colnames(batchna) %in% colnames(mean_removed)] <- mean_removed
+
+test<-rbind(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)
+
+rm(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)
+mdf<-test[order(test$sample_id),]  
 mdf[is.na(mdf)] <- 0
 ```
+
 ##PCA
 ```{r}
 rm(rowinfo,raw)

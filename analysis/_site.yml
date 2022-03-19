@@ -13,6 +13,12 @@ navbar:
     href: models_tests.html
   - text: BN tests
     href: bn_tests.html	
+  - text: Visualizations
+    href: visualizations.html
+  - text: WaveICA2.0
+    href: waveica2.html
+  - text: ComBat
+    href: combat.html
   - text: About
     href: about.html
   - text: License
