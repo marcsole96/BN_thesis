@@ -1,0 +1,74 @@
+---
+title: "Combat"
+author: "Marc"
+date: "18/3/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+# Libraries
+
+```{r include=FALSE}
+set.seed(1234)
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+theme_set(theme_minimal())
+```
+```{r}
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    NULL
+  return(pca_plot)
+}
+
+```
+
+# Data and models loading
+
+```{r}
+#setwd("../workflowr/data")
+mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+mdf<-data.frame(mdf)
+mdf[is.na(mdf)] <- 0
+```
+
+# Loading ComBat
+https://rdrr.io/bioc/sva/man/ComBat.html
+
+```{r}
+library(sva)
+```
+```{r}
+#combat_edata1 = ComBat(dat=mdf, batch=batch, par.prior=TRUE, prior.plots=FALSE)
+```
+

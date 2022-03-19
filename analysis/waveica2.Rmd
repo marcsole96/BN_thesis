@@ -1,0 +1,161 @@
+---
+title: "WaveICA2_0"
+author: "Marc"
+date: "18/3/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+
+```{r include=FALSE}
+set.seed(1234)
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+theme_set(theme_minimal())
+```
+```{r}
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    NULL
+  return(pca_plot)
+}
+
+```
+
+# Data and models loading
+
+```{r}
+#setwd("../workflowr/data")
+mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+```
+
+# Loading WaveICA2.0
+https://github.com/dengkuistat/WaveICA_2.0
+
+https://www.metaboanalyst.ca/docs/RTutorial.xhtml
+
+## Installation
+```{r}
+#devtools::install_github("dengkuistat/WaveICA_2.0",host="https://api.github.com")
+#install.packages("remotes")
+#devtools::install_github("dengkuistat/WaveICA",host="https://api.github.com", force=T)
+```
+```{r}
+#library(WaveICA2.0)
+library(WaveICA)
+```
+
+## Preparing the data
+```{r}
+
+mdf <- mdf[1:200]
+mdf<-mdf[order(mdf$batch),]  
+
+sample_order<-mdf$batch
+
+test<-mdf %>% select(starts_with("M"))
+```
+
+## Trying to run the thing
+```{r}
+#wave<- WaveICA(test,wf="haar",sample_order,group=NULL,K=20,t=0.05,t2=0.05,alpha=0)
+```
+
+
+# MetaboanalystR
+
+## Install missing packages
+```{r}
+metanr_packages <- function(){
+metr_pkgs <- c("impute", "pcaMethods", "globaltest", "GlobalAncova", "Rgraphviz", "preprocessCore", "genefilter", "SSPA", "sva", "limma", "KEGGgraph", "siggenes","BiocParallel", "MSnbase", "multtest", "RBGL", "edgeR", "fgsea", "devtools", "crmn")
+list_installed <- installed.packages()
+new_pkgs <- subset(metr_pkgs, !(metr_pkgs %in% list_installed[, "Package"]))
+if(length(new_pkgs)!=0){if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
+        BiocManager::install(new_pkgs)
+        print(c(new_pkgs, " packages added..."))
+    }
+
+if((length(new_pkgs)<1)){
+        print("No new packages added...")
+    }
+}
+```
+
+```{r}
+metanr_packages()
+```
+
+## Installing the package
+```{r}
+devtools::install_github("xia-lab/MetaboAnalystR", build = TRUE, build_vignettes = TRUE, build_manual =T)
+```
+
+## Trying to run the thing
+
+## Detach all unloaded packages
+```{r}
+lapply(names(sessionInfo()$otherPkgs), function(pkgs)
+  detach(
+    paste0('package:', pkgs),
+    character.only = T,
+    unload = T,
+    force = T
+  ))
+
+
+```
+
+## Trying to run the thing
+```{r}
+library("MetaboAnalystR")
+library(tidyverse)
+```
+
+```{r}
+test<-mdf %>% mutate(rowid = row_number()) %>% 
+  relocate(rowid, .before = type) %>%
+  select(-type, -sample_id)
+
+#mSet <- PerformBatchCorrection(test)
+```
+
+```{r}
+#mSet <- InitDataObjects("pktable", "utils", FALSE)
+```
+
+```{r}
+# mSet <- Read.SignalDriftData(mSet, test, "row")
+# mSet <- PerformBatchCorrection(mSet)
+```
+

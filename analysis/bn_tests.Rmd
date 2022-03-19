@@ -56,7 +56,6 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 ```{r}
 #setwd("../workflowr/data")
 mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
-
 #mdf<-mdf %>% gather(key="mz",value="values",6:ncol(mdf)) %>% spread(mz,values)
 
 results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
@@ -263,7 +262,7 @@ mdf<-test[order(test$sample_id),]
 mdf[is.na(mdf)] <- 0
 ```
 
-##PCA
+## PCA
 ```{r}
 rm(rowinfo,raw)
 raw     <-  mdf[6:(ncol(mdf))]
@@ -275,7 +274,7 @@ tmp2 <- raw[tmp1$rowid,]
 plot_pca(tmp1,tmp2,color_label = "age")
 ```
 
-##Model
+## Model
 ```{r}
 training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
 training_DF[is.na(training_DF)] <- 0
@@ -300,7 +299,7 @@ results
 
 
 
-#Saving the model
+# Saving the model
 ```{r}
 saveRDS(fit1, "bn_test.rds")
 ```

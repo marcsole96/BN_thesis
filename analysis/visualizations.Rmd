@@ -1,0 +1,107 @@
+---
+title: "Visualizations and comparisons"
+author: "Marc"
+date: "18/3/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+
+```{r include=FALSE}
+set.seed(1234)
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+theme_set(theme_minimal())
+```
+
+```{r}
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    NULL
+  return(pca_plot)
+}
+
+```
+
+# Data and models loading
+
+```{r}
+#setwd("../workflowr/data")
+load("models.RData")
+fit8 <- readRDS("bn_test.rds")
+mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+```
+
+# Comparing the two normalization methods
+
+```{r eval=FALSE, include=FALSE}
+error %>% filter(model=="fit6"|model=="fit7") %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
+  scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
+  facet_wrap(~model)
+```
+
+```{r}
+error %>% filter(model=="fit6"|model=="fit7") %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8) +
+  geom_jitter(shape=16, position=position_jitter(0)) +
+  scale_color_brewer(palette="Dark2")
+```
+
+
+# Plotting the RMSE
+```{r}
+results[8,] = data.frame(getTrainPerf(fit8), Name = paste0("fit8"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN")
+
+error1<-fit8$pred %>%
+  filter(alpha == fit8$bestTune$alpha & lambda == fit8$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "fit8")
+
+error<-rbind(error,error1)
+```
+
+```{r eval=FALSE, fig.width=10, include=FALSE}
+error %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
+  scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
+  facet_wrap(~model)
+```
+
+```{r}
+error %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8) +
+  geom_jitter(shape=16, position=position_jitter(0)) +
+  scale_color_brewer(palette="Dark2")
+```

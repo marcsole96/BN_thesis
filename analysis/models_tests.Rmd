@@ -64,7 +64,7 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 #setwd("../workflowr/data")
 mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
 #Making a waaay smaller df
-#mdf <- mdf[1:250]
+#mdf <- mdf[1:255]
 
 #mdf<-mdf %>% gather(key="mz",value="values",6:ncol(mdf)) %>% spread(mz,values)
 ```
