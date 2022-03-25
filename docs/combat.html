@@ -473,7 +473,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -482,7 +482,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -491,10 +491,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-03-19
+<strong>Last updated:</strong> 2022-03-25
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>workflowr/data/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -570,28 +570,52 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,17 +625,27 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/preprocessing_thesis_cache/
+    Ignored:    data/Demo for WaveICA/
 
 Untracked files:
     Untracked:  data/.Rprofile
     Untracked:  data/.gitignore
     Untracked:  data/TraceAge_bloodspots_t3_neg_clean.csv
     Untracked:  data/TraceAge_bloodspots_t3_pos_clean.csv
+    Untracked:  data/bn_after_norm.rds
+    Untracked:  data/bn_before_norm.rds
+    Untracked:  data/bn_means.rds
     Untracked:  data/bn_test.rds
+    Untracked:  data/combat_model.rds
     Untracked:  data/data_for_BN.RData
+    Untracked:  data/mdf.rds
+    Untracked:  data/mdf_processed.rds
     Untracked:  data/model_tests.rds
     Untracked:  data/models.RData
+    Untracked:  data/models_waveICA2.0.RData
     Untracked:  data/packrat/
+    Untracked:  data/sample_order_traceage_wp2_sample_overview.xlsx
+    Untracked:  data/waveICA_models.rds
     Untracked:  models.RData
 
 </code></pre>
@@ -651,6 +685,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/c026601523296966ba54de0734f30647a4e6c8fc/analysis/combat.Rmd" target="_blank">c026601</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-25
+</td>
+<td>
+Lots of things done
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/80b7a6ec0e7f6eb11e08ca91c44e1f3741de0e3b/docs/combat.html" target="_blank">80b7a6e</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -704,23 +772,34 @@ many things but nothing important done
 </div>
 <div id="data-and-models-loading" class="section level1">
 <h1>Data and models loading</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#setwd(&quot;../workflowr/data&quot;)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;TraceAge_bloodspots_t3_pos_clean.csv&quot;</span>)</span></code></pre></div>
-<pre><code>Rows: 184 Columns: 13051
--- Column specification --------------------------------------------------------
-Delimiter: &quot;,&quot;
-chr     (4): sample, batch, type, sample_id
-dbl (13047): age, M45T88, M45T218, M45T251, M45T63, M45T402, M45T44, M46T88,...
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span><span class="fu">data.frame</span>(mdf)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mdf[<span class="fu">is.na</span>(mdf)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>WD <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(WD<span class="sc">!=</span><span class="st">&quot;C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data&quot;</span>){</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setwd</span>(<span class="st">&quot;../workflowr/data&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="at">file =</span> <span class="st">&quot;mdf_processed.rds&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span><span class="fu">data.frame</span>(mdf)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>sampleorder <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;../data/sample_order_traceage_wp2_sample_overview.xlsx&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>sampleorder<span class="ot">&lt;-</span>sampleorder <span class="sc">%&gt;%</span> <span class="fu">select</span>(Sample, <span class="st">`</span><span class="at">Injection order positive</span><span class="st">`</span>) </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(sampleorder)[<span class="dv">1</span>]<span class="ot">&lt;-</span><span class="st">&quot;sample&quot;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">TrainRMSE =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainRsquared =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainMAE =</span> <span class="fu">as.numeric</span>(),<span class="at">method =</span> <span class="fu">as.character</span>(),<span class="at">Name =</span> <span class="fu">as.character</span>(),<span class="at">QC =</span> <span class="fu">as.character</span>())</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Some samples have different ID than on the original dataframe. </span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">merge</span>(mdf,sampleorder,<span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>), <span class="at">all =</span> T) </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#Removing them and keeping the ones I know are correct leaves me with less rows</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>merged <span class="ot">&lt;-</span> <span class="fu">merge</span>(mdf,sampleorder,<span class="at">by=</span><span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>), <span class="at">all =</span> F) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(<span class="st">`</span><span class="at">Injection order positive</span><span class="st">`</span>, <span class="at">.before =</span> sample)</span></code></pre></div>
 </div>
 <div id="loading-combat" class="section level1">
 <h1>Loading ComBat</h1>
 <p><a href="https://rdrr.io/bioc/sva/man/ComBat.html" class="uri">https://rdrr.io/bioc/sva/man/ComBat.html</a></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sva)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sva)</span></code></pre></div>
 <pre><code>Loading required package: mgcv</code></pre>
 <pre><code>Loading required package: nlme</code></pre>
 <pre><code>
@@ -739,7 +818,60 @@ Attaching package: &#39;genefilter&#39;</code></pre>
 
     spec</code></pre>
 <pre><code>Loading required package: BiocParallel</code></pre>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#combat_edata1 = ComBat(dat=mdf, batch=batch, par.prior=TRUE, prior.plots=FALSE)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mdf[<span class="fu">is.na</span>(mdf)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#mdf&lt;-mdf[order(mdf$batch),]  </span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(rowid, <span class="at">.before =</span> sample)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(rowid, sample, age, batch, type, sample_id)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>batches<span class="ot">&lt;-</span>(mdf<span class="sc">$</span>batch)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>test<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">&quot;M&quot;</span>))</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>test<span class="ot">&lt;-</span><span class="fu">as.matrix</span>(test)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">#Group may be age</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">#group&lt;-as.numeric(mdf$age)</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>combat <span class="ot">&lt;-</span> <span class="fu">ComBat</span>(<span class="at">dat=</span><span class="fu">t</span>(test), <span class="at">batch=</span>batches, <span class="at">par.prior=</span><span class="cn">TRUE</span>, <span class="at">prior.plots=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>Found 17 genes with uniform expression within a single batch (all zeros); these will not be adjusted for batch.</code></pre>
+<pre><code>Found8batches</code></pre>
+<pre><code>Adjusting for0covariate(s) or covariate level(s)</code></pre>
+<pre><code>Standardizing Data across genes</code></pre>
+<pre><code>Fitting L/S model and finding priors</code></pre>
+<pre><code>Finding parametric adjustments</code></pre>
+<pre><code>Adjusting the Data</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>combat <span class="ot">&lt;-</span> <span class="fu">t</span>(combat)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>combat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,combat)</span></code></pre></div>
+<div id="model" class="section level2">
+<h2>Model</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> combat <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id, <span class="sc">-</span>rowid)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">repeats=</span> <span class="dv">5</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">1</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit1), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit1&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + Combat&quot;</span>)</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>  TrainRMSE TrainRsquared TrainMAE method Name
+1  3.637477     0.9682411 2.493449 glmnet fit1
+                                                              QC
+1 4th_root + PCA outlier removal + Bad features removal + Combat</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>combat_model<span class="ot">&lt;-</span>fit1</span></code></pre></div>
+</div>
+</div>
+<div id="saving-the-model" class="section level1">
+<h1>Saving the model</h1>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(combat_model, <span class="st">&quot;combat_model.rds&quot;</span>)</span></code></pre></div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -747,7 +879,7 @@ Attaching package: &#39;genefilter&#39;</code></pre>
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>R version 4.1.3 (2022-03-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 22000)
@@ -764,11 +896,11 @@ attached base packages:
 
 other attached packages:
  [1] sva_3.42.0          BiocParallel_1.28.3 genefilter_1.76.0  
- [4] mgcv_1.8-39         nlme_3.1-155        patchwork_1.1.1    
- [7] ggrepel_0.9.1       purrr_0.3.4         dplyr_1.0.8        
-[10] tidyr_1.2.0         readr_2.1.2         caret_6.0-91       
-[13] lattice_0.20-45     cowplot_1.1.1       plotly_4.10.0      
-[16] ggfortify_0.4.14    ggplot2_3.3.5      
+ [4] mgcv_1.8-39         nlme_3.1-155        readxl_1.3.1       
+ [7] patchwork_1.1.1     ggrepel_0.9.1       purrr_0.3.4        
+[10] dplyr_1.0.8         tidyr_1.2.0         readr_2.1.2        
+[13] caret_6.0-91        lattice_0.20-45     cowplot_1.1.1      
+[16] plotly_4.10.0       ggfortify_0.4.14    ggplot2_3.3.5      
 
 loaded via a namespace (and not attached):
   [1] colorspace_2.0-3       ellipsis_0.3.2         class_7.3-20          
@@ -784,32 +916,33 @@ loaded via a namespace (and not attached):
  [31] cli_3.2.0              later_1.3.0            htmltools_0.5.2       
  [34] tools_4.1.3            GenomeInfoDbData_1.2.7 gtable_0.3.0          
  [37] glue_1.6.2             reshape2_1.4.4         Rcpp_1.0.8            
- [40] Biobase_2.54.0         jquerylib_0.1.4        Biostrings_2.62.0     
- [43] vctrs_0.3.8            iterators_1.0.14       timeDate_3043.102     
- [46] gower_1.0.0            xfun_0.30              stringr_1.4.0         
- [49] globals_0.14.0         lifecycle_1.0.1        XML_3.99-0.9          
- [52] future_1.24.0          edgeR_3.36.0           zlibbioc_1.40.0       
- [55] MASS_7.3-55            scales_1.1.1           ipred_0.9-12          
- [58] vroom_1.5.7            hms_1.1.1              promises_1.2.0.1      
+ [40] Biobase_2.54.0         cellranger_1.1.0       jquerylib_0.1.4       
+ [43] Biostrings_2.62.0      vctrs_0.3.8            iterators_1.0.14      
+ [46] timeDate_3043.102      gower_1.0.0            xfun_0.30             
+ [49] stringr_1.4.0          globals_0.14.0         lifecycle_1.0.1       
+ [52] XML_3.99-0.9           future_1.24.0          edgeR_3.36.0          
+ [55] zlibbioc_1.40.0        MASS_7.3-55            scales_1.1.1          
+ [58] ipred_0.9-12           hms_1.1.1              promises_1.2.0.1      
  [61] parallel_4.1.3         yaml_2.3.5             memoise_2.0.1         
  [64] gridExtra_2.3          sass_0.4.0             rpart_4.1.16          
- [67] stringi_1.7.6          RSQLite_2.2.10         S4Vectors_0.32.3      
- [70] foreach_1.5.2          BiocGenerics_0.40.0    hardhat_0.2.0         
- [73] lava_1.6.10            GenomeInfoDb_1.30.1    matrixStats_0.61.0    
- [76] bitops_1.0-7           rlang_1.0.2            pkgconfig_2.0.3       
- [79] evaluate_0.15          recipes_0.2.0          htmlwidgets_1.5.4     
- [82] bit_4.0.4              tidyselect_1.1.2       parallelly_1.30.0     
- [85] plyr_1.8.6             magrittr_2.0.2         R6_2.5.1              
- [88] IRanges_2.28.0         generics_0.1.2         DBI_1.1.2             
- [91] pillar_1.7.0           whisker_0.4            withr_2.5.0           
- [94] RCurl_1.98-1.6         KEGGREST_1.34.0        survival_3.2-13       
- [97] nnet_7.3-17            tibble_3.1.6           future.apply_1.8.1    
-[100] crayon_1.5.0           utf8_1.2.2             tzdb_0.2.0            
-[103] rmarkdown_2.13         locfit_1.5-9.5         grid_4.1.3            
-[106] data.table_1.14.2      blob_1.2.2             git2r_0.30.1          
-[109] ModelMetrics_1.2.2.2   digest_0.6.29          xtable_1.8-4          
-[112] httpuv_1.6.5           stats4_4.1.3           munsell_0.5.0         
-[115] viridisLite_0.4.0      bslib_0.3.1           </code></pre>
+ [67] stringi_1.7.6          RSQLite_2.2.10         highr_0.9             
+ [70] S4Vectors_0.32.3       foreach_1.5.2          BiocGenerics_0.40.0   
+ [73] hardhat_0.2.0          shape_1.4.6            lava_1.6.10           
+ [76] GenomeInfoDb_1.30.1    matrixStats_0.61.0     bitops_1.0-7          
+ [79] rlang_1.0.2            pkgconfig_2.0.3        evaluate_0.15         
+ [82] recipes_0.2.0          htmlwidgets_1.5.4      bit_4.0.4             
+ [85] tidyselect_1.1.2       parallelly_1.30.0      plyr_1.8.6            
+ [88] magrittr_2.0.2         R6_2.5.1               IRanges_2.28.0        
+ [91] generics_0.1.2         DBI_1.1.2              pillar_1.7.0          
+ [94] whisker_0.4            withr_2.5.0            RCurl_1.98-1.6        
+ [97] KEGGREST_1.34.0        survival_3.2-13        nnet_7.3-17           
+[100] tibble_3.1.6           future.apply_1.8.1     crayon_1.5.0          
+[103] utf8_1.2.2             tzdb_0.2.0             rmarkdown_2.13        
+[106] locfit_1.5-9.5         grid_4.1.3             data.table_1.14.2     
+[109] blob_1.2.2             git2r_0.30.1           ModelMetrics_1.2.2.2  
+[112] digest_0.6.29          xtable_1.8-4           httpuv_1.6.5          
+[115] glmnet_4.1-3           stats4_4.1.3           munsell_0.5.0         
+[118] viridisLite_0.4.0      bslib_0.3.1           </code></pre>
 </div>
 </div>
 

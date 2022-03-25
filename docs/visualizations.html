@@ -473,7 +473,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -482,7 +482,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -491,10 +491,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-03-19
+<strong>Last updated:</strong> 2022-03-25
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>workflowr/data/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -570,28 +570,52 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,17 +625,27 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/preprocessing_thesis_cache/
+    Ignored:    data/Demo for WaveICA/
 
 Untracked files:
     Untracked:  data/.Rprofile
     Untracked:  data/.gitignore
     Untracked:  data/TraceAge_bloodspots_t3_neg_clean.csv
     Untracked:  data/TraceAge_bloodspots_t3_pos_clean.csv
+    Untracked:  data/bn_after_norm.rds
+    Untracked:  data/bn_before_norm.rds
+    Untracked:  data/bn_means.rds
     Untracked:  data/bn_test.rds
+    Untracked:  data/combat_model.rds
     Untracked:  data/data_for_BN.RData
+    Untracked:  data/mdf.rds
+    Untracked:  data/mdf_processed.rds
     Untracked:  data/model_tests.rds
     Untracked:  data/models.RData
+    Untracked:  data/models_waveICA2.0.RData
     Untracked:  data/packrat/
+    Untracked:  data/sample_order_traceage_wp2_sample_overview.xlsx
+    Untracked:  data/waveICA_models.rds
     Untracked:  models.RData
 
 </code></pre>
@@ -651,6 +685,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/c026601523296966ba54de0734f30647a4e6c8fc/analysis/visualizations.Rmd" target="_blank">c026601</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-25
+</td>
+<td>
+Lots of things done
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/80b7a6ec0e7f6eb11e08ca91c44e1f3741de0e3b/docs/visualizations.html" target="_blank">80b7a6e</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -704,45 +772,77 @@ many things but nothing important done
 </div>
 <div id="data-and-models-loading" class="section level1">
 <h1>Data and models loading</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#setwd(&quot;../workflowr/data&quot;)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;models.RData&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fit8 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;bn_test.rds&quot;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;TraceAge_bloodspots_t3_pos_clean.csv&quot;</span>)</span></code></pre></div>
-<pre><code>Rows: 184 Columns: 13051
--- Column specification --------------------------------------------------------
-Delimiter: &quot;,&quot;
-chr     (4): sample, batch, type, sample_id
-dbl (13047): age, M45T88, M45T218, M45T251, M45T63, M45T402, M45T44, M46T88,...
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>WD <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(WD<span class="sc">!=</span><span class="st">&quot;C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data&quot;</span>){</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setwd</span>(<span class="st">&quot;../workflowr/data&quot;</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;models.RData&quot;</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>H_BN_means <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;bn_means.rds&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Combat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;../data/combat_model.rds&quot;</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;../data/models_waveICA2.0.RData&quot;</span>)</span></code></pre></div>
 </div>
 <div id="comparing-the-two-normalization-methods" class="section level1">
 <h1>Comparing the two normalization methods</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>error <span class="sc">%&gt;%</span> <span class="fu">filter</span>(model<span class="sc">==</span><span class="st">&quot;fit6&quot;</span><span class="sc">|</span>model<span class="sc">==</span><span class="st">&quot;fit7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>model,<span class="at">y=</span>rmse, <span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>error <span class="sc">%&gt;%</span> <span class="fu">filter</span>(model<span class="sc">==</span><span class="st">&quot;fit6&quot;</span><span class="sc">|</span>model<span class="sc">==</span><span class="st">&quot;fit7&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>model,<span class="at">y=</span>rmse, <span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>)</span></code></pre></div>
 <p><img src="figure/visualizations.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="plotting-the-rmse" class="section level1">
-<h1>Plotting the RMSE</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">8</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit8), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit8&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN&quot;</span>)</span>
+<div id="getting-the-errors-of-fit-8" class="section level1">
+<h1>Getting the errors of fit 8</h1>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">8</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(H_BN_means), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;H_BN_means&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + Mean BN&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>H_BN_means<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(alpha <span class="sc">==</span> H_BN_means<span class="sc">$</span>bestTune<span class="sc">$</span>alpha <span class="sc">&amp;</span> lambda <span class="sc">==</span> H_BN_means<span class="sc">$</span>bestTune<span class="sc">$</span>lambda) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">rmse =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;H_BN_means&quot;</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="getting-the-errors-of-waveica-files" class="section level1">
+<h1>Getting the errors of WAVEICA files</h1>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">9</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(waveICA2<span class="fl">.0</span>_realorder), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;waveICA2.0_realorder&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + WaveICA2.0&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>fit8<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(alpha <span class="sc">==</span> fit8<span class="sc">$</span>bestTune<span class="sc">$</span>alpha <span class="sc">&amp;</span> lambda <span class="sc">==</span> fit8<span class="sc">$</span>bestTune<span class="sc">$</span>lambda) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>waveICA2<span class="fl">.0</span>_realorder<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(alpha <span class="sc">==</span> waveICA2<span class="fl">.0</span>_realorder<span class="sc">$</span>bestTune<span class="sc">$</span>alpha <span class="sc">&amp;</span> lambda <span class="sc">==</span> waveICA2<span class="fl">.0</span>_realorder<span class="sc">$</span>bestTune<span class="sc">$</span>lambda) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">rmse =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;fit8&quot;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;I_waveICA2.0_realorder&quot;</span>)</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>error <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>model,<span class="at">y=</span>rmse, <span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>)</span></code></pre></div>
-<p><img src="figure/visualizations.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="getting-the-errors-of-combat" class="section level1">
+<h1>Getting the errors of ComBat</h1>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">11</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(Combat), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;Combat&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + ComBat&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>Combat<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(alpha <span class="sc">==</span> Combat<span class="sc">$</span>bestTune<span class="sc">$</span>alpha <span class="sc">&amp;</span> lambda <span class="sc">==</span> Combat<span class="sc">$</span>bestTune<span class="sc">$</span>lambda) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">rmse =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">&quot;J_ComBat&quot;</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="plotting" class="section level1">
+<h1>Plotting</h1>
+<div id="everything" class="section level2">
+<h2>Everything</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>error <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>model,<span class="at">y=</span>rmse, <span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>) <span class="sc">+</span>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>))</span></code></pre></div>
+<p><img src="figure/visualizations.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /> ## The Normalizations</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>test<span class="ot">&lt;-</span>error <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">26</span><span class="sc">:</span><span class="dv">140</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>test <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>model,<span class="at">y=</span>rmse, <span class="at">color=</span>model)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>) <span class="sc">+</span>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette=</span><span class="st">&quot;Dark2&quot;</span>)</span></code></pre></div>
+<p><img src="figure/visualizations.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -750,7 +850,7 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>R version 4.1.3 (2022-03-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 22000)
@@ -771,39 +871,39 @@ other attached packages:
  [9] cowplot_1.1.1    plotly_4.10.0    ggfortify_0.4.14 ggplot2_3.3.5   
 
 loaded via a namespace (and not attached):
- [1] nlme_3.1-155         fs_1.5.2             bit64_4.0.5         
- [4] lubridate_1.8.0      RColorBrewer_1.1-2   httr_1.4.2          
- [7] rprojroot_2.0.2      tools_4.1.3          bslib_0.3.1         
-[10] utf8_1.2.2           R6_2.5.1             rpart_4.1.16        
-[13] DBI_1.1.2            lazyeval_0.2.2       colorspace_2.0-3    
-[16] nnet_7.3-17          withr_2.5.0          tidyselect_1.1.2    
-[19] gridExtra_2.3        bit_4.0.4            compiler_4.1.3      
-[22] git2r_0.30.1         glmnet_4.1-3         cli_3.2.0           
-[25] labeling_0.4.2       sass_0.4.0           scales_1.1.1        
-[28] stringr_1.4.0        digest_0.6.29        rmarkdown_2.13      
-[31] pkgconfig_2.0.3      htmltools_0.5.2      parallelly_1.30.0   
-[34] highr_0.9            fastmap_1.1.0        htmlwidgets_1.5.4   
-[37] rlang_1.0.2          rstudioapi_0.13      farver_2.1.0        
-[40] shape_1.4.6          jquerylib_0.1.4      generics_0.1.2      
-[43] jsonlite_1.8.0       vroom_1.5.7          ModelMetrics_1.2.2.2
-[46] magrittr_2.0.2       Matrix_1.4-0         Rcpp_1.0.8          
-[49] munsell_0.5.0        fansi_1.0.2          lifecycle_1.0.1     
-[52] stringi_1.7.6        whisker_0.4          pROC_1.18.0         
-[55] yaml_2.3.5           MASS_7.3-55          plyr_1.8.6          
-[58] recipes_0.2.0        grid_4.1.3           parallel_4.1.3      
-[61] listenv_0.8.0        promises_1.2.0.1     crayon_1.5.0        
-[64] splines_4.1.3        hms_1.1.1            knitr_1.37          
-[67] pillar_1.7.0         future.apply_1.8.1   reshape2_1.4.4      
-[70] codetools_0.2-18     stats4_4.1.3         glue_1.6.2          
-[73] packrat_0.7.0        evaluate_0.15        data.table_1.14.2   
-[76] tzdb_0.2.0           vctrs_0.3.8          httpuv_1.6.5        
-[79] foreach_1.5.2        gtable_0.3.0         future_1.24.0       
-[82] assertthat_0.2.1     xfun_0.30            gower_1.0.0         
-[85] prodlim_2019.11.13   later_1.3.0          class_7.3-20        
-[88] survival_3.2-13      viridisLite_0.4.0    timeDate_3043.102   
-[91] tibble_3.1.6         iterators_1.0.14     hardhat_0.2.0       
-[94] workflowr_1.7.0      lava_1.6.10          globals_0.14.0      
-[97] ellipsis_0.3.2       ipred_0.9-12        </code></pre>
+ [1] nlme_3.1-155         fs_1.5.2             lubridate_1.8.0     
+ [4] RColorBrewer_1.1-2   httr_1.4.2           rprojroot_2.0.2     
+ [7] tools_4.1.3          bslib_0.3.1          utf8_1.2.2          
+[10] R6_2.5.1             rpart_4.1.16         DBI_1.1.2           
+[13] lazyeval_0.2.2       colorspace_2.0-3     nnet_7.3-17         
+[16] withr_2.5.0          tidyselect_1.1.2     gridExtra_2.3       
+[19] compiler_4.1.3       git2r_0.30.1         glmnet_4.1-3        
+[22] cli_3.2.0            labeling_0.4.2       sass_0.4.0          
+[25] scales_1.1.1         stringr_1.4.0        digest_0.6.29       
+[28] rmarkdown_2.13       pkgconfig_2.0.3      htmltools_0.5.2     
+[31] parallelly_1.30.0    fastmap_1.1.0        highr_0.9           
+[34] htmlwidgets_1.5.4    rlang_1.0.2          rstudioapi_0.13     
+[37] farver_2.1.0         shape_1.4.6          jquerylib_0.1.4     
+[40] generics_0.1.2       jsonlite_1.8.0       ModelMetrics_1.2.2.2
+[43] magrittr_2.0.2       Matrix_1.4-0         Rcpp_1.0.8          
+[46] munsell_0.5.0        fansi_1.0.2          lifecycle_1.0.1     
+[49] stringi_1.7.6        whisker_0.4          pROC_1.18.0         
+[52] yaml_2.3.5           MASS_7.3-55          plyr_1.8.6          
+[55] recipes_0.2.0        grid_4.1.3           parallel_4.1.3      
+[58] listenv_0.8.0        promises_1.2.0.1     crayon_1.5.0        
+[61] splines_4.1.3        hms_1.1.1            knitr_1.37          
+[64] pillar_1.7.0         stats4_4.1.3         future.apply_1.8.1  
+[67] reshape2_1.4.4       codetools_0.2-18     glue_1.6.2          
+[70] packrat_0.7.0        evaluate_0.15        data.table_1.14.2   
+[73] tzdb_0.2.0           vctrs_0.3.8          httpuv_1.6.5        
+[76] foreach_1.5.2        gtable_0.3.0         future_1.24.0       
+[79] assertthat_0.2.1     xfun_0.30            gower_1.0.0         
+[82] prodlim_2019.11.13   later_1.3.0          class_7.3-20        
+[85] survival_3.2-13      viridisLite_0.4.0    timeDate_3043.102   
+[88] tibble_3.1.6         iterators_1.0.14     hardhat_0.2.0       
+[91] workflowr_1.7.0      lava_1.6.10          globals_0.14.0      
+[94] ellipsis_0.3.2       ipred_0.9-12        </code></pre>
+</div>
 </div>
 </div>
 

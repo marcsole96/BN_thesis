@@ -473,7 +473,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -482,7 +482,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -491,10 +491,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-03-19
+<strong>Last updated:</strong> 2022-03-25
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>workflowr/data/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -570,28 +570,52 @@ This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysi
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
 </p>
 </div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreea24a9d19e4db37ab174d7502d6af77dfd71eb630targetblanka24a9d1a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/a24a9d19e4db37ab174d7502d6af77dfd71eb630" target="_blank">a24a9d1</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -601,17 +625,27 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/preprocessing_thesis_cache/
+    Ignored:    data/Demo for WaveICA/
 
 Untracked files:
     Untracked:  data/.Rprofile
     Untracked:  data/.gitignore
     Untracked:  data/TraceAge_bloodspots_t3_neg_clean.csv
     Untracked:  data/TraceAge_bloodspots_t3_pos_clean.csv
+    Untracked:  data/bn_after_norm.rds
+    Untracked:  data/bn_before_norm.rds
+    Untracked:  data/bn_means.rds
     Untracked:  data/bn_test.rds
+    Untracked:  data/combat_model.rds
     Untracked:  data/data_for_BN.RData
+    Untracked:  data/mdf.rds
+    Untracked:  data/mdf_processed.rds
     Untracked:  data/model_tests.rds
     Untracked:  data/models.RData
+    Untracked:  data/models_waveICA2.0.RData
     Untracked:  data/packrat/
+    Untracked:  data/sample_order_traceage_wp2_sample_overview.xlsx
+    Untracked:  data/waveICA_models.rds
     Untracked:  models.RData
 
 </code></pre>
@@ -651,6 +685,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/c026601523296966ba54de0734f30647a4e6c8fc/analysis/bn_tests.Rmd" target="_blank">c026601</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-25
+</td>
+<td>
+Lots of things done
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/80b7a6ec0e7f6eb11e08ca91c44e1f3741de0e3b/docs/bn_tests.html" target="_blank">80b7a6e</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -806,256 +874,119 @@ things done
 </div>
 <div id="data-loading" class="section level1">
 <h1>Data loading</h1>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#setwd(&quot;../workflowr/data&quot;)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;TraceAge_bloodspots_t3_pos_clean.csv&quot;</span>)</span></code></pre></div>
-<pre><code>Rows: 184 Columns: 13051
--- Column specification --------------------------------------------------------
-Delimiter: &quot;,&quot;
-chr     (4): sample, batch, type, sample_id
-dbl (13047): age, M45T88, M45T218, M45T251, M45T63, M45T402, M45T44, M46T88,...
-
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#mdf&lt;-mdf %&gt;% gather(key=&quot;mz&quot;,value=&quot;values&quot;,6:ncol(mdf)) %&gt;% spread(mz,values)</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">TrainRMSE =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainRsquared =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainMAE =</span> <span class="fu">as.numeric</span>(),<span class="at">method =</span> <span class="fu">as.character</span>(),<span class="at">Name =</span> <span class="fu">as.character</span>(),<span class="at">QC =</span> <span class="fu">as.character</span>())</span></code></pre></div>
-<div id="th-root-transformation" class="section level2">
-<h2>4th root transformation</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Imputing zeros</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>test_df<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">gather</span>(<span class="at">key=</span><span class="st">&quot;mz&quot;</span>,<span class="at">value=</span><span class="st">&quot;values&quot;</span>,<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(mdf))</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>test_df<span class="sc">$</span>values[<span class="fu">is.na</span>(test_df<span class="sc">$</span>values)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#4th root transformation</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>root_transform <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span> (x<span class="sc">^</span><span class="fl">0.25</span>)}</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>mdf[<span class="dv">6</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(mdf[<span class="dv">6</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))],root_transform)</span></code></pre></div>
-</div>
-<div id="pca-outliars-removal" class="section level2">
-<h2>PCA outliars removal</h2>
-<p>I haven’t found any package that does it automatically, meaning I will have to explain a bit the theory behind this method. <a href="https://www.r-bloggers.com/2021/09/how-to-remove-outliers-in-r-3/" class="uri">https://www.r-bloggers.com/2021/09/how-to-remove-outliers-in-r-3/</a></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">6</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">rowid_to_column</span>(rowinfo, <span class="st">&quot;rowid&quot;</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>r  <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(<span class="at">x =</span> tmp2, <span class="at">retx =</span> T, <span class="at">center=</span>T, <span class="at">scale. =</span> T, <span class="at">rank. =</span> <span class="dv">12</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>bad_rows <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">rowid2=</span><span class="fu">apply</span>(r<span class="sc">$</span>x, <span class="dv">2</span>, <span class="cf">function</span>(x) {</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">which</span>(<span class="fu">abs</span>(x <span class="sc">-</span> <span class="fu">median</span>(x)) <span class="sc">&gt;</span> (<span class="fl">1.5</span> <span class="sc">*</span> <span class="fu">quantile</span>(x,<span class="fl">0.95</span>)<span class="sc">-</span><span class="fu">quantile</span>(x,<span class="fl">0.05</span>))) </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">%&gt;%</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.vector</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(rowid2)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> tmp1 <span class="sc">%&gt;%</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(bad_rows) <span class="sc">%&gt;%</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n=</span><span class="fu">ifelse</span>(<span class="fu">is.na</span>(n), <span class="dv">0</span>,n)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label=</span><span class="fu">ifelse</span>(n<span class="sc">&gt;</span><span class="dv">0</span>, rowid, <span class="st">&quot;&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  {.}</span></code></pre></div>
-<pre><code>Joining, by = &quot;rowid2&quot;</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bad_rows <span class="ot">&lt;-</span> tmp1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(n<span class="sc">&gt;</span><span class="dv">0</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ms <span class="ot">=</span> <span class="fu">list</span>()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(bad_rows) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  ms<span class="sc">$</span>values1  <span class="ot">&lt;-</span> raw[<span class="sc">-</span>bad_rows<span class="sc">$</span>rowid,]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  ms<span class="sc">$</span>rowinfo1 <span class="ot">&lt;-</span> rowinfo[<span class="sc">-</span>bad_rows<span class="sc">$</span>rowid,]</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  ms<span class="sc">$</span>values1  <span class="ot">&lt;-</span> raw</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  ms<span class="sc">$</span>rowinfo1 <span class="ot">&lt;-</span> rowinfo</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">#Overwritting the original DF with the new data</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>ms<span class="sc">$</span>values1</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>ms<span class="sc">$</span>rowinfo1</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1 <span class="sc">%&gt;%</span> </span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) </span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(bad_rows, tmp1, tmp2,r)</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values1[tmp1<span class="sc">$</span>rowid,]</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tmp1,tmp2)</span></code></pre></div>
-</div>
-<div id="removing-extreme-values-columns" class="section level2">
-<h2>Removing extreme values (columns)</h2>
-<p>(values larger than median + 1.5 * q90)</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span> ms<span class="sc">$</span>values1</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo1</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">rowid =</span> rowinfo<span class="sc">$</span>rowid, <span class="at">type =</span> rowinfo<span class="sc">$</span>type) <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">as_tibble</span>(raw))</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> tmp1 <span class="sc">%&gt;%</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;compound&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span>,  <span class="at">cols=</span> <span class="fu">c</span>(<span class="sc">-</span>rowid, <span class="sc">-</span>type))</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> tmp1 <span class="sc">%&gt;%</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a> <span class="fu">group_by</span>(compound) <span class="sc">%&gt;%</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a> <span class="fu">summarise</span>(<span class="at">n_bad =</span> <span class="fu">sum</span>(value <span class="sc">&gt;</span> <span class="fu">median</span>(value)<span class="sc">+</span><span class="fl">1.5</span><span class="sc">*</span><span class="fu">quantile</span>(value,<span class="fl">0.90</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a> {.}</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>bad_features <span class="ot">&lt;-</span> tmp2 <span class="sc">%&gt;%</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_bad <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(compound) <span class="sc">%&gt;%</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>values2 <span class="ot">&lt;-</span> raw <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">any_of</span>(bad_features<span class="sc">$</span>compound))</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo2 <span class="ot">&lt;-</span> rowinfo</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#Overwritting the original DF with the new data</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>ms<span class="sc">$</span>values2</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>ms<span class="sc">$</span>rowinfo2</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(bad_features,tmp2,tmp1,raw)</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values2[tmp1<span class="sc">$</span>rowid,]</span></code></pre></div>
-</div>
-<div id="removing-features-using-qc-and-blind-samples." class="section level2">
-<h2>Removing features using QC and blind samples.</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>raw <span class="ot">&lt;-</span> ms<span class="sc">$</span>values2</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo2</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;blind&quot;</span>, <span class="st">&quot;qc&quot;</span>, <span class="st">&quot;sample&quot;</span>)) </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>pd1 <span class="ot">&lt;-</span> tmp2 <span class="sc">%&gt;%</span> </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(tmp1) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">starts_with</span>(<span class="st">&quot;M&quot;</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(type, name) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median =</span> <span class="fu">median</span>(value), </span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">variation =</span> <span class="fu">mad</span>(value)<span class="sc">/</span>median) <span class="sc">%&gt;%</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> type, <span class="at">values_from=</span><span class="fu">c</span>(median,variation))</span></code></pre></div>
-<pre><code>`summarise()` has grouped output by &#39;type&#39;. You can override using the
-`.groups` argument.</code></pre>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>good_features <span class="ot">&lt;-</span> pd1 <span class="sc">%&gt;%</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(median_qc <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>median_blind) <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(median_sample <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>median_blind) <span class="sc">%&gt;%</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variation_sample <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>variation_qc ) <span class="sc">%&gt;%</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(variation_sample <span class="sc">&gt;</span> <span class="fl">1.5</span><span class="sc">*</span>variation_blind) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  {.}</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>rowinfo3 <span class="ot">&lt;-</span> rowinfo</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>ms<span class="sc">$</span>values3  <span class="ot">&lt;-</span> raw <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">any_of</span>(good_features<span class="sc">$</span>name))</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Overwriting the original DF with the new data</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>values<span class="ot">&lt;-</span>ms<span class="sc">$</span>values3</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>rowinfo<span class="ot">&lt;-</span>ms<span class="sc">$</span>rowinfo3</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">cbind</span>(rowinfo,values)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>rowid)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(tmp1,tmp2,pd1,good_features)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> ms<span class="sc">$</span>rowinfo3 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>))</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> ms<span class="sc">$</span>values3[tmp1<span class="sc">$</span>rowid,]</span></code></pre></div>
-</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>WD <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(WD<span class="sc">!=</span><span class="st">&quot;C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data&quot;</span>){</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setwd</span>(<span class="st">&quot;../workflowr/data&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(<span class="at">file =</span> <span class="st">&quot;mdf_processed.rds&quot;</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#mdf&lt;-mdf %&gt;% gather(key=&quot;mz&quot;,value=&quot;values&quot;,6:ncol(mdf)) %&gt;% spread(mz,values)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">TrainRMSE =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainRsquared =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainMAE =</span> <span class="fu">as.numeric</span>(),<span class="at">method =</span> <span class="fu">as.character</span>(),<span class="at">Name =</span> <span class="fu">as.character</span>(),<span class="at">QC =</span> <span class="fu">as.character</span>())</span></code></pre></div>
 </div>
 <div id="simple-bn-subsctracting-the-mean-of-each-batch" class="section level1">
 <h1>Simple BN subsctracting the mean of each batch</h1>
 <div id="removing-the-means-of-each-batch-using-the-colmeans-function" class="section level2">
 <h2>Removing the means of each batch using the colMeans() function</h2>
 <p><a href="https://www.gastonsanchez.com/visually-enforced/how-to/2014/01/15/Center-data-in-R/" class="uri">https://www.gastonsanchez.com/visually-enforced/how-to/2014/01/15/Center-data-in-R/</a></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Making a function to center the means</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>center_colmeans <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    xcenter <span class="ot">=</span> <span class="fu">colMeans</span>(x)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">-</span> <span class="fu">rep</span>(xcenter, <span class="fu">rep.int</span>(<span class="fu">nrow</span>(x), <span class="fu">ncol</span>(x)))</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>batch1<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="dv">1</span>)</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch1[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch1)]))</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>batch1[ , <span class="fu">colnames</span>(batch1) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>batch2<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="dv">2</span>)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch2[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch2)]))</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>batch2[ , <span class="fu">colnames</span>(batch2) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>batch3<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="dv">3</span>)</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch3[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch3)]))</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>batch3[ , <span class="fu">colnames</span>(batch3) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>batch2b<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;2b&quot;</span>)</span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch2b[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch2b)]))</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>batch2b[ , <span class="fu">colnames</span>(batch2b) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>batchb2<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;b2&quot;</span>)</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchb2[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchb2)]))</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>batchb2[ , <span class="fu">colnames</span>(batchb2) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>batchb3<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;b3&quot;</span>)</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchb3[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchb3)]))</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>batchb3[ , <span class="fu">colnames</span>(batchb3) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>batchb<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;b&quot;</span>)</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchb[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchb)]))</span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>batchb[ , <span class="fu">colnames</span>(batchb) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>batchna<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(batch))</span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchna[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchna)]))</span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>batchna[ , <span class="fu">colnames</span>(batchna) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>test<span class="ot">&lt;-</span><span class="fu">rbind</span>(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)</span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)</span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>test[<span class="fu">order</span>(test<span class="sc">$</span>sample_id),]  </span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>mdf[<span class="fu">is.na</span>(mdf)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Making a function to center the means</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>center_colmeans <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    xcenter <span class="ot">=</span> <span class="fu">colMeans</span>(x)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    x <span class="sc">-</span> <span class="fu">rep</span>(xcenter, <span class="fu">rep.int</span>(<span class="fu">nrow</span>(x), <span class="fu">ncol</span>(x)))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>batch1<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch1[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch1)]))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>batch1[ , <span class="fu">colnames</span>(batch1) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>batch2<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="dv">2</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch2[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch2)]))</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>batch2[ , <span class="fu">colnames</span>(batch2) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>batch3<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="dv">3</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch3[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch3)]))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>batch3[ , <span class="fu">colnames</span>(batch3) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>batch2b<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;2b&quot;</span>)</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batch2b[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batch2b)]))</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>batch2b[ , <span class="fu">colnames</span>(batch2b) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>batchb2<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;b2&quot;</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchb2[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchb2)]))</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>batchb2[ , <span class="fu">colnames</span>(batchb2) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>batchb3<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;b3&quot;</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchb3[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchb3)]))</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>batchb3[ , <span class="fu">colnames</span>(batchb3) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>batchb<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(batch<span class="sc">==</span><span class="st">&quot;b&quot;</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchb[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchb)]))</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>batchb[ , <span class="fu">colnames</span>(batchb) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>batchna<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> </span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(batch))</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>mean_removed<span class="ot">&lt;-</span>(<span class="fu">center_colmeans</span>(batchna[<span class="dv">6</span><span class="sc">:</span><span class="fu">ncol</span>(batchna)]))</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>batchna[ , <span class="fu">colnames</span>(batchna) <span class="sc">%in%</span> <span class="fu">colnames</span>(mean_removed)] <span class="ot">&lt;-</span> mean_removed</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>test<span class="ot">&lt;-</span><span class="fu">rbind</span>(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>test[<span class="fu">order</span>(test<span class="sc">$</span>sample_id),]  </span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>mdf[<span class="fu">is.na</span>(mdf)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code></pre></div>
 </div>
 <div id="pca" class="section level2">
 <h2>PCA</h2>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rowinfo,raw)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">6</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>]</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">rowid_to_column</span>(rowinfo, <span class="st">&quot;rowid&quot;</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2,<span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
-<p><img src="figure/bn_tests.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rowinfo,raw)</span></code></pre></div>
+<pre><code>Warning in rm(rowinfo, raw): object &#39;rowinfo&#39; not found</code></pre>
+<pre><code>Warning in rm(rowinfo, raw): object &#39;raw&#39; not found</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">6</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">rowid_to_column</span>(rowinfo, <span class="st">&quot;rowid&quot;</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_pca</span>(tmp1,tmp2,<span class="at">color_label =</span> <span class="st">&quot;age&quot;</span>)</span></code></pre></div>
+<p><img src="figure/bn_tests.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="model" class="section level2">
 <h2>Model</h2>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">repeats=</span> <span class="dv">5</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">1</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit1), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit1&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN&quot;</span>)</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>training_DF <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type<span class="sc">==</span><span class="st">&quot;sample&quot;</span>) <span class="sc">%&gt;%</span>  <span class="fu">select</span>(<span class="sc">-</span>sample,<span class="sc">-</span>batch,<span class="sc">-</span>type,<span class="sc">-</span>sample_id)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>training_DF[<span class="fu">is.na</span>(training_DF)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>training_x <span class="ot">&lt;-</span> training_DF <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>age) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>training_y <span class="ot">&lt;-</span> training_DF<span class="sc">$</span>age</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>trControl <span class="ot">&lt;-</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">&quot;repeatedcv&quot;</span>, <span class="at">number =</span> <span class="dv">10</span>, <span class="at">repeats=</span> <span class="dv">5</span>, <span class="at">verboseIter =</span> F, <span class="at">savePredictions =</span> <span class="st">&quot;final&quot;</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">train</span>(<span class="at">x =</span> training_x, </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">y =</span> training_y, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">method =</span> <span class="st">&quot;glmnet&quot;</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">tuneLength =</span> <span class="dv">5</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">trControl =</span> trControl,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">metric =</span> <span class="st">&#39;RMSE&#39;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">1</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(fit1), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;fit1&quot;</span>), <span class="at">QC =</span> <span class="st">&quot;4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN&quot;</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>results</span></code></pre></div>
 <pre><code>  TrainRMSE TrainRsquared TrainMAE method Name
-1  3.468171     0.9737919 2.692565 glmnet fit1
+1  3.659072     0.9731487 2.459356 glmnet fit1
                                                                                      QC
 1 4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN</code></pre>
 </div>
 </div>
 <div id="saving-the-model" class="section level1">
 <h1>Saving the model</h1>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(fit1, <span class="st">&quot;bn_test.rds&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(fit1, <span class="st">&quot;bn_means.rds&quot;</span>)</span></code></pre></div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1063,7 +994,7 @@ i Specify the column types or set `show_col_types = FALSE` to quiet this message
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>R version 4.1.3 (2022-03-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 22000)
@@ -1084,39 +1015,38 @@ other attached packages:
  [9] cowplot_1.1.1    plotly_4.10.0    ggfortify_0.4.14 ggplot2_3.3.5   
 
 loaded via a namespace (and not attached):
- [1] nlme_3.1-155         fs_1.5.2             bit64_4.0.5         
- [4] lubridate_1.8.0      httr_1.4.2           rprojroot_2.0.2     
- [7] tools_4.1.3          bslib_0.3.1          utf8_1.2.2          
-[10] R6_2.5.1             rpart_4.1.16         DBI_1.1.2           
-[13] lazyeval_0.2.2       colorspace_2.0-3     nnet_7.3-17         
-[16] withr_2.5.0          tidyselect_1.1.2     gridExtra_2.3       
-[19] bit_4.0.4            compiler_4.1.3       git2r_0.30.1        
-[22] glmnet_4.1-3         cli_3.2.0            labeling_0.4.2      
-[25] sass_0.4.0           scales_1.1.1         stringr_1.4.0       
-[28] digest_0.6.29        rmarkdown_2.13       pkgconfig_2.0.3     
-[31] htmltools_0.5.2      parallelly_1.30.0    highr_0.9           
-[34] fastmap_1.1.0        htmlwidgets_1.5.4    rlang_1.0.2         
-[37] rstudioapi_0.13      shape_1.4.6          farver_2.1.0        
-[40] jquerylib_0.1.4      generics_0.1.2       jsonlite_1.8.0      
-[43] vroom_1.5.7          ModelMetrics_1.2.2.2 magrittr_2.0.2      
-[46] Matrix_1.4-0         Rcpp_1.0.8           munsell_0.5.0       
-[49] fansi_1.0.2          lifecycle_1.0.1      stringi_1.7.6       
-[52] whisker_0.4          pROC_1.18.0          yaml_2.3.5          
-[55] MASS_7.3-55          plyr_1.8.6           recipes_0.2.0       
-[58] grid_4.1.3           parallel_4.1.3       listenv_0.8.0       
-[61] promises_1.2.0.1     crayon_1.5.0         splines_4.1.3       
-[64] hms_1.1.1            knitr_1.37           pillar_1.7.0        
-[67] future.apply_1.8.1   reshape2_1.4.4       codetools_0.2-18    
-[70] stats4_4.1.3         glue_1.6.2           packrat_0.7.0       
-[73] evaluate_0.15        data.table_1.14.2    tzdb_0.2.0          
-[76] vctrs_0.3.8          httpuv_1.6.5         foreach_1.5.2       
-[79] gtable_0.3.0         future_1.24.0        assertthat_0.2.1    
-[82] xfun_0.30            gower_1.0.0          prodlim_2019.11.13  
-[85] later_1.3.0          class_7.3-20         survival_3.2-13     
-[88] viridisLite_0.4.0    timeDate_3043.102    tibble_3.1.6        
-[91] iterators_1.0.14     hardhat_0.2.0        workflowr_1.7.0     
-[94] lava_1.6.10          globals_0.14.0       ellipsis_0.3.2      
-[97] ipred_0.9-12        </code></pre>
+ [1] nlme_3.1-155         fs_1.5.2             lubridate_1.8.0     
+ [4] httr_1.4.2           rprojroot_2.0.2      tools_4.1.3         
+ [7] bslib_0.3.1          utf8_1.2.2           R6_2.5.1            
+[10] rpart_4.1.16         DBI_1.1.2            lazyeval_0.2.2      
+[13] colorspace_2.0-3     nnet_7.3-17          withr_2.5.0         
+[16] tidyselect_1.1.2     gridExtra_2.3        compiler_4.1.3      
+[19] git2r_0.30.1         glmnet_4.1-3         cli_3.2.0           
+[22] labeling_0.4.2       sass_0.4.0           scales_1.1.1        
+[25] stringr_1.4.0        digest_0.6.29        rmarkdown_2.13      
+[28] pkgconfig_2.0.3      htmltools_0.5.2      parallelly_1.30.0   
+[31] fastmap_1.1.0        highr_0.9            htmlwidgets_1.5.4   
+[34] rlang_1.0.2          rstudioapi_0.13      shape_1.4.6         
+[37] farver_2.1.0         jquerylib_0.1.4      generics_0.1.2      
+[40] jsonlite_1.8.0       ModelMetrics_1.2.2.2 magrittr_2.0.2      
+[43] Matrix_1.4-0         Rcpp_1.0.8           munsell_0.5.0       
+[46] fansi_1.0.2          lifecycle_1.0.1      stringi_1.7.6       
+[49] whisker_0.4          pROC_1.18.0          yaml_2.3.5          
+[52] MASS_7.3-55          plyr_1.8.6           recipes_0.2.0       
+[55] grid_4.1.3           parallel_4.1.3       listenv_0.8.0       
+[58] promises_1.2.0.1     crayon_1.5.0         splines_4.1.3       
+[61] hms_1.1.1            knitr_1.37           pillar_1.7.0        
+[64] stats4_4.1.3         future.apply_1.8.1   reshape2_1.4.4      
+[67] codetools_0.2-18     glue_1.6.2           packrat_0.7.0       
+[70] evaluate_0.15        data.table_1.14.2    tzdb_0.2.0          
+[73] vctrs_0.3.8          httpuv_1.6.5         foreach_1.5.2       
+[76] gtable_0.3.0         future_1.24.0        assertthat_0.2.1    
+[79] xfun_0.30            gower_1.0.0          prodlim_2019.11.13  
+[82] later_1.3.0          class_7.3-20         survival_3.2-13     
+[85] viridisLite_0.4.0    timeDate_3043.102    tibble_3.1.6        
+[88] iterators_1.0.14     hardhat_0.2.0        workflowr_1.7.0     
+[91] lava_1.6.10          globals_0.14.0       ellipsis_0.3.2      
+[94] ipred_0.9-12        </code></pre>
 </div>
 </div>
 
