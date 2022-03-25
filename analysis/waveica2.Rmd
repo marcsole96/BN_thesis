@@ -22,9 +22,9 @@ library(dplyr)
 library(purrr)
 library(ggrepel)
 library(patchwork)
+library(readxl)
 theme_set(theme_minimal())
-```
-```{r}
+
 plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
   
   tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
@@ -52,11 +52,33 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 
 ```
 
+
 # Data and models loading
 
 ```{r}
-#setwd("../workflowr/data")
-mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+set.seed(1234)
+WD <- getwd()
+if(WD!="C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data"){
+  setwd("../workflowr/data")
+}
+
+
+mdf <- read_rds(file = "mdf_processed.rds")
+
+sampleorder <- read_excel("../data/sample_order_traceage_wp2_sample_overview.xlsx") %>% as.data.frame()
+
+sampleorder<-sampleorder %>% select(Sample, `Injection order positive`) 
+
+names(sampleorder)[1]<-"sample"
+
+
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
+
+#Some samples have different ID than on the original dataframe. 
+merged <- merge(mdf,sampleorder,by=c("sample"), all = T) 
+#Removing them and keeping the ones I know are correct leaves me with less rows
+merged <- merge(mdf,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
 ```
 
 # Loading WaveICA2.0
@@ -71,91 +93,116 @@ https://www.metaboanalyst.ca/docs/RTutorial.xhtml
 #devtools::install_github("dengkuistat/WaveICA",host="https://api.github.com", force=T)
 ```
 ```{r}
-#library(WaveICA2.0)
-library(WaveICA)
+library(WaveICA2.0)
+#library(WaveICA)
 ```
 
-## Preparing the data
-```{r}
-
-mdf <- mdf[1:200]
-mdf<-mdf[order(mdf$batch),]  
-
-sample_order<-mdf$batch
-
-test<-mdf %>% select(starts_with("M"))
-```
-
-## Trying to run the thing
-```{r}
-#wave<- WaveICA(test,wf="haar",sample_order,group=NULL,K=20,t=0.05,t2=0.05,alpha=0)
-```
-
-
-# MetaboanalystR
-
-## Install missing packages
-```{r}
-metanr_packages <- function(){
-metr_pkgs <- c("impute", "pcaMethods", "globaltest", "GlobalAncova", "Rgraphviz", "preprocessCore", "genefilter", "SSPA", "sva", "limma", "KEGGgraph", "siggenes","BiocParallel", "MSnbase", "multtest", "RBGL", "edgeR", "fgsea", "devtools", "crmn")
-list_installed <- installed.packages()
-new_pkgs <- subset(metr_pkgs, !(metr_pkgs %in% list_installed[, "Package"]))
-if(length(new_pkgs)!=0){if (!requireNamespace("BiocManager", quietly = TRUE))
-        install.packages("BiocManager")
-        BiocManager::install(new_pkgs)
-        print(c(new_pkgs, " packages added..."))
-    }
-
-if((length(new_pkgs)<1)){
-        print("No new packages added...")
-    }
-}
-```
+# WaveICA 2.0 on original data
 
 ```{r}
-metanr_packages()
-```
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 
-## Installing the package
-```{r}
-devtools::install_github("xia-lab/MetaboAnalystR", build = TRUE, build_vignettes = TRUE, build_manual =T)
-```
+ms = list()
+test<-mdf %>% select(starts_with("M")) %>% as.matrix()
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
 
-## Trying to run the thing
+tmp3 <- WaveICA_2.0(test, Injection_Order = 1:nrow(test), Cutoff = 0.1, wf = "haar", K = 20, alpha = 0)
+tmp3 <- tmp3$data_wave
+wave_original_mdf <- tmp3 %>% as_tibble()
 
-## Detach all unloaded packages
-```{r}
-lapply(names(sessionInfo()$otherPkgs), function(pkgs)
-  detach(
-    paste0('package:', pkgs),
-    character.only = T,
-    unload = T,
-    force = T
-  ))
-
+wave_original_mdf <- cbind(rowinfo,wave_original_mdf)
 
 ```
 
-## Trying to run the thing
+# WaveICA 2.0 with the provided sample order
+
 ```{r}
-library("MetaboAnalystR")
-library(tidyverse)
+merged<-merged %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+
+ms = list()
+test2<-merged %>% select(starts_with("M")) %>% as.matrix()
+rowinfo <- merged %>% select(rowid, sample, age, batch, type, sample_id)
+order <- merged$`Injection order positive`
+
+tmp4 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.1, wf = "haar", K = 20, alpha = 0)
+tmp4 <- tmp4$data_wave
+wave_withorder_mdf <- tmp4 %>% as_tibble()
+wave_withorder_mdf <- cbind(rowinfo,wave_withorder_mdf)
 ```
 
+# PCAs
+## Taking the original row order
 ```{r}
-test<-mdf %>% mutate(rowid = row_number()) %>% 
-  relocate(rowid, .before = type) %>%
-  select(-type, -sample_id)
+rm(rowinfo)
+raw     <-  wave_original_mdf[7:(ncol(mdf))]
+rowinfo <- wave_original_mdf[0:6]
 
-#mSet <- PerformBatchCorrection(test)
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+```
+## Taking the provided sample order (which removes some samples)
+```{r}
+rm(rowinfo,raw)
+raw     <-  wave_withorder_mdf[7:(ncol(mdf))]
+rowinfo <- wave_withorder_mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
 ```
 
+# Models
+## Taking the original row order
 ```{r}
-#mSet <- InitDataObjects("pktable", "utils", FALSE)
+training_DF <- wave_original_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+
+waveICA2.0_rows <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[1,] = data.frame(getTrainPerf(waveICA2.0_rows), Name = paste0("waveICA2.0_rows"), QC = "4th_root + PCA outlier removal + Bad features removal + WaveICA2.0 roworder")
+
+results
 ```
 
+## Taking the provided sample order (which removes some samples)
 ```{r}
-# mSet <- Read.SignalDriftData(mSet, test, "row")
-# mSet <- PerformBatchCorrection(mSet)
+training_DF <- wave_withorder_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+
+waveICA2.0_realorder <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[2,] = data.frame(getTrainPerf(waveICA2.0_realorder), Name = paste0("waveICA2.0_realorder"), QC = "4th_root + PCA outlier removal + Bad features removal + WaveICA2.0 realorder")
+
+results
+```
+
+# Saving the models
+```{r}
+
+rm(mdf,ms,merged,raw,rowinfo,training_DF,training_x,trControl,training_y,plot_pca,results,sampleorder,test,test2,tmp1,tmp2,tmp3,tmp4,wave_original_mdf,wave_withorder_mdf,order,WD)
+save.image(file = "models_waveICA2.0.RData")
 ```
 

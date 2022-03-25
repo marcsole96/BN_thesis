@@ -56,10 +56,14 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 # Data and models loading
 
 ```{r}
-#setwd("../workflowr/data")
+WD <- getwd()
+if(WD!="C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data"){
+  setwd("../workflowr/data")
+}
 load("models.RData")
-fit8 <- readRDS("bn_test.rds")
-mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+H_BN_means <- readRDS("bn_means.rds")
+Combat <- readRDS("../data/combat_model.rds")
+load("../data/models_waveICA2.0.RData")
 ```
 
 # Comparing the two normalization methods
@@ -78,30 +82,64 @@ error %>% filter(model=="fit6"|model=="fit7") %>% ggplot(aes(x=model,y=rmse, col
 ```
 
 
-# Plotting the RMSE
+# Getting the errors of fit 8
 ```{r}
-results[8,] = data.frame(getTrainPerf(fit8), Name = paste0("fit8"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Mean BN")
+results[8,] = data.frame(getTrainPerf(H_BN_means), Name = paste0("H_BN_means"), QC = "4th_root + PCA outlier removal + Bad features removal + Mean BN")
 
-error1<-fit8$pred %>%
-  filter(alpha == fit8$bestTune$alpha & lambda == fit8$bestTune$lambda) %>% #subset 
+error1<-H_BN_means$pred %>%
+  filter(alpha == H_BN_means$bestTune$alpha & lambda == H_BN_means$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit8")
+  mutate(model = "H_BN_means")
 
 error<-rbind(error,error1)
 ```
 
-```{r eval=FALSE, fig.width=10, include=FALSE}
-error %>% ggplot(aes(x=rep,y=rmse, fill=rep)) + geom_bar(stat="identity",position=position_stack()) + 
-  scale_fill_brewer(palette="Set3") + geom_text(aes(label=round(rmse,4)), position = position_stack(vjust = 0.5)) + 
-  facet_wrap(~model)
+# Getting the errors of WAVEICA files
+```{r}
+results[9,] = data.frame(getTrainPerf(waveICA2.0_realorder), Name = paste0("waveICA2.0_realorder"), QC = "4th_root + PCA outlier removal + Bad features removal + WaveICA2.0")
+
+error1<-waveICA2.0_realorder$pred %>%
+  filter(alpha == waveICA2.0_realorder$bestTune$alpha & lambda == waveICA2.0_realorder$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "I_waveICA2.0_realorder")
+
+error<-rbind(error,error1)
 ```
 
+
+# Getting the errors of ComBat
+
+```{r}
+results[11,] = data.frame(getTrainPerf(Combat), Name = paste0("Combat"), QC = "4th_root + PCA outlier removal + Bad features removal + ComBat")
+
+error1<-Combat$pred %>%
+  filter(alpha == Combat$bestTune$alpha & lambda == Combat$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(rmse = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(model = "J_ComBat")
+
+error<-rbind(error,error1)
+```
+
+# Plotting
+## Everything
 ```{r}
 error %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
-                outlier.size=8) +
-  geom_jitter(shape=16, position=position_jitter(0)) +
+                outlier.size=8) +  geom_jitter(shape=16, position=position_jitter(0))
+```
+## The Normalizations
+
+```{r}
+test<-error %>% slice(26:140)
+test %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8) +  geom_jitter(shape=16, position=position_jitter(0)) +
   scale_color_brewer(palette="Dark2")
 ```

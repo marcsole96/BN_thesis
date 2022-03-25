@@ -61,8 +61,13 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 # Data loading
 
 ```{r}
-#setwd("../workflowr/data")
-mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+WD <- getwd()
+if(WD!="C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data"){
+  setwd("../workflowr/data")
+}
+
+#mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+mdf <- read_rds(file = "mdf.rds")
 #Making a waaay smaller df
 #mdf <- mdf[1:255]
 
@@ -124,14 +129,14 @@ set.seed(1)
 for (i in c(1:15)){
 trControl <- trainControl(method = "repeatedcv", number = 10, verboseIter = F, savePredictions = "final")
   
-fit1 <- train(x = training_x, 
+A_Input_data <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = i,
        trControl = trControl,
        metric = 'RMSE'
       )
-tunelengths[i-1,] = data.frame(getTrainPerf(fit1), Name = paste0("tunelength", i-1), QC = "none")
+tunelengths[i-1,] = data.frame(getTrainPerf(A_Input_data), Name = paste0("tunelength", i-1), QC = "none")
 }
 
 tunelengths
@@ -209,7 +214,7 @@ results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),Trai
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats=5, verboseIter = F, savePredictions = TRUE)
 
-fit1 <- train(x = training_x, 
+A_Input_data <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -217,7 +222,7 @@ fit1 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[1,] = data.frame(getTrainPerf(fit1), Name = paste0("fit1"), QC = "none")
+results[1,] = data.frame(getTrainPerf(A_Input_data), Name = paste0("A_Input_data"), QC = "none")
 ```
 
 \#\#Getting the RMSE of each repeat: <https://stackoverflow.com/questions/56950684/how-to-get-predictions-for-each-fold-in-10-fold-cross-validation-of-the-best-tun/56965881#56965881>
@@ -225,34 +230,34 @@ results[1,] = data.frame(getTrainPerf(fit1), Name = paste0("fit1"), QC = "none")
 Looking at the predictions:
 
 ```{r}
-head(fit1$pred)
+head(A_Input_data$pred)
 ```
 
 Getting the predictions with the best alpha and lambda
 
 ```{r}
-fit1$pred %>%
-  filter(alpha == fit1$bestTune$alpha & lambda == fit1$bestTune$lambda) %>% head()
+A_Input_data$pred %>%
+  filter(alpha == A_Input_data$bestTune$alpha & lambda == A_Input_data$bestTune$lambda) %>% head()
 ```
 
 Separating the folds and the repeats
 
 ```{r}
-fit1$pred %>%
-  filter(alpha == fit1$bestTune$alpha & lambda == fit1$bestTune$lambda) %>% #subset 
+A_Input_data$pred %>%
+  filter(alpha == A_Input_data$bestTune$alpha & lambda == A_Input_data$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% head()
 ```
 
 Measuring the RMSE
 
 ```{r}
-error<-fit1$pred %>%
-  filter(alpha == fit1$bestTune$alpha & lambda == fit1$bestTune$lambda) %>% #subset 
+error<-A_Input_data$pred %>%
+  filter(alpha == A_Input_data$bestTune$alpha & lambda == A_Input_data$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit1")
+  mutate(model = "A_Input_data")
   
 
 error
@@ -362,7 +367,7 @@ training_y <- training_DF$age
 ```{r}
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
-fit2 <- train(x = training_x, 
+B_4th_root <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -370,7 +375,7 @@ fit2 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[2,] = data.frame(getTrainPerf(fit2), Name = paste0("fit2"), QC = "4th_root")
+results[2,] = data.frame(getTrainPerf(B_4th_root), Name = paste0("B_4th_root"), QC = "B_4th_root")
 
 results
 ```
@@ -378,13 +383,13 @@ results
 ## Getting the RMSE for each fold
 
 ```{r}
-error1<-fit2$pred %>%
-  filter(alpha == fit2$bestTune$alpha & lambda == fit2$bestTune$lambda) %>% #subset 
+error1<-B_4th_root$pred %>%
+  filter(alpha == B_4th_root$bestTune$alpha & lambda == B_4th_root$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit2")
+  mutate(model = "B_4th_root")
 
 error<-rbind(error,error1)
 ```
@@ -519,7 +524,7 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
-fit3 <- train(x = training_x, 
+C_PCA_outliers_removed <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -527,7 +532,7 @@ fit3 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[3,] = data.frame(getTrainPerf(fit3), Name = paste0("fit3"), QC = "4th_root + PCA outlier removal")
+results[3,] = data.frame(getTrainPerf(C_PCA_outliers_removed), Name = paste0("C_PCA_outliers_removed"), QC = "B_4th_root + PCA outlier removal")
 
 results
 ```
@@ -535,13 +540,13 @@ results
 ## Getting the RMSE for each fold
 
 ```{r}
-error1<-fit3$pred %>%
-  filter(alpha == fit3$bestTune$alpha & lambda == fit3$bestTune$lambda) %>% #subset 
+error1<-C_PCA_outliers_removed$pred %>%
+  filter(alpha == C_PCA_outliers_removed$bestTune$alpha & lambda == C_PCA_outliers_removed$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit3")
+  mutate(model = "C_PCA_outliers_removed")
 
 error<-rbind(error,error1)
 ```
@@ -661,7 +666,7 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
-fit4 <- train(x = training_x, 
+D_extreme_vals_removed <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -669,7 +674,7 @@ fit4 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[4,] = data.frame(getTrainPerf(fit4), Name = paste0("fit4"), QC = "4th_root + PCA outlier removal + Bad features removal")
+results[4,] = data.frame(getTrainPerf(D_extreme_vals_removed), Name = paste0("D_extreme_vals_removed"), QC = "B_4th_root + PCA outlier removal + Bad features removal")
 
 results
 ```
@@ -677,21 +682,21 @@ results
 ## Getting the RMSE for each fold
 
 ```{r}
-error1<-fit4$pred %>%
-  filter(alpha == fit4$bestTune$alpha & lambda == fit4$bestTune$lambda) %>% #subset 
+error1<-D_extreme_vals_removed$pred %>%
+  filter(alpha == D_extreme_vals_removed$bestTune$alpha & lambda == D_extreme_vals_removed$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit4")
+  mutate(model = "D_extreme_vals_removed")
 
 error<-rbind(error,error1)
 ```
 
-Size of the dataframe
+## Size of the dataframe and saving the processed mdf
 
 ```{r}
-
+write_rds(mdf, file = "mdf_processed.rds")
 dim(mdf)
 ```
 
@@ -800,7 +805,7 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
 
-fit5 <- train(x = training_x, 
+E_QC_cleanup <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -808,7 +813,7 @@ fit5 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[5,] = data.frame(getTrainPerf(fit5), Name = paste0("fit5"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples")
+results[5,] = data.frame(getTrainPerf(E_QC_cleanup), Name = paste0("E_QC_cleanup"), QC = "B_4th_root + PCA outlier removal + Bad features removal + QC and Bind samples")
 
 results
 ```
@@ -816,13 +821,13 @@ results
 ## Getting the RMSE for each fold
 
 ```{r}
-error1<-fit5$pred %>%
-  filter(alpha == fit5$bestTune$alpha & lambda == fit5$bestTune$lambda) %>% #subset 
+error1<-E_QC_cleanup$pred %>%
+  filter(alpha == E_QC_cleanup$bestTune$alpha & lambda == E_QC_cleanup$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit5")
+  mutate(model = "E_QC_cleanup")
 
 error<-rbind(error,error1)
 ```
@@ -916,7 +921,7 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 50, verboseIter = F, savePredictions = "final")
 
-fit6 <- train(x = training_x, 
+F_sum_to_1_norm <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -924,7 +929,7 @@ fit6 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[6,] = data.frame(getTrainPerf(fit6), Name = paste0("fit6"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization Sum to 1")
+results[6,] = data.frame(getTrainPerf(F_sum_to_1_norm), Name = paste0("F_sum_to_1_norm"), QC = "B_4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization Sum to 1")
 
 results
 ```
@@ -932,13 +937,13 @@ results
 ## Getting the RMSE for each fold
 
 ```{r}
-error1<-fit6$pred %>%
-  filter(alpha == fit6$bestTune$alpha & lambda == fit6$bestTune$lambda) %>% #subset 
+error1<-F_sum_to_1_norm$pred %>%
+  filter(alpha == F_sum_to_1_norm$bestTune$alpha & lambda == F_sum_to_1_norm$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit6")
+  mutate(model = "F_sum_to_1_norm")
 
 error<-rbind(error,error1)
 ```
@@ -1018,7 +1023,7 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 50, verboseIter = F, savePredictions = "final")
 
-fit7 <- train(x = training_x, 
+G_og_norm <- train(x = training_x, 
                y = training_y, 
           method = "glmnet",
           tuneLength = 5,
@@ -1026,7 +1031,7 @@ fit7 <- train(x = training_x,
        metric = 'RMSE'
       )
 
-results[7,] = data.frame(getTrainPerf(fit7), Name = paste0("fit7"), QC = "4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method")
+results[7,] = data.frame(getTrainPerf(G_og_norm), Name = paste0("G_og_norm"), QC = "B_4th_root + PCA outlier removal + Bad features removal + QC and Bind samples + Row Normalization OG method")
 
 results
 ```
@@ -1034,13 +1039,13 @@ results
 ## Getting the RMSE for each fold
 
 ```{r}
-error1<-fit7$pred %>%
-  filter(alpha == fit7$bestTune$alpha & lambda == fit7$bestTune$lambda) %>% #subset 
+error1<-G_og_norm$pred %>%
+  filter(alpha == G_og_norm$bestTune$alpha & lambda == G_og_norm$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(rmse = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(model = "fit7")
+  mutate(model = "G_og_norm")
 
 error<-rbind(error,error1)
 ```
@@ -1054,7 +1059,7 @@ dim(mdf)
 
 ### Saving all the models
 ```{r}
-rm(error1,mdf,ms,rowinfo,training_DF,training_x,trControl,values,i,sumofrows,training_y,xvar,plot_pca,root_transform, yvar)
+rm(error1,ms,rowinfo,training_DF,training_x,trControl,values,i,sumofrows,training_y,xvar,plot_pca,root_transform, yvar)
 
 save.image(file = "models.RData")
 ```
