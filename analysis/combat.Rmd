@@ -111,8 +111,19 @@ combat <- ComBat(dat=t(test), batch=batches, par.prior=TRUE, prior.plots=FALSE)
 combat <- t(combat)
 combat <- cbind(rowinfo,combat)
 ```
+# PCA
+```{r}
+rm(rowinfo)
+raw     <-  combat[7:(ncol(mdf))]
+rowinfo <- combat[0:6]
 
-## Model
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+```
+
+
+# Model
 ```{r}
 training_DF <- combat %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
 training_DF[is.na(training_DF)] <- 0
@@ -120,7 +131,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
 fit1 <- train(x = training_x, 
                y = training_y, 

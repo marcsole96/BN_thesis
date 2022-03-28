@@ -137,7 +137,7 @@ error %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour
 ```
 ## The Normalizations
 
-```{r}
+```{r fig.asp = 0.8, fig.width = 7}
 test<-error %>% slice(26:140)
 test %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
                 outlier.size=8) +  geom_jitter(shape=16, position=position_jitter(0)) +
