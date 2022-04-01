@@ -19,6 +19,10 @@ navbar:
     href: waveica2.html
   - text: ComBat
     href: combat.html
+  - text: PQN
+    href: pqn.html
+  - text: EigenMS
+    href: eigenms.html
   - text: About
     href: about.html
   - text: License

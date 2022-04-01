@@ -212,7 +212,7 @@ training_y <- training_DF$age
 ```{r}
 results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats=5, verboseIter = F, savePredictions = TRUE)
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = TRUE)
 
 A_Input_data <- train(x = training_x, 
                y = training_y, 
@@ -365,7 +365,7 @@ training_y <- training_DF$age
 ## Making the model model and storing the RMSE
 
 ```{r}
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
 
 B_4th_root <- train(x = training_x, 
                y = training_y, 
@@ -522,7 +522,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
 
 C_PCA_outliers_removed <- train(x = training_x, 
                y = training_y, 
@@ -664,7 +664,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
 
 D_extreme_vals_removed <- train(x = training_x, 
                y = training_y, 
@@ -803,7 +803,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
 
 E_QC_cleanup <- train(x = training_x, 
                y = training_y, 
@@ -919,7 +919,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 50, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
 F_sum_to_1_norm <- train(x = training_x, 
                y = training_y, 
@@ -1021,7 +1021,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 50, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
 G_og_norm <- train(x = training_x, 
                y = training_y, 

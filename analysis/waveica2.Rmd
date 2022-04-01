@@ -52,7 +52,6 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
 
 ```
 
-
 # Data and models loading
 
 ```{r}
@@ -82,16 +81,19 @@ merged <- merge(mdf,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection
 ```
 
 # Loading WaveICA2.0
-https://github.com/dengkuistat/WaveICA_2.0
 
-https://www.metaboanalyst.ca/docs/RTutorial.xhtml
+<https://github.com/dengkuistat/WaveICA_2.0>
+
+<https://www.metaboanalyst.ca/docs/RTutorial.xhtml>
 
 ## Installation
+
 ```{r}
 #devtools::install_github("dengkuistat/WaveICA_2.0",host="https://api.github.com")
 #install.packages("remotes")
 #devtools::install_github("dengkuistat/WaveICA",host="https://api.github.com", force=T)
 ```
+
 ```{r}
 library(WaveICA2.0)
 #library(WaveICA)
@@ -131,7 +133,9 @@ wave_withorder_mdf <- cbind(rowinfo,wave_withorder_mdf)
 ```
 
 # PCAs
+
 ## Taking the original row order
+
 ```{r}
 rm(rowinfo)
 raw     <-  wave_original_mdf[7:(ncol(mdf))]
@@ -141,7 +145,9 @@ tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number
 tmp2 <- raw[tmp1$rowid,]
 plot_pca(tmp1,tmp2,color_label = "age")
 ```
+
 ## Taking the provided sample order (which removes some samples)
+
 ```{r}
 rm(rowinfo,raw)
 raw     <-  wave_withorder_mdf[7:(ncol(mdf))]
@@ -153,7 +159,9 @@ plot_pca(tmp1,tmp2,color_label = "age")
 ```
 
 # Models
+
 ## Taking the original row order
+
 ```{r}
 training_DF <- wave_original_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
 training_DF[is.na(training_DF)] <- 0
@@ -161,7 +169,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
 waveICA2.0_rows <- train(x = training_x, 
                y = training_y, 
@@ -177,6 +185,7 @@ results
 ```
 
 ## Taking the provided sample order (which removes some samples)
+
 ```{r}
 training_DF <- wave_withorder_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
 training_DF[is.na(training_DF)] <- 0
@@ -184,7 +193,7 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 5, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
 waveICA2.0_realorder <- train(x = training_x, 
                y = training_y, 
@@ -200,9 +209,9 @@ results
 ```
 
 # Saving the models
+
 ```{r}
 
 rm(mdf,ms,merged,raw,rowinfo,training_DF,training_x,trControl,training_y,plot_pca,results,sampleorder,test,test2,tmp1,tmp2,tmp3,tmp4,wave_original_mdf,wave_withorder_mdf,order,WD)
 save.image(file = "models_waveICA2.0.RData")
 ```
-

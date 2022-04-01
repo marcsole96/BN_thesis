@@ -7,7 +7,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 # Libraries
 
 ```{r include=FALSE}
@@ -26,6 +25,7 @@ library(patchwork)
 library(readxl)
 theme_set(theme_minimal())
 ```
+
 ```{r}
 plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
   
@@ -84,7 +84,8 @@ merged <- merge(mdf,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection
 ```
 
 # Loading ComBat
-https://rdrr.io/bioc/sva/man/ComBat.html
+
+<https://rdrr.io/bioc/sva/man/ComBat.html>
 
 ```{r}
 library(sva)
@@ -111,7 +112,9 @@ combat <- ComBat(dat=t(test), batch=batches, par.prior=TRUE, prior.plots=FALSE)
 combat <- t(combat)
 combat <- cbind(rowinfo,combat)
 ```
+
 # PCA
+
 ```{r}
 rm(rowinfo)
 raw     <-  combat[7:(ncol(mdf))]
@@ -122,8 +125,8 @@ tmp2 <- raw[tmp1$rowid,]
 plot_pca(tmp1,tmp2,color_label = "age")
 ```
 
-
 # Model
+
 ```{r}
 training_DF <- combat %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
 training_DF[is.na(training_DF)] <- 0
@@ -148,10 +151,8 @@ results
 combat_model<-fit1
 ```
 
-
-
 # Saving the model
+
 ```{r}
 saveRDS(combat_model, "combat_model.rds")
 ```
-
