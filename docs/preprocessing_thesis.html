@@ -440,6 +440,12 @@ div.tocify {
   <a href="combat.html">ComBat</a>
 </li>
 <li>
+  <a href="pqn.html">PQN</a>
+</li>
+<li>
+  <a href="eigenms.html">EigenMS</a>
+</li>
+<li>
   <a href="about.html">About</a>
 </li>
 <li>
@@ -488,7 +494,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-03-25
+<strong>Last updated:</strong> 2022-04-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -585,16 +591,16 @@ unnamed-chunk-11
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreef4f59b2ab3ebfdc9a9a96b18983d4fab89f05e11targetblankf4f59b2a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/f4f59b2ab3ebfdc9a9a96b18983d4fab89f05e11" target="_blank">f4f59b2</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreec026601523296966ba54de0734f30647a4e6c8fctargetblankc026601a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreef4f59b2ab3ebfdc9a9a96b18983d4fab89f05e11targetblankf4f59b2a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/c026601523296966ba54de0734f30647a4e6c8fc" target="_blank">c026601</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/f4f59b2ab3ebfdc9a9a96b18983d4fab89f05e11" target="_blank">f4f59b2</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -609,6 +615,7 @@ Ignored files:
 Untracked files:
     Untracked:  data/.Rprofile
     Untracked:  data/.gitignore
+    Untracked:  data/NOREVA.2.1.1.tar.gz
     Untracked:  data/TraceAge_bloodspots_t3_neg_clean.csv
     Untracked:  data/TraceAge_bloodspots_t3_pos_clean.csv
     Untracked:  data/bn_after_norm.rds
@@ -617,12 +624,16 @@ Untracked files:
     Untracked:  data/bn_test.rds
     Untracked:  data/combat_model.rds
     Untracked:  data/data_for_BN.RData
+    Untracked:  data/eigenms.Rmd
     Untracked:  data/mdf.rds
     Untracked:  data/mdf_processed.rds
     Untracked:  data/model_tests.rds
     Untracked:  data/models.RData
     Untracked:  data/models_waveICA2.0.RData
     Untracked:  data/packrat/
+    Untracked:  data/pqn.Rmd
+    Untracked:  data/pqn_msbox.rds
+    Untracked:  data/pqn_rcpm.rds
     Untracked:  data/sample_order_traceage_wp2_sample_overview.xlsx
     Untracked:  data/waveICA_models.rds
     Untracked:  models.RData
@@ -664,6 +675,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/e993fa98451f12c8987a031c4523305e1e94004f/docs/preprocessing_thesis.html" target="_blank">e993fa9</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-03-25
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1271,24 +1299,24 @@ loaded via a namespace (and not attached):
 [10] rpart_4.1.16         DBI_1.1.2            colorspace_2.0-3    
 [13] nnet_7.3-17          withr_2.5.0          tidyselect_1.1.2    
 [16] bit_4.0.4            compiler_4.1.3       git2r_0.30.1        
-[19] cli_3.2.0            labeling_0.4.2       sass_0.4.0          
+[19] cli_3.2.0            labeling_0.4.2       sass_0.4.1          
 [22] scales_1.1.1         proxy_0.4-26         stringr_1.4.0       
 [25] digest_0.6.29        rmarkdown_2.13       pkgconfig_2.0.3     
 [28] htmltools_0.5.2      parallelly_1.30.0    highr_0.9           
 [31] fastmap_1.1.0        rlang_1.0.2          rstudioapi_0.13     
 [34] jquerylib_0.1.4      generics_0.1.2       farver_2.1.0        
 [37] jsonlite_1.8.0       vroom_1.5.7          ModelMetrics_1.2.2.2
-[40] magrittr_2.0.2       Matrix_1.4-0         Rcpp_1.0.8          
-[43] munsell_0.5.0        fansi_1.0.2          lifecycle_1.0.1     
+[40] magrittr_2.0.2       Matrix_1.4-0         Rcpp_1.0.8.3        
+[43] munsell_0.5.0        fansi_1.0.3          lifecycle_1.0.1     
 [46] stringi_1.7.6        whisker_0.4          pROC_1.18.0         
-[49] yaml_2.3.5           MASS_7.3-55          plyr_1.8.6          
+[49] yaml_2.3.5           MASS_7.3-55          plyr_1.8.7          
 [52] recipes_0.2.0        grid_4.1.3           parallel_4.1.3      
-[55] listenv_0.8.0        promises_1.2.0.1     crayon_1.5.0        
-[58] splines_4.1.3        hms_1.1.1            knitr_1.37          
+[55] listenv_0.8.0        promises_1.2.0.1     crayon_1.5.1        
+[58] splines_4.1.3        hms_1.1.1            knitr_1.38          
 [61] pillar_1.7.0         future.apply_1.8.1   reshape2_1.4.4      
 [64] codetools_0.2-18     stats4_4.1.3         glue_1.6.2          
 [67] packrat_0.7.0        evaluate_0.15        data.table_1.14.2   
-[70] vctrs_0.3.8          tzdb_0.2.0           httpuv_1.6.5        
+[70] vctrs_0.3.8          tzdb_0.3.0           httpuv_1.6.5        
 [73] foreach_1.5.2        gtable_0.3.0         future_1.24.0       
 [76] assertthat_0.2.1     xfun_0.30            gower_1.0.0         
 [79] prodlim_2019.11.13   e1071_1.7-9          later_1.3.0         
