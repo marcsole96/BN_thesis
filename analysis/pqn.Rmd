@@ -1,0 +1,190 @@
+---
+title: "Probabilistic Quotient Normalization"
+author: "Marc"
+date: "29/3/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+
+```{r include=FALSE}
+set.seed(1234)
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+library(readxl)
+theme_set(theme_minimal())
+
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 10){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    NULL
+  return(pca_plot)
+}
+
+```
+
+# Data and models loading
+
+```{r}
+set.seed(1234)
+WD <- getwd()
+if(WD!="C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data"){
+  setwd("../workflowr/data")
+}
+
+mdf <- read_rds(file = "mdf_processed.rds")
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
+```
+
+# Probabilistic quotient normalization
+https://rdrr.io/github/ricoderks/Rcpm/man/pqn.html
+## Installing and loading the package
+```{r eval=FALSE, include=FALSE}
+install.packages("remotes")
+remotes::install_github("ricoderks/Rcpm")
+```
+
+## Trying to make it work
+### Using Rcpm library
+```{r}
+library(Rcpm)
+test<-mdf %>% select(starts_with("M"))
+test<-as.matrix(test) %>% scale()
+
+quotient_norm<-pqn(t(test), n="median", QC = NULL) %>% t() %>% as.data.frame()
+quotient_norm <- quotient_norm %>% select_if(~ !any(is.na(.)))
+quotient_norm <- cbind(rowinfo,quotient_norm)
+
+```
+PCA doesn't work because there are NAs... weird
+```{r}
+rm(rowinfo)
+raw     <-  quotient_norm %>% select(starts_with("M"))
+rowinfo <- quotient_norm[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+```
+
+### Using MSbox
+https://cran.r-project.org/web/packages/MSbox/index.html
+```{r}
+library(MSbox)
+```
+
+```{r}
+test<-mdf %>% select(starts_with("M"))
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+msbox_norm<-doNormalization(test, method = "PQN")
+msbox_norm <- cbind(rowinfo,msbox_norm)
+```
+PCA 
+```{r}
+rm(rowinfo)
+raw     <-  msbox_norm %>% select(starts_with("M"))
+rowinfo <-  msbox_norm[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+plot_pca(tmp1,tmp2,color_label = "age")
+```
+
+
+
+
+
+
+
+# Making the models
+
+## Rcpm
+```{r}
+
+
+training_DF <- quotient_norm %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+fit1 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[1,] = data.frame(getTrainPerf(fit1), Name = paste0("fit1"), QC = "4th_root + PCA outlier removal + Bad features removal + quotient_norm")
+
+results
+
+quotient_norm_model<-fit1
+```
+
+## MSBox
+```{r}
+training_DF <- msbox_norm %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+fit2 <- train(x = training_x, 
+               y = training_y, 
+          method = "glmnet",
+          tuneLength = 5,
+       trControl = trControl,
+       metric = 'RMSE'
+      )
+
+results[2,] = data.frame(getTrainPerf(fit2), Name = paste0("fit2"), QC = "4th_root + PCA outlier removal + Bad features removal + msbox_norm")
+
+results
+
+msbox_norm_model<-fit2
+```
+
+# Saving the models 
+```{r}
+saveRDS(quotient_norm_model, "pqn_rcpm.rds")
+saveRDS(msbox_norm_model, "pqn_msbox.rds")
+```
+
