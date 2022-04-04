@@ -5,8 +5,6 @@ navbar:
   left:
   - text: Home
     href: index.html
-  - text: Original preprocess
-    href: preprocessing_thesis.html
   - text: My preprocess tests
     href: regression_thesis.html
   - text: Different models tests
@@ -23,10 +21,6 @@ navbar:
     href: pqn.html
   - text: EigenMS
     href: eigenms.html
-  - text: About
-    href: about.html
-  - text: License
-    href: license.html
   right:
   - icon: fab fa-github
     text: Source code

@@ -173,11 +173,11 @@ error<-rbind(error,error1)
 error %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
                 outlier.size=8) +  geom_jitter(shape=16, position=position_jitter(0))
 ```
-## The Normalizations
 
-```{r fig.asp = 0.8, fig.width = 8}
-test<-error %>% slice(26:325)
+## The Normalizations
+```{r fig.asp = 0.4, fig.width = 10}
+test<-error %>% slice(126:325)
 test %>% ggplot(aes(x=model,y=rmse, color=model)) + geom_boxplot(outlier.colour = "red") + geom_boxplot(outlier.colour="red", outlier.shape=1,
-                outlier.size=8) +  geom_jitter(shape=16, position=position_jitter(0)) +
-  scale_color_brewer(palette="Dark2")
+                outlier.size=8) +  geom_jitter(shape=16, position=position_jitter(0)) + 
+  scale_color_brewer(palette="Set2")
 ```

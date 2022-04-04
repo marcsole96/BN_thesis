@@ -101,7 +101,7 @@ library(WaveICA2.0)
 
 # WaveICA 2.0 on original data
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 
 ms = list()
@@ -119,6 +119,9 @@ wave_original_mdf <- cbind(rowinfo,wave_original_mdf)
 # WaveICA 2.0 with the provided sample order
 
 ```{r}
+
+#Making a waaay smaller df
+#merged <- merged[1:100]
 merged<-merged %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 
 ms = list()
@@ -126,7 +129,7 @@ test2<-merged %>% select(starts_with("M")) %>% as.matrix()
 rowinfo <- merged %>% select(rowid, sample, age, batch, type, sample_id)
 order <- merged$`Injection order positive`
 
-tmp4 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.1, wf = "haar", K = 20, alpha = 0)
+tmp4 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.9, wf = "haar", K = 10, alpha = 0.1)
 tmp4 <- tmp4$data_wave
 wave_withorder_mdf <- tmp4 %>% as_tibble()
 wave_withorder_mdf <- cbind(rowinfo,wave_withorder_mdf)
@@ -136,7 +139,7 @@ wave_withorder_mdf <- cbind(rowinfo,wave_withorder_mdf)
 
 ## Taking the original row order
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 rm(rowinfo)
 raw     <-  wave_original_mdf[7:(ncol(mdf))]
 rowinfo <- wave_original_mdf[0:6]
@@ -150,7 +153,7 @@ plot_pca(tmp1,tmp2,color_label = "age")
 
 ```{r}
 rm(rowinfo,raw)
-raw     <-  wave_withorder_mdf[7:(ncol(mdf))]
+raw     <-  wave_withorder_mdf[7:(ncol(wave_withorder_mdf))]
 rowinfo <- wave_withorder_mdf[0:6]
 
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
@@ -162,7 +165,7 @@ plot_pca(tmp1,tmp2,color_label = "age")
 
 ## Taking the original row order
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 training_DF <- wave_original_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
 training_DF[is.na(training_DF)] <- 0
 
