@@ -162,7 +162,7 @@ write_rds(wave_0.7_mdf, file = "mdf_wave07good.rds")
 ```
 
 # PCAs
-```{r fig.asp = 0.6, fig.width = 1}
+```{r fig.asp = 0.6, fig.width = 10}
 #Cutoff of 1
 mdf <- wave_withorder_mdf
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
@@ -427,7 +427,7 @@ error<-rbind(error,error1)
 ```
 
 ## Plotting
-```{r fig.asp = 0.6, fig.width = 1}
+```{r fig.asp = 0.6, fig.width = 10}
 error %>% ggplot(aes(x=model,y=rmse, color=model)) + 
   geom_boxplot(outlier.colour = "red") + 
   geom_boxplot(outlier.colour="red", outlier.shape=1, outlier.size=8) +  geom_jitter(shape=16, position=position_jitter(0)) +
