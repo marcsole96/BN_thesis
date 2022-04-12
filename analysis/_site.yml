@@ -19,8 +19,8 @@ navbar:
     href: combat.html
   - text: PQN
     href: pqn.html
-  - text: EigenMS
-    href: eigenms.html
+  - text: Batches Plots
+    href: batchplot.html
   right:
   - icon: fab fa-github
     text: Source code
