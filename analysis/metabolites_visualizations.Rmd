@@ -1,0 +1,220 @@
+---
+title: "Metabolites Visualizations"
+author: "Marc"
+date: "15/4/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+
+```{r include=FALSE}
+rm(list=ls()) 
+set.seed(1234)
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+library(ggpubr)
+library(readxl)
+library(reshape2)
+library(tibble)
+library(grid)
+library(gridExtra)
+library(lattice)
+theme_set(theme_minimal())
+
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 6){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    NULL
+  return(pca_plot)
+}
+```
+
+# Data loading
+
+```{r}
+WD <- getwd()
+if(WD!="C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data"){
+  setwd("../workflowr/data")
+}
+
+A_mdf_original<-readRDS("../data/mdf_original.rds")
+B_mdf_4throot<-readRDS("../data/mdf_4throot.rds")
+C_mdf_pca_outliers_removed<-readRDS("../data/mdf_pca_outliers_removed.rds")
+D_mdf_extreme_values_removed<-readRDS("../data/mdf_extreme_values_removed.rds")
+E_mdf_qc_removed<-readRDS("../data/mdf_qc_removed.rds")
+F_mdf_sumtoone<-readRDS("../data/mdf_sumtoone.rds")
+G_mdf_robustnorm<-readRDS("../data/mdf_robustnorm.rds")
+H_mdf_meansnorm<-readRDS("../data/mdf_meansnorm.rds")
+I_mdf_combat<-readRDS("../data/mdf_combat.rds")
+J_mdf_wave_0<-readRDS("../data/mdf_wave_0.rds")
+K_mdf_Rcpm<-readRDS("../data/mdf_Rcpm.rds")
+L_mdf_MSBox<-readRDS("../data/mdf_MSBox.rds")
+
+
+wave_0<-readRDS("../data/mdf_wave_0.rds")
+wave_03<-readRDS("../data/mdf_wave_03.rds")
+wave_05<-readRDS("../data/mdf_wave_05.rds")
+wave_07<-readRDS("../data/mdf_wave_07.rds")
+wave_1<-readRDS("../data/mdf_wave_1.rds")
+
+sampleorder <- read_excel("../data/sample_order_traceage_wp2_sample_overview.xlsx") %>% as.data.frame()
+sampleorder<-sampleorder %>% select(Sample, `Injection order positive`) 
+names(sampleorder)[1]<-"sample"
+```
+
+# Identifying metabolites with high variance on the "before normalization" data
+```{r}
+#Finding a metabolite with high variance
+variances <- apply(X=D_mdf_extreme_values_removed[7:(ncol(D_mdf_extreme_values_removed))], MARGIN=2, FUN=var)
+sorted <- sort(variances, decreasing=TRUE, index.return=TRUE)$ix[1:20] # replace 2 with 100 ...
+names(D_mdf_extreme_values_removed[, sorted])
+```
+
+# Plotting how the normalization methods change the batch effect
+
+## Original data
+```{r fig.asp = 0.5, fig.width = 7}
+original <- merge(A_mdf_original,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+poriginal<-original %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+
+original %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order on original unprocessed data") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After removing extreme values and applying 4th root transformation
+
+```{r fig.asp = 0.5, fig.width = 7}
+extremes <- merge(D_mdf_extreme_values_removed,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pextremes<-extremes %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+
+extremes %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order with processed data") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After sum to 1 normalization
+
+```{r fig.asp = 0.5, fig.width = 7}
+sumto1 <- merge(F_mdf_sumtoone,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+psumto1<-sumto1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+sumto1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order Sum to 1 Normalization") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After "Rowbust" normalization
+
+```{r fig.asp = 0.5, fig.width = 7}
+robustnorm <- merge(G_mdf_robustnorm,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+probust<-robustnorm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+robustnorm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order Robust Normalization") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After mean centering normalization
+
+```{r fig.asp = 0.5, fig.width = 7}
+means <- merge(H_mdf_meansnorm,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pmeans<-means %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+
+means %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order Mean Centering Normalization") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After ComBat normalization
+
+```{r fig.asp = 0.5, fig.width = 7}
+combat <- merge(I_mdf_combat,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pcombat<-combat %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+combat %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order ComBat Normalization") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After WaveICA using 0
+
+```{r fig.asp = 0.5, fig.width = 7}
+wave <- merge(J_mdf_wave_0,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave<-wave %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+wave %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order WaveICA2.0 cutoff of 0 Normalization") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After PQN Rcpm
+
+```{r fig.asp = 0.5, fig.width = 7}
+rcpm <- merge(K_mdf_Rcpm,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+prcpm<-rcpm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+rcpm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order PQN Rcpm Normalization") + theme(plot.title = element_text(face = "italic"))
+```
+
+## After PQN MSBox
+
+```{r fig.asp = 0.5, fig.width = 7}
+msbox <- merge(L_mdf_MSBox,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pmsbox<-msbox %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+msbox %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order PQN MSBox Normalization") + theme(plot.title = element_text(face = "italic"))
+```
+
+
+```{r fig.asp = 0.6, fig.width = 10}
+y.grob <- textGrob("Metabolite (M91T29) Intensity", 
+                   gp=gpar(), rot=90)
+
+x.grob <- textGrob("Injection Order", 
+                   gp=gpar())
+arrangement<-ggarrange(poriginal, pextremes, psumto1, probust,pmeans,pcombat, pwave,prcpm,pmsbox,
+                    labels = c("Original", "Extreme values removed", "Sum To One Normalization", "Robust Normalization","Means Normalization","ComBat Normalization","WaveICA2.0 CF0","pRcpm","pMSBox"),font.label = list(size = 8, color = "black"),
+                    ncol = 3, nrow = 3,common.legend = TRUE, legend = "right")
+
+
+
+arrangement<-grid.arrange(arrangeGrob(arrangement, left = y.grob, bottom = x.grob))
+annotate_figure(arrangement, top = text_grob("Injection order and intensity of a specific metabolite", face = "italic", size = 15))
+
+rm(arrangement)
+```
+

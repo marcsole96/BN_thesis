@@ -1,0 +1,418 @@
+---
+title: "RMSE Visualizations"
+author: "Marc"
+date: "16/4/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+
+```{r include=FALSE}
+rm(list=ls()) 
+set.seed(1234)
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+library(ggpubr)
+library(readxl)
+library(reshape2)
+library(tibble)
+library(grid)
+library(gridExtra)
+library(lattice)
+library(forcats)
+theme_set(theme_minimal())
+```
+
+# Model loading
+```{r}
+WD <- getwd()
+if(WD!="C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data"){
+  setwd("../workflowr/data")
+}
+
+load("models.RData")
+```
+
+# Erros and plot from the original data until extreme values removed
+
+## Original Data
+
+```{r}
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),Details = as.character())
+
+
+results[1,] = data.frame(getTrainPerf(A_Input_data), Name = paste0("A_Input_Data"), Details = "Original Raw Data")
+
+error<-A_Input_data$pred %>%
+  filter(alpha == A_Input_data$bestTune$alpha & lambda == A_Input_data$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "A_Input_data", Details = "Original Raw Data")
+```
+
+## 4th root
+
+```{r}
+results[2,] = data.frame(getTrainPerf(B_4th_root), Name = paste0("B_4th_root"), Details = "4th root transformed")
+
+error1<-B_4th_root$pred %>%
+  filter(alpha == B_4th_root$bestTune$alpha & lambda == B_4th_root$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "B_4th_root", Details = "4th root transformed")
+
+error<-rbind(error,error1)
+```
+
+## PCA outliers removed
+
+```{r}
+results[3,] = data.frame(getTrainPerf(C_PCA_outliers_removed), Name = paste0("C_PCA_outliers_removed"), Details = "PCA outliers removed")
+
+error1<-C_PCA_outliers_removed$pred %>%
+  filter(alpha == C_PCA_outliers_removed$bestTune$alpha & lambda == C_PCA_outliers_removed$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "C_PCA_outliers_removed", Details = "PCA outliers removed")
+
+error<-rbind(error,error1)
+```
+
+## Extreme values removed
+
+```{r}
+results[4,] = data.frame(getTrainPerf(D_extreme_vals_removed), Name = paste0("D_extreme_vals_removed"), Details = "Extreme values removed")
+
+error1<-D_extreme_vals_removed$pred %>%
+  filter(alpha == D_extreme_vals_removed$bestTune$alpha & lambda == D_extreme_vals_removed$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "D_extreme_vals_removed", Details = "Extreme values removed")
+
+error<-rbind(error,error1)
+```
+
+## QC cleanup
+
+```{r}
+results[5,] = data.frame(getTrainPerf(E_QC_cleanup), Name = paste0("E_QC_cleanup"), Details = "QC Cleanup")
+
+error1<-E_QC_cleanup$pred %>%
+  filter(alpha == E_QC_cleanup$bestTune$alpha & lambda == E_QC_cleanup$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "E_QC_cleanup", Details = "QC Cleanup")
+
+error<-rbind(error,error1)
+```
+
+
+## Making the cool plot
+```{r fig.asp = 0.9, fig.width = 7}
+error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
+  geom_boxplot(outlier.colour = "red", alpha = 0.3)+
+  geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8)+
+  geom_jitter(shape=16, position=position_jitter(0))+
+  theme(legend.position="top")+
+  scale_color_brewer(palette = "Set2")+
+  theme(axis.title.x = element_blank())
+
+table.p <- ggtexttable(results, rows = NULL, 
+                        theme = ttheme("mOrange", base_size = 7))
+ggarrange(error.p, table.p, 
+          ncol = 1, nrow = 2)
+```
+
+
+
+
+# Errors and plot from the normalization methods
+
+## Extreme values again
+
+```{r}
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),Details = as.character())
+
+results[1,] = data.frame(getTrainPerf(D_extreme_vals_removed), Name = paste0("D_extreme_vals_removed"), Details = "Extreme values removed")
+
+error<-D_extreme_vals_removed$pred %>%
+  filter(alpha == D_extreme_vals_removed$bestTune$alpha & lambda == D_extreme_vals_removed$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "D_extreme_vals_removed", Details = "Extreme values removed")
+```
+
+## Sum to 1
+
+```{r}
+results[2,] = data.frame(getTrainPerf(F_sum_to_1_norm), Name = paste0("F_sum_to_1_norm"), Details = "RowsSum to 1")
+
+error1<-F_sum_to_1_norm$pred %>%
+  filter(alpha == F_sum_to_1_norm$bestTune$alpha & lambda == F_sum_to_1_norm$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "F_sum_to_1_norm", Details = "RowsSum to 1")
+
+error<-rbind(error,error1)
+```
+
+## Robust
+
+```{r}
+results[3,] = data.frame(getTrainPerf(G_og_norm), Name = paste0("G_og_norm"), Details = "Robust")
+
+error1<-G_og_norm$pred %>%
+  filter(alpha == G_og_norm$bestTune$alpha & lambda == G_og_norm$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "G_og_norm", Details = "Robust")
+
+error<-rbind(error,error1)
+```
+
+## Means
+
+```{r}
+results[4,] = data.frame(getTrainPerf(H_BN_means), Name = paste0("H_BN_means"), Details = "Mean Centering")
+
+error1<-H_BN_means$pred %>%
+  filter(alpha == H_BN_means$bestTune$alpha & lambda == H_BN_means$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "H_BN_means", Details = "Mean Centering")
+
+error<-rbind(error,error1)
+```
+
+## ComBat
+
+```{r}
+results[5,] = data.frame(getTrainPerf(I_ComBat), Name = paste0("I_ComBat"), Details = "ComBat")
+
+error1<-I_ComBat$pred %>%
+  filter(alpha == I_ComBat$bestTune$alpha & lambda == I_ComBat$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "I_ComBat", Details = "ComBat")
+
+error<-rbind(error,error1)
+```
+
+## WaveICA2.0 Cutoff of 0
+
+```{r}
+results[6,] = data.frame(getTrainPerf(wave_0), Name = paste0("wave_0"), Details = "WaveICA2.0 Cutoff 0")
+
+error1<-wave_0$pred %>%
+  filter(alpha == wave_0$bestTune$alpha & lambda == wave_0$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0", Details = "WaveICA2.0 Cutoff 0")
+
+error<-rbind(error,error1)
+```
+
+## PQN Rcpm
+
+```{r}
+results[7,] = data.frame(getTrainPerf(J_PQN_Rpcm), Name = paste0("J_PQN_Rpcm"), Details = "PQN Rcpm")
+
+error1<-J_PQN_Rpcm$pred %>%
+  filter(alpha == J_PQN_Rpcm$bestTune$alpha & lambda == J_PQN_Rpcm$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "J_PQN_Rpcm", Details = "PQN Rcpm")
+
+error<-rbind(error,error1)
+```
+
+
+## PQN msBox
+
+```{r}
+results[8,] = data.frame(getTrainPerf(K_PQN_msBox), Name = paste0("K_PQN_msBox"), Details = "PQN msBox")
+
+error1<-K_PQN_msBox$pred %>%
+  filter(alpha == K_PQN_msBox$bestTune$alpha & lambda == K_PQN_msBox$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "K_PQN_msBox", Details = "PQN msBox")
+
+error<-rbind(error,error1)
+```
+
+## Making the cool plot
+```{r fig.asp = 0.7, fig.width = 9}
+error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
+  geom_boxplot(outlier.colour = "red", alpha = 0.3)+
+  geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8)+
+  geom_jitter(shape=16, position=position_jitter(0))+
+  theme(legend.position="top")+
+  scale_color_brewer(palette = "Set2")+
+  theme(axis.title.x = element_blank())
+
+table.p <- ggtexttable(results, rows = NULL, 
+                        theme = ttheme("mOrange", base_size = 7))
+ggarrange(error.p, table.p, 
+          ncol = 1, nrow = 2,
+          heights = c(0.8, 0.5, 0.3))
+```
+
+
+# Errors and plot from the WaveICA2.0 Cutoff parameters
+
+## WaveICA2.0 Cutoff of 0
+
+```{r}
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),Details = as.character())
+
+results[1,] = data.frame(getTrainPerf(wave_0), Name = paste0("wave_0"), Details = "WaveICA2.0 Cutoff 0")
+
+error<-wave_0$pred %>%
+  filter(alpha == wave_0$bestTune$alpha & lambda == wave_0$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0", Details = "WaveICA2.0 Cutoff 0")
+```
+
+## WaveICA2.0 Cutoff of 0.3
+
+```{r}
+results[2,] = data.frame(getTrainPerf(wave_0.3), Name = paste0("wave_0.3"), Details = "WaveICA2.0 Cutoff 0.3")
+
+error1<-wave_0.3$pred %>%
+  filter(alpha == wave_0.3$bestTune$alpha & lambda == wave_0.3$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.3", Details = "WaveICA2.0 Cutoff 0.3")
+
+error<-rbind(error,error1)
+```
+
+## WaveICA2.0 Cutoff of 0.5
+
+```{r}
+results[3,] = data.frame(getTrainPerf(wave_0.5), Name = paste0("wave_0.5"), Details = "WaveICA2.0 Cutoff 0.5")
+
+error1<-wave_0.5$pred %>%
+  filter(alpha == wave_0.5$bestTune$alpha & lambda == wave_0.5$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.5", Details = "WaveICA2.0 Cutoff 0.5")
+
+error<-rbind(error,error1)
+```
+
+## WaveICA2.0 Cutoff of 0.7
+
+```{r}
+results[4,] = data.frame(getTrainPerf(wave_0.7), Name = paste0("wave_0.7"), Details = "WaveICA2.0 Cutoff 0.7")
+
+error1<-wave_0.7$pred %>%
+  filter(alpha == wave_0.7$bestTune$alpha & lambda == wave_0.7$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.7", Details = "WaveICA2.0 Cutoff 0.7")
+
+error<-rbind(error,error1)
+```
+
+## WaveICA2.0 Cutoff of 1
+
+```{r}
+results[5,] = data.frame(getTrainPerf(wave_1), Name = paste0("wave_1"), Details = "WaveICA2.0 Cutoff 1")
+
+error1<-wave_1$pred %>%
+  filter(alpha == wave_1$bestTune$alpha & lambda == wave_1$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_1", Details = "WaveICA2.0 Cutoff 1")
+
+error<-rbind(error,error1)
+```
+
+## Making the cool plots
+```{r fig.asp = 0.9, fig.width = 7}
+error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
+  geom_boxplot(outlier.colour = "red", alpha = 0.3)+
+  geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8)+
+  geom_jitter(shape=16, position=position_jitter(0))+
+  theme(legend.position="top")+
+  scale_color_brewer(palette = "Set2")+
+  theme(axis.title.x = element_blank())
+
+table.p <- ggtexttable(results, rows = NULL, 
+                        theme = ttheme("mOrange", base_size = 7))
+ggarrange(error.p, table.p, 
+          ncol = 1, nrow = 2,
+          heights = c(1, 0.5, 0.3))
+```
+
+```{r fig.asp = 0.9, fig.width = 8}
+error.p<-error %>% slice(26:nrow(error)) %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
+  geom_boxplot(outlier.colour = "red", alpha = 0.3)+
+  geom_boxplot(outlier.colour="red", outlier.shape=1,
+                outlier.size=8)+
+  geom_jitter(shape=16, position=position_jitter(0))+
+  theme(legend.position="top")+
+  scale_color_brewer(palette = "Set2")+
+  theme(axis.title.x = element_blank())
+
+resultstemp<-results %>% slice(2:nrow(results))
+table.p <- ggtexttable(resultstemp, rows = NULL, 
+                        theme = ttheme("mOrange", base_size = 7))
+rm(resultstemp)
+ggarrange(error.p, table.p, 
+          ncol = 1, nrow = 2,
+          heights = c(1, 0.5, 0.3))
+```

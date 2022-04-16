@@ -5,22 +5,14 @@ navbar:
   left:
   - text: Home
     href: index.html
-  - text: My preprocess tests
-    href: regression_thesis.html
-  - text: Different models tests
-    href: models_tests.html
-  - text: BN tests
-    href: bn_tests.html	
-  - text: Visualizations
-    href: visualizations.html
-  - text: WaveICA2.0
-    href: waveica2.html
-  - text: ComBat
-    href: combat.html
-  - text: PQN
-    href: pqn.html
-  - text: Batches Plots
-    href: batchplot.html
+  - text: All models
+    href: models.html
+  - text: PCAs
+    href: PCAs.html
+  - text: Metabolites
+    href: metabolites_visualizations.html
+  - text: RMSE
+    href: rmse_vis.html
   right:
   - icon: fab fa-github
     text: Source code

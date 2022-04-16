@@ -1,0 +1,872 @@
+---
+title: "Models"
+author: "Marc"
+date: "13/4/2022"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+
+```{r include=FALSE}
+rm(list=ls()) 
+set.seed(1234)
+library(ggplot2)
+library(ggfortify)
+library(plotly)
+library(cowplot)
+library(caret)
+library(readr)
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggrepel)
+library(patchwork)
+library(ggpubr)
+library(readxl)
+theme_set(theme_minimal())
+```
+
+# Data loading
+
+```{r}
+WD <- getwd()
+if(WD!="C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data"){
+  setwd("../workflowr/data")
+}
+#mdf <- read_csv("TraceAge_bloodspots_t3_pos_clean.csv")
+#write_rds(mdf,"mdf.rds")
+mdf <- read_rds(file = "mdf.rds")
+
+#For simple tests is wise to make a smaller DF
+#mdf <- mdf[1:255]
+```
+
+# Model using the original non processed data
+
+No transformation or BN is performed in this data \#\# Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type == "sample") %>% select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = TRUE)
+
+# A_Input_data <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# Model with 4th root transformed data
+
+## 4th root transformation
+
+```{r}
+#Imputing zeros
+test_df<-mdf %>% gather(key="mz",value="values",6:ncol(mdf))
+test_df$values[is.na(test_df$values)] <- 0
+#4th root transformation
+
+root_transform <- function(x){
+  return (x^0.25)}
+mdf[6:(ncol(mdf))] <- lapply(mdf[6:(ncol(mdf))],root_transform)
+
+#saveRDS(mdf,"mdf_4throot.rds")
+```
+
+## Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type == "sample") %>% select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+
+# B_4th_root <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# Model with PCA outliers removed
+
+## Original method using quantiles
+
+I haven't found any package that does it automatically, meaning I will have to explain a bit the theory behind this method. <https://www.r-bloggers.com/2021/09/how-to-remove-outliers-in-r-3/>
+
+```{r}
+raw     <-  mdf[6:(ncol(mdf))]
+rowinfo <- mdf[0:5]
+rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+
+r  <- prcomp(x = tmp2, retx = T, center=T, scale. = T, rank. = 12)
+
+bad_rows <- tibble(rowid2=apply(r$x, 2, function(x) {
+  which(abs(x - median(x)) > (1.5 * quantile(x,0.95)-quantile(x,0.05))) 
+  }) %>%
+    unlist() %>% 
+    as.vector()) %>% 
+    count(rowid2)
+
+tmp1 <- tmp1 %>%
+  left_join(bad_rows) %>%
+  mutate(n=ifelse(is.na(n), 0,n)) %>%
+  mutate(label=ifelse(n>0, rowid, "")) %>%
+  {.}
+
+
+bad_rows <- tmp1 %>% filter(n>0)
+ms = list()
+if (nrow(bad_rows) > 0) {
+  ms$values1  <- raw[-bad_rows$rowid,]
+  ms$rowinfo1 <- rowinfo[-bad_rows$rowid,]
+} else {
+  ms$values1  <- raw
+  ms$rowinfo1 <- rowinfo
+}
+
+#Overwritting the original DF with the new data
+values<-ms$values1
+rowinfo<-ms$rowinfo1
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+ms$rowinfo1 <- ms$rowinfo1 %>% 
+  mutate(rowid = row_number()) 
+
+rm(bad_rows, tmp1, tmp2,r)
+
+#saveRDS(mdf,"mdf_pca_outliers_removed.rds")
+```
+
+## Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+
+# C_PCA_outliers_removed <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# Model after removing extreme values
+
+## Original method using quantiles to remove features (columns)
+
+(values larger than median + 1.5 \* q90)
+
+```{r}
+raw     <- ms$values1
+rowinfo <- ms$rowinfo1
+
+tmp1 <- tibble(rowid = rowinfo$rowid, type = rowinfo$type) %>%
+  bind_cols(as_tibble(raw))
+
+tmp1 <- tmp1 %>%
+  pivot_longer(names_to = "compound", values_to = "value",  cols= c(-rowid, -type))
+
+tmp2 <- tmp1 %>%
+ group_by(compound) %>%
+ summarise(n_bad = sum(value > median(value)+1.5*quantile(value,0.90))) %>%
+ {.}
+
+bad_features <- tmp2 %>%
+  ungroup() %>%
+  filter(n_bad > 0) %>%
+  select(compound) %>%
+  distinct()
+
+ms$values2 <- raw %>% select(-any_of(bad_features$compound))
+ms$rowinfo2 <- rowinfo
+
+#Overwritting the original DF with the new data
+values<-ms$values2
+rowinfo<-ms$rowinfo2
+mdf <- cbind(rowinfo,values)
+mdf <- mdf %>% select(-rowid)
+
+rm(bad_features,tmp2,tmp1,raw)
+#saveRDS(mdf,"mdf_extreme_values_removed.rds")
+```
+
+## Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+
+# D_extreme_vals_removed <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# Model after removing features using QC and blind samples.
+
+```{r}
+raw     <-  mdf %>% select(starts_with("M")) 
+rowinfo <-  mdf[0:5] %>%  mutate(rowid = row_number())
+
+tmp1 <- rowinfo %>% filter(type %in% c("blind", "qc", "sample")) 
+tmp2 <- raw[tmp1$rowid,]
+
+pd1 <- tmp2 %>% 
+  bind_cols(tmp1) %>% 
+  pivot_longer(starts_with("M")) %>%
+  group_by(type, name) %>% 
+  summarise(median = median(value), 
+            variation = mad(value)/median) %>%
+  pivot_wider(names_from = type, values_from=c(median,variation))
+
+
+good_features <- pd1 %>% 
+  filter(median_qc > 1.5*median_blind) %>%
+  filter(median_sample > 1.5*median_blind) %>%
+  filter(variation_sample > 1.5*variation_qc ) %>%
+  filter(variation_sample > 1.5*variation_blind) %>% 
+  {.}
+
+ms$rowinfo3 <- rowinfo
+ms$values3  <- raw %>% select(any_of(good_features$name))
+#Overwriting the original DF with the new data
+values<-ms$values3
+rowinfo<-ms$rowinfo3
+mdfqcrm <- cbind(rowinfo,values)
+mdfqcrm <- mdfqcrm %>% select(-rowid)
+
+rm(tmp1,tmp2,pd1,good_features)
+
+#saveRDS(mdfqcrm,"mdf_qc_removed.rds")
+```
+
+## Size
+
+```{r}
+dim(mdfqcrm)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdfqcrm %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+
+# E_QC_cleanup <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# Row normalization summing to 1
+
+## My method
+
+```{r}
+sumofrows<-mdf %>% select(starts_with("M")) %>% rowSums()
+
+test<-mdf %>% mutate(rowsum=sumofrows) %>% 
+  select(starts_with("M"), "rowsum")
+
+test<-test/test[,ncol(test)]
+
+mdf <- cbind(rowinfo,test)
+mdf <- mdf %>% select(-rowid, -rowsum)
+#write_rds(mdf, file = "mdf_sumtoone.rds")
+```
+
+## Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# F_sum_to_1_norm <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# Robust row normalization (OG method)
+
+```{r}
+mdf <- read_rds(file = "mdf_extreme_values_removed.rds")
+target_info   <- ms$rowinfo2
+target_values <- ms$values2 %>% as_tibble()
+
+tmp1 <- target_info %>% filter(type %in% c("qc"))
+tmp2 <- target_values[tmp1$rowid,]
+
+stable_features <- tmp1 %>%
+  bind_cols(tmp2) %>%
+  pivot_longer(starts_with("M")) %>%
+  group_by(sample_id) %>%
+  mutate(rank=rank(value)) %>%
+  ungroup() %>%  
+  group_by(name) %>%
+  summarise(median = median(rank),
+            range = max(rank)-min(rank)) %>%
+  ungroup() %>%
+  slice_min(order_by = median, prop = 0.8) %>%
+  slice_max(order_by = median, prop = 0.8) %>%
+  slice_min(order_by = range, prop = 0.8)
+
+raw    <- target_values
+data.x <- raw
+tmp    <- rowSums(target_values %>% select(any_of(stable_features$name)))
+raw    <- max(raw)*raw / tmp
+
+ms$values4  <- raw
+ms$rowinfo4 <- target_info
+
+rm(raw,data.x,tmp, stable_features)
+rm(target_info, target_values)
+
+
+rowinfo<-tmp1
+values<-tmp2
+mdf <- cbind(ms$rowinfo4,ms$values4)
+mdf <- mdf %>% select(-rowid)
+rm(tmp1,tmp2)
+#write_rds(mdf, file = "mdf_robustnorm.rds")
+```
+
+## Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# G_og_norm <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# BN subtracting the means
+
+## Data preparation
+
+```{r}
+mdf <- read_rds(file = "mdf_extreme_values_removed.rds")
+```
+
+## Removing the means of each batch using the colMeans() function
+
+<https://www.gastonsanchez.com/visually-enforced/how-to/2014/01/15/Center-data-in-R/>
+
+```{r}
+#Making a function to center the means
+center_colmeans <- function(x) {
+    xcenter = colMeans(x)
+    x - rep(xcenter, rep.int(nrow(x), ncol(x)))
+}
+
+batch1<-mdf %>% 
+  filter(batch==1)
+mean_removed<-(center_colmeans(batch1[6:ncol(batch1)]))
+batch1[ , colnames(batch1) %in% colnames(mean_removed)] <- mean_removed
+
+batch2<-mdf %>% 
+  filter(batch==2)
+mean_removed<-(center_colmeans(batch2[6:ncol(batch2)]))
+batch2[ , colnames(batch2) %in% colnames(mean_removed)] <- mean_removed
+
+batch3<-mdf %>% 
+  filter(batch==3)
+mean_removed<-(center_colmeans(batch3[6:ncol(batch3)]))
+batch3[ , colnames(batch3) %in% colnames(mean_removed)] <- mean_removed
+
+batch2b<-mdf %>% 
+  filter(batch=="2b")
+mean_removed<-(center_colmeans(batch2b[6:ncol(batch2b)]))
+batch2b[ , colnames(batch2b) %in% colnames(mean_removed)] <- mean_removed
+
+batchb2<-mdf %>% 
+  filter(batch=="b2")
+mean_removed<-(center_colmeans(batchb2[6:ncol(batchb2)]))
+batchb2[ , colnames(batchb2) %in% colnames(mean_removed)] <- mean_removed
+
+batchb3<-mdf %>% 
+  filter(batch=="b3")
+mean_removed<-(center_colmeans(batchb3[6:ncol(batchb3)]))
+batchb3[ , colnames(batchb3) %in% colnames(mean_removed)] <- mean_removed
+
+batchb<-mdf %>% 
+  filter(batch=="b")
+mean_removed<-(center_colmeans(batchb[6:ncol(batchb)]))
+batchb[ , colnames(batchb) %in% colnames(mean_removed)] <- mean_removed
+
+batchna<-mdf %>% 
+  filter(is.na(batch))
+mean_removed<-(center_colmeans(batchna[6:ncol(batchna)]))
+batchna[ , colnames(batchna) %in% colnames(mean_removed)] <- mean_removed
+
+test<-rbind(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)
+
+rm(batch1,batch2,batch3,batch2b,batchb2,batchb3,batchb,batchna)
+mdf<-test[order(test$sample_id),]  
+mdf[is.na(mdf)] <- 0
+
+#write_rds(mdf, file = "mdf_meansnorm.rds")
+```
+
+## Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# H_BN_means <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# ComBat
+
+## Data preparation
+
+```{r}
+mdf <- read_rds(file = "mdf_extreme_values_removed.rds")
+mdf<-data.frame(mdf)
+mdf[is.na(mdf)] <- 0
+
+#mdf<-mdf[order(mdf$batch),]  
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+batches<-(mdf$batch)
+test<-mdf %>% select(starts_with("M"))
+test<-as.matrix(test)
+```
+
+## Running ComBat
+
+```{r}
+library(sva)
+combat <- ComBat(dat=t(test), batch=batches, par.prior=TRUE, prior.plots=FALSE)
+combat <- t(combat)
+combat <- cbind(rowinfo,combat)
+#write_rds(combat, file = "mdf_combat.rds")
+```
+
+## Size
+
+```{r}
+dim(mdf)
+```
+
+## Making the model
+
+```{r}
+training_DF <- combat %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# I_ComBat <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# WaveICA2.0
+
+## Data preparation
+
+```{r}
+mdf <- read_rds(file = "mdf_extreme_values_removed.rds")
+sampleorder <- read_excel("../data/sample_order_traceage_wp2_sample_overview.xlsx") %>% as.data.frame()
+sampleorder<-sampleorder %>% select(Sample, `Injection order positive`) 
+names(sampleorder)[1]<-"sample"
+
+#Removing duplicates and keeping the ones I know are correct leaves me with less rows
+merged <- merge(mdf,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+merged<-merged %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+
+ms = list()
+test2<-merged %>% select(starts_with("M")) %>% as.matrix()
+rowinfo <- merged %>% select(rowid, sample, age, batch, type, sample_id)
+order <- merged$`Injection order positive`
+```
+
+## Running WaveICA2.0 (using different parameters)
+
+```{r}
+library(WaveICA2.0)
+
+#Cutoff of 1
+tmp4 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 1, wf = "haar", K = 10, alpha = 0.1)
+tmp4 <- tmp4$data_wave
+wave_1_mdf <- tmp4 %>% as_tibble()
+wave_1_mdf <- cbind(rowinfo,wave_1_mdf)
+#write_rds(wave_1_mdf, file = "mdf_wave_1.rds")
+
+#Cutoff of 0
+tmp5 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0, wf = "haar", K = 10, alpha = 0.1)
+tmp5 <- tmp5$data_wave
+wave_0_mdf <- tmp5 %>% as_tibble()
+wave_0_mdf <- cbind(rowinfo,wave_0_mdf)
+#write_rds(wave_0_mdf, file = "mdf_wave_0.rds")
+
+#Cutoff of 0.3
+tmp6 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.3, wf = "haar", K = 10, alpha = 0.1)
+tmp6 <- tmp6$data_wave
+wave_0.3_mdf <- tmp6 %>% as_tibble()
+wave_0.3_mdf <- cbind(rowinfo,wave_0.3_mdf)
+#write_rds(wave_0.3_mdf, file = "mdf_wave_03.rds")
+
+#Cutoff of 0.5
+tmp7 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.5, wf = "haar", K = 10, alpha = 0.1)
+tmp7 <- tmp7$data_wave
+wave_0.5_mdf <- tmp7 %>% as_tibble()
+wave_0.5_mdf <- cbind(rowinfo,wave_0.5_mdf)
+#write_rds(wave_0.5_mdf, file = "mdf_wave_05.rds")
+
+#Cutoff of 0.7
+tmp8 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.7, wf = "haar", K = 10, alpha = 0.1)
+tmp8 <- tmp8$data_wave
+wave_0.7_mdf <- tmp8 %>% as_tibble()
+wave_0.7_mdf <- cbind(rowinfo,wave_0.7_mdf)
+#write_rds(wave_0.7_mdf, file = "mdf_wave_07.rds")
+```
+
+## Size
+
+```{r}
+dim(wave_1_mdf)
+dim(wave_0_mdf)
+dim(wave_0.3_mdf)
+dim(wave_0.5_mdf)
+dim(wave_0.7_mdf)
+```
+
+## Making the MODELS
+
+### 1
+
+```{r}
+training_DF <- wave_1_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_1 <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0.7
+
+```{r}
+training_DF <- wave_0.7_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.7 <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0.5
+
+```{r}
+training_DF <- wave_0.5_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.5 <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0.3
+
+```{r}
+training_DF <- wave_0.3_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.3 <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0
+
+```{r}
+training_DF <- wave_0_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0 <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+# Probabilistic Quotient Normalization
+
+## Rcpm PQN
+
+### Data preparation
+
+```{r}
+mdf <- read_rds(file = "mdf_extreme_values_removed.rds")
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+```
+
+### Running Rcpm
+
+```{r}
+library(Rcpm)
+test<-mdf %>% select(starts_with("M"))
+test<-as.matrix(test) %>% scale()
+
+quotient_norm<-pqn(t(test), n="median", QC = NULL) %>% t() %>% as.data.frame()
+quotient_norm <- quotient_norm %>% select_if(~ !any(is.na(.)))
+quotient_norm <- cbind(rowinfo,quotient_norm)
+
+#write_rds(quotient_norm, file = "mdf_Rcpm.rds")
+```
+
+### Size
+
+```{r}
+dim(mdf)
+```
+
+### Making the model
+
+```{r}
+training_DF <- quotient_norm %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# PQN_Rcpm <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+# J_PQN_Rcpm <- PQN_Rcpm
+# rm(PQN_Rcpm)
+```
+
+## MSBox PQN
+
+### Data preparation
+
+```{r}
+mdf <- read_rds(file = "mdf_extreme_values_removed.rds")
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+```
+
+### Running MSBox PQN
+
+```{r}
+library(MSbox)
+test<-mdf %>% select(starts_with("M"))
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+msbox_norm<-doNormalization(test, method = "PQN")
+msbox_norm <- cbind(rowinfo,msbox_norm)
+#write_rds(msbox_norm, file = "mdf_MSBox.rds")
+```
+
+### Size
+
+```{r}
+dim(mdf)
+```
+
+### Making the model
+
+```{r}
+training_DF <- msbox_norm %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# PQN_msBox <- train(x = training_x, 
+#                y = training_y, 
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+# K_PQN_msBox <- PQN_msBox
+# rm(PQN_msBox)
+```
+
+### Saving all the models
+
+```{r}
+rm(combat,mdf,mdfqcrm,mean_removed,merged,ms,msbox_norm,quotient_norm,results,rowinfo,sampleorder,test,test_df, test2, tmp4,tmp5,tmp6,tmp7,tmp8,training_DF,training_x,trControl,values,wave_0_mdf,wave_0.3_mdf,wave_0.5_mdf,wave_0.7_mdf,wave_1_mdf,batches,order,sumofrows,training_y,WD,center_colmeans,root_transform)
+
+#save.image(file = "models.RData")
+```
