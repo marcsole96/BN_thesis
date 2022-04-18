@@ -249,15 +249,15 @@ error<-rbind(error,error1)
 ## PQN Rcpm
 
 ```{r}
-results[7,] = data.frame(getTrainPerf(J_PQN_Rpcm), Name = paste0("J_PQN_Rpcm"), Details = "PQN Rcpm")
+results[7,] = data.frame(getTrainPerf(J_PQN_Rcpm), Name = paste0("J_PQN_Rcpm"), Details = "PQN Rcpm")
 
-error1<-J_PQN_Rpcm$pred %>%
-  filter(alpha == J_PQN_Rpcm$bestTune$alpha & lambda == J_PQN_Rpcm$bestTune$lambda) %>% #subset 
+error1<-J_PQN_Rcpm$pred %>%
+  filter(alpha == J_PQN_Rcpm$bestTune$alpha & lambda == J_PQN_Rcpm$bestTune$lambda) %>% #subset 
   separate(Resample, c("fold", "rep"), "\\.") %>% 
   group_by(rep) %>% #group by replicate
   summarise(RMSE = RMSE(obs, pred)) %>% 
   as.data.frame() %>% 
-  mutate(Model = "J_PQN_Rpcm", Details = "PQN Rcpm")
+  mutate(Model = "J_PQN_Rcpm", Details = "PQN Rcpm")
 
 error<-rbind(error,error1)
 ```
@@ -316,10 +316,42 @@ error<-wave_0$pred %>%
   mutate(Model = "wave_0", Details = "WaveICA2.0 Cutoff 0")
 ```
 
+## WaveICA2.0 Cutoff of 0.1
+
+```{r}
+results[2,] = data.frame(getTrainPerf(wave_0.1), Name = paste0("wave_0.1"), Details = "WaveICA2.0 Cutoff 0.1")
+
+error1<-wave_0.1$pred %>%
+  filter(alpha == wave_0.1$bestTune$alpha & lambda == wave_0.1$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.1", Details = "WaveICA2.0 Cutoff 0.1")
+
+error<-rbind(error,error1)
+```
+
+## WaveICA2.0 Cutoff of 0.2
+
+```{r}
+results[3,] = data.frame(getTrainPerf(wave_0.2), Name = paste0("wave_0.2"), Details = "WaveICA2.0 Cutoff 0.2")
+
+error1<-wave_0.2$pred %>%
+  filter(alpha == wave_0.2$bestTune$alpha & lambda == wave_0.2$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.2", Details = "WaveICA2.0 Cutoff 0.2")
+
+error<-rbind(error,error1)
+```
+
 ## WaveICA2.0 Cutoff of 0.3
 
 ```{r}
-results[2,] = data.frame(getTrainPerf(wave_0.3), Name = paste0("wave_0.3"), Details = "WaveICA2.0 Cutoff 0.3")
+results[4,] = data.frame(getTrainPerf(wave_0.3), Name = paste0("wave_0.3"), Details = "WaveICA2.0 Cutoff 0.3")
 
 error1<-wave_0.3$pred %>%
   filter(alpha == wave_0.3$bestTune$alpha & lambda == wave_0.3$bestTune$lambda) %>% #subset 
@@ -332,10 +364,26 @@ error1<-wave_0.3$pred %>%
 error<-rbind(error,error1)
 ```
 
+## WaveICA2.0 Cutoff of 0.4
+
+```{r}
+results[5,] = data.frame(getTrainPerf(wave_0.4), Name = paste0("wave_0.4"), Details = "WaveICA2.0 Cutoff 0.4")
+
+error1<-wave_0.4$pred %>%
+  filter(alpha == wave_0.4$bestTune$alpha & lambda == wave_0.4$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.4", Details = "WaveICA2.0 Cutoff 0.4")
+
+error<-rbind(error,error1)
+```
+
 ## WaveICA2.0 Cutoff of 0.5
 
 ```{r}
-results[3,] = data.frame(getTrainPerf(wave_0.5), Name = paste0("wave_0.5"), Details = "WaveICA2.0 Cutoff 0.5")
+results[6,] = data.frame(getTrainPerf(wave_0.5), Name = paste0("wave_0.5"), Details = "WaveICA2.0 Cutoff 0.5")
 
 error1<-wave_0.5$pred %>%
   filter(alpha == wave_0.5$bestTune$alpha & lambda == wave_0.5$bestTune$lambda) %>% #subset 
@@ -348,10 +396,27 @@ error1<-wave_0.5$pred %>%
 error<-rbind(error,error1)
 ```
 
+
+## WaveICA2.0 Cutoff of 0.6
+
+```{r}
+results[7,] = data.frame(getTrainPerf(wave_0.6), Name = paste0("wave_0.6"), Details = "WaveICA2.0 Cutoff 0.6")
+
+error1<-wave_0.6$pred %>%
+  filter(alpha == wave_0.6$bestTune$alpha & lambda == wave_0.6$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.6", Details = "WaveICA2.0 Cutoff 0.6")
+
+error<-rbind(error,error1)
+```
+
 ## WaveICA2.0 Cutoff of 0.7
 
 ```{r}
-results[4,] = data.frame(getTrainPerf(wave_0.7), Name = paste0("wave_0.7"), Details = "WaveICA2.0 Cutoff 0.7")
+results[8,] = data.frame(getTrainPerf(wave_0.7), Name = paste0("wave_0.7"), Details = "WaveICA2.0 Cutoff 0.7")
 
 error1<-wave_0.7$pred %>%
   filter(alpha == wave_0.7$bestTune$alpha & lambda == wave_0.7$bestTune$lambda) %>% #subset 
@@ -364,10 +429,42 @@ error1<-wave_0.7$pred %>%
 error<-rbind(error,error1)
 ```
 
+## WaveICA2.0 Cutoff of 0.8
+
+```{r}
+results[9,] = data.frame(getTrainPerf(wave_0.8), Name = paste0("wave_0.8"), Details = "WaveICA2.0 Cutoff 0.8")
+
+error1<-wave_0.8$pred %>%
+  filter(alpha == wave_0.8$bestTune$alpha & lambda == wave_0.8$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.8", Details = "WaveICA2.0 Cutoff 0.8")
+
+error<-rbind(error,error1)
+```
+
+## WaveICA2.0 Cutoff of 0.9
+
+```{r}
+results[10,] = data.frame(getTrainPerf(wave_0.9), Name = paste0("wave_0.9"), Details = "WaveICA2.0 Cutoff 0.9")
+
+error1<-wave_0.9$pred %>%
+  filter(alpha == wave_0.9$bestTune$alpha & lambda == wave_0.9$bestTune$lambda) %>% #subset 
+  separate(Resample, c("fold", "rep"), "\\.") %>% 
+  group_by(rep) %>% #group by replicate
+  summarise(RMSE = RMSE(obs, pred)) %>% 
+  as.data.frame() %>% 
+  mutate(Model = "wave_0.9", Details = "WaveICA2.0 Cutoff 0.9")
+
+error<-rbind(error,error1)
+```
+
 ## WaveICA2.0 Cutoff of 1
 
 ```{r}
-results[5,] = data.frame(getTrainPerf(wave_1), Name = paste0("wave_1"), Details = "WaveICA2.0 Cutoff 1")
+results[11,] = data.frame(getTrainPerf(wave_1), Name = paste0("wave_1"), Details = "WaveICA2.0 Cutoff 1")
 
 error1<-wave_1$pred %>%
   filter(alpha == wave_1$bestTune$alpha & lambda == wave_1$bestTune$lambda) %>% #subset 
@@ -388,7 +485,6 @@ error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
                 outlier.size=8)+
   geom_jitter(shape=16, position=position_jitter(0))+
   theme(legend.position="top")+
-  scale_color_brewer(palette = "Set2")+
   theme(axis.title.x = element_blank())
 
 table.p <- ggtexttable(results, rows = NULL, 
@@ -405,7 +501,6 @@ error.p<-error %>% slice(26:nrow(error)) %>% ggplot(aes(x=fct_inorder(Details),y
                 outlier.size=8)+
   geom_jitter(shape=16, position=position_jitter(0))+
   theme(legend.position="top")+
-  scale_color_brewer(palette = "Set2")+
   theme(axis.title.x = element_blank())
 
 resultstemp<-results %>% slice(2:nrow(results))

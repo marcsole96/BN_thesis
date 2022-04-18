@@ -78,9 +78,15 @@ L_mdf_MSBox<-readRDS("../data/mdf_MSBox.rds")
 
 
 wave_0<-readRDS("../data/mdf_wave_0.rds")
+wave_01<-readRDS("../data/mdf_wave_01.rds")
+wave_02<-readRDS("../data/mdf_wave_02.rds")
 wave_03<-readRDS("../data/mdf_wave_03.rds")
+wave_04<-readRDS("../data/mdf_wave_04.rds")
 wave_05<-readRDS("../data/mdf_wave_05.rds")
+wave_06<-readRDS("../data/mdf_wave_06.rds")
 wave_07<-readRDS("../data/mdf_wave_07.rds")
+wave_08<-readRDS("../data/mdf_wave_08.rds")
+wave_09<-readRDS("../data/mdf_wave_09.rds")
 wave_1<-readRDS("../data/mdf_wave_1.rds")
 ```
 
@@ -673,6 +679,32 @@ tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number
 tmp2 <- raw[tmp1$rowid,]
 Wavecut1<-plot_pca(tmp1,tmp2,color_label = "batch")
 
+#Cutoff of 0.9
+mdf <- wave_09
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+Wavecut0.9<-plot_pca(tmp1,tmp2,color_label = "batch")
+
+#Cutoff of 0.8
+mdf <- wave_08
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+Wavecut0.8<-plot_pca(tmp1,tmp2,color_label = "batch")
+
 #After WaveICA2.0 Cutoff of 0.7
 mdf <- wave_07
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
@@ -685,6 +717,20 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 Wavecut0.7<-plot_pca(tmp1,tmp2,color_label = "batch")
+
+#After WaveICA2.0 Cutoff of 0.6
+mdf <- wave_06
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+Wavecut0.6<-plot_pca(tmp1,tmp2,color_label = "batch")
+
 
 #After WaveICA2.0 Cutoff of 0.5
 mdf <- wave_05
@@ -699,6 +745,20 @@ tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number
 tmp2 <- raw[tmp1$rowid,]
 Wavecut0.5<-plot_pca(tmp1,tmp2,color_label = "batch")
 
+#After WaveICA2.0 Cutoff of 0.4
+mdf <- wave_04
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+Wavecut0.4<-plot_pca(tmp1,tmp2,color_label = "batch")
+
+
 #After WaveICA2.0 Cutoff of 0.3
 mdf <- wave_03
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
@@ -711,6 +771,32 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 Wavecut0.3<-plot_pca(tmp1,tmp2,color_label = "batch")
+
+#After WaveICA2.0 Cutoff of 0.2
+mdf <- wave_02
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+Wavecut0.2<-plot_pca(tmp1,tmp2,color_label = "batch")
+
+#After WaveICA2.0 Cutoff of 0.1
+mdf <- wave_01
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+Wavecut0.1<-plot_pca(tmp1,tmp2,color_label = "batch")
 
 #After WaveICA2.0 Cutoff of 0
 mdf <- wave_0
@@ -727,8 +813,8 @@ Wavecut0<-plot_pca(tmp1,tmp2,color_label = "batch")
 
 #Plot
 
-arrangement<- ggarrange(Wavecut1,Wavecut0.7,Wavecut0.5,Wavecut0.3,Wavecut0,
-                    labels = c("1", "0.7", "0.5", "0.3","0"),font.label = list(size = 8, color = "black"),ncol = 3, nrow = 2,common.legend = TRUE, legend = "bottom")
+arrangement<- ggarrange(Wavecut1,Wavecut0.9,Wavecut0.7,Wavecut0.6,Wavecut0.5,Wavecut0.4,Wavecut0.3,Wavecut0.2,Wavecut0.1,Wavecut0,
+                    labels = c("1","0.9","0.8","0.7","0.6","0.5","0.4", "0.3","0.2","0.1","0"),font.label = list(size = 8, color = "black"),ncol = 4, nrow = 3,common.legend = TRUE, legend = "bottom")
 
 annotate_figure(arrangement, top = text_grob("Testing WaveICA2.0's Cutoffs", face = "italic", size = 15))
 rm(arrangement)

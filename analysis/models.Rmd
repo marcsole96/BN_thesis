@@ -524,8 +524,8 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# H_BN_means <- train(x = training_x, 
-#                y = training_y, 
+# H_BN_means <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
@@ -578,8 +578,8 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# I_ComBat <- train(x = training_x, 
-#                y = training_y, 
+# I_ComBat <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
@@ -618,6 +618,7 @@ tmp4 <- tmp4$data_wave
 wave_1_mdf <- tmp4 %>% as_tibble()
 wave_1_mdf <- cbind(rowinfo,wave_1_mdf)
 #write_rds(wave_1_mdf, file = "mdf_wave_1.rds")
+rm(tmp4)
 
 #Cutoff of 0
 tmp5 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0, wf = "haar", K = 10, alpha = 0.1)
@@ -625,27 +626,82 @@ tmp5 <- tmp5$data_wave
 wave_0_mdf <- tmp5 %>% as_tibble()
 wave_0_mdf <- cbind(rowinfo,wave_0_mdf)
 #write_rds(wave_0_mdf, file = "mdf_wave_0.rds")
+rm(tmp5)
+
+#Cutoff of 0.1
+tmp6 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.1, wf = "haar", K = 10, alpha = 0.1)
+tmp6 <- tmp6$data_wave
+wave_0.1_mdf <- tmp6 %>% as_tibble()
+wave_0.1_mdf <- cbind(rowinfo,wave_0.1_mdf)
+#write_rds(wave_0.1_mdf, file = "mdf_wave_01.rds")
+rm(tmp6)
+
+#Cutoff of 0.2
+tmp7 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.2, wf = "haar", K = 10, alpha = 0.1)
+tmp7 <- tmp7$data_wave
+wave_0.2_mdf <- tmp7 %>% as_tibble()
+wave_0.2_mdf <- cbind(rowinfo,wave_0.2_mdf)
+#write_rds(wave_0.2_mdf, file = "mdf_wave_02.rds")
+rm(tmp7)
 
 #Cutoff of 0.3
-tmp6 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.3, wf = "haar", K = 10, alpha = 0.1)
-tmp6 <- tmp6$data_wave
-wave_0.3_mdf <- tmp6 %>% as_tibble()
+tmp8 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.3, wf = "haar", K = 10, alpha = 0.1)
+tmp8 <- tmp8$data_wave
+wave_0.3_mdf <- tmp8 %>% as_tibble()
 wave_0.3_mdf <- cbind(rowinfo,wave_0.3_mdf)
 #write_rds(wave_0.3_mdf, file = "mdf_wave_03.rds")
+rm(tmp8)
+
+#Cutoff of 0.4
+tmp9 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.4, wf = "haar", K = 10, alpha = 0.1)
+tmp9 <- tmp9$data_wave
+wave_0.4_mdf <- tmp9 %>% as_tibble()
+wave_0.4_mdf <- cbind(rowinfo,wave_0.4_mdf)
+#write_rds(wave_0.4_mdf, file = "mdf_wave_04.rds")
+rm(tmp9)
+
 
 #Cutoff of 0.5
-tmp7 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.5, wf = "haar", K = 10, alpha = 0.1)
-tmp7 <- tmp7$data_wave
-wave_0.5_mdf <- tmp7 %>% as_tibble()
+tmp10 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.5, wf = "haar", K = 10, alpha = 0.1)
+tmp10 <- tmp10$data_wave
+wave_0.5_mdf <- tmp10 %>% as_tibble()
 wave_0.5_mdf <- cbind(rowinfo,wave_0.5_mdf)
 #write_rds(wave_0.5_mdf, file = "mdf_wave_05.rds")
+rm(tmp10)
+
+#Cutoff of 0.6
+tmp11 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.6, wf = "haar", K = 10, alpha = 0.1)
+tmp11 <- tmp11$data_wave
+wave_0.6_mdf <- tmp11 %>% as_tibble()
+wave_0.6_mdf <- cbind(rowinfo,wave_0.6_mdf)
+#write_rds(wave_0.6_mdf, file = "mdf_wave_06.rds")
+rm(tmp11)
+
 
 #Cutoff of 0.7
-tmp8 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.7, wf = "haar", K = 10, alpha = 0.1)
-tmp8 <- tmp8$data_wave
-wave_0.7_mdf <- tmp8 %>% as_tibble()
+tmp12 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.7, wf = "haar", K = 10, alpha = 0.1)
+tmp12 <- tmp12$data_wave
+wave_0.7_mdf <- tmp12 %>% as_tibble()
 wave_0.7_mdf <- cbind(rowinfo,wave_0.7_mdf)
 #write_rds(wave_0.7_mdf, file = "mdf_wave_07.rds")
+rm(tmp12)
+
+#Cutoff of 0.8
+tmp13 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.8, wf = "haar", K = 10, alpha = 0.1)
+tmp13 <- tmp13$data_wave
+wave_0.8_mdf <- tmp13 %>% as_tibble()
+wave_0.8_mdf <- cbind(rowinfo,wave_0.8_mdf)
+#write_rds(wave_0.8_mdf, file = "mdf_wave_08.rds")
+rm(tmp13)
+
+
+#Cutoff of 0.9
+tmp14 <- WaveICA_2.0(test2, Injection_Order = order, Cutoff = 0.9, wf = "haar", K = 10, alpha = 0.1)
+tmp14 <- tmp14$data_wave
+wave_0.9_mdf <- tmp14 %>% as_tibble()
+wave_0.9_mdf <- cbind(rowinfo,wave_0.9_mdf)
+#write_rds(wave_0.9_mdf, file = "mdf_wave_09.rds")
+rm(tmp14)
 ```
 
 ## Size
@@ -671,8 +727,48 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# wave_1 <- train(x = training_x, 
-#                y = training_y, 
+# wave_1 <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0.9
+
+```{r}
+training_DF <- wave_0.9_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.9 <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0.8
+
+```{r}
+training_DF <- wave_0.8_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.8 <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
@@ -691,14 +787,35 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# wave_0.7 <- train(x = training_x, 
-#                y = training_y, 
+# wave_0.7 <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
 #       )
 ```
+
+### 0.6
+
+```{r}
+training_DF <- wave_0.6_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.6 <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
 
 ### 0.5
 
@@ -711,8 +828,28 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# wave_0.5 <- train(x = training_x, 
-#                y = training_y, 
+# wave_0.5 <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0.4
+
+```{r}
+training_DF <- wave_0.4_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.4 <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
@@ -731,14 +868,55 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# wave_0.3 <- train(x = training_x, 
-#                y = training_y, 
+# wave_0.3 <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
 #       )
 ```
+
+### 0.2
+
+```{r}
+training_DF <- wave_0.2_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.2 <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
+### 0.1
+
+```{r}
+training_DF <- wave_0.1_mdf %>% filter(type=="sample") %>%  select(-sample,-batch,-type,-sample_id, -rowid)
+training_DF[is.na(training_DF)] <- 0
+
+training_x <- training_DF %>% select(-age) %>% as.data.frame()
+training_y <- training_DF$age
+
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+
+# wave_0.1 <- train(x = training_x,
+#                y = training_y,
+#           method = "glmnet",
+#           tuneLength = 5,
+#        trControl = trControl,
+#        metric = 'RMSE'
+#       )
+```
+
 
 ### 0
 
@@ -751,8 +929,8 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# wave_0 <- train(x = training_x, 
-#                y = training_y, 
+# wave_0 <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
@@ -803,8 +981,8 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# PQN_Rcpm <- train(x = training_x, 
-#                y = training_y, 
+# PQN_Rcpm <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
@@ -852,8 +1030,8 @@ training_y <- training_DF$age
 
 trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
 
-# PQN_msBox <- train(x = training_x, 
-#                y = training_y, 
+# PQN_msBox <- train(x = training_x,
+#                y = training_y,
 #           method = "glmnet",
 #           tuneLength = 5,
 #        trControl = trControl,
@@ -866,7 +1044,7 @@ trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verbo
 ### Saving all the models
 
 ```{r}
-rm(combat,mdf,mdfqcrm,mean_removed,merged,ms,msbox_norm,quotient_norm,results,rowinfo,sampleorder,test,test_df, test2, tmp4,tmp5,tmp6,tmp7,tmp8,training_DF,training_x,trControl,values,wave_0_mdf,wave_0.3_mdf,wave_0.5_mdf,wave_0.7_mdf,wave_1_mdf,batches,order,sumofrows,training_y,WD,center_colmeans,root_transform)
+rm(combat,mdf,mdfqcrm,mean_removed,merged,ms,msbox_norm,quotient_norm,results,rowinfo,sampleorder,test,test_df, test2, tmp4,tmp5,tmp6,tmp7,tmp8,tmp9,tmp10,tmp11,tmp12,tmp13,tmp14,training_DF,training_x,trControl,values,wave_0_mdf,wave_0.1_mdf,wave_0.2_mdf,wave_0.3_mdf,wave_0.4_mdf,wave_0.5_mdf,wave_0.6_mdf,wave_0.7_mdf,wave_0.8_mdf,wave_0.9_mdf,wave_1_mdf,batches,order,sumofrows,training_y,WD,center_colmeans,root_transform)
 
 #save.image(file = "models.RData")
 ```
