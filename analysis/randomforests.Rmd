@@ -1,7 +1,7 @@
 ---
-title: "Models"
+title: "Random Forests"
 author: "Marc"
-date: "13/4/2022"
+date: "25/4/2022"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -62,11 +62,11 @@ training_y <- training_DF$age
 
 results <- data.frame(TrainRMSE = as.numeric(),TrainRsquared = as.numeric(),TrainMAE = as.numeric(),method = as.character(),Name = as.character(),QC = as.character())
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = TRUE)
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = TRUE)
 
 # A_Input_data <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -105,11 +105,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = T, savePredictions = "final")
 
 # B_4th_root <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -185,11 +185,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = T, savePredictions = "final")
 
 # C_PCA_outliers_removed <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -251,11 +251,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = T, savePredictions = "final")
 
 # D_extreme_vals_removed <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -315,11 +315,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats = 25, verboseIter = T, savePredictions = "final")
 
 # E_QC_cleanup <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -358,11 +358,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # F_sum_to_1_norm <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -428,11 +428,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # G_og_norm <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -522,11 +522,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # H_BN_means <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -576,11 +576,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # I_ComBat <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -726,11 +726,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_1 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -746,11 +746,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.9 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -766,11 +766,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.8 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -786,11 +786,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.7 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -806,11 +806,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.6 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -827,11 +827,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.5 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -847,11 +847,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.4 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -867,11 +867,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.3 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -887,11 +887,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.2 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -907,11 +907,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0.1 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -928,11 +928,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # wave_0 <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -980,11 +980,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # PQN_Rcpm <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -1029,11 +1029,11 @@ training_DF[is.na(training_DF)] <- 0
 training_x <- training_DF %>% select(-age) %>% as.data.frame()
 training_y <- training_DF$age
 
-trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = F, savePredictions = "final")
+trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verboseIter = T, savePredictions = "final")
 
 # PQN_msBox <- train(x = training_x,
 #                y = training_y,
-#           method = "glmnet",
+#           method = "ranger",
 #           tuneLength = 5,
 #        trControl = trControl,
 #        metric = 'RMSE'
@@ -1047,5 +1047,5 @@ trControl <- trainControl(method = "repeatedcv", number = 10, repeats= 25, verbo
 ```{r}
 rm(combat,mdf,mdfqcrm,mean_removed,merged,ms,msbox_norm,quotient_norm,results,rowinfo,sampleorder,test,test_df, test2, tmp4,tmp5,tmp6,tmp7,tmp8,tmp9,tmp10,tmp11,tmp12,tmp13,tmp14,training_DF,training_x,trControl,values,wave_0_mdf,wave_0.1_mdf,wave_0.2_mdf,wave_0.3_mdf,wave_0.4_mdf,wave_0.5_mdf,wave_0.6_mdf,wave_0.7_mdf,wave_0.8_mdf,wave_0.9_mdf,wave_1_mdf,batches,order,sumofrows,training_y,WD,center_colmeans,root_transform)
 
-# save.image(file = "models.RData")
+# save.image(file = "models_ranger.RData")
 ```

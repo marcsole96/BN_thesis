@@ -13,6 +13,8 @@ navbar:
     href: metabolites_visualizations.html
   - text: RMSE
     href: rmse_vis.html
+  - text: RMSE_RF
+    href: rmse_vis_RF.html
   right:
   - icon: fab fa-github
     text: Source code
