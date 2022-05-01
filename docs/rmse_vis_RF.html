@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Marc" />
+
+
+<title>RMSE Visualizations RF Ranger</title>
+
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Thesis BN</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="models.html">All models</a>
+</li>
+<li>
+  <a href="PCAs.html">PCAs</a>
+</li>
+<li>
+  <a href="metabolites_visualizations.html">Metabolites</a>
+</li>
+<li>
+  <a href="rmse_vis.html">RMSE</a>
+</li>
+<li>
+  <a href="rmse_vis_RF.html">RMSE_RF</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/marcsole96/BN_thesis">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">RMSE Visualizations RF Ranger</h1>
+<h4 class="author">Marc</h4>
+<h4 class="date">16/4/2022</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-05-01
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>workflowr/data/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version 1.7.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20220214code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20220214)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20220214code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20220214)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it difficult for you and others to run your code on a different machine. Change the absolute path(s) below to the suggested relative path(s) to make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data
+</td>
+<td style="text-align:left;">
+.
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree62c75dfcd97ba8dd14e281a3c983a5accfe82c69targetblank62c75dfa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/62c75dfcd97ba8dd14e281a3c983a5accfe82c69" target="_blank">62c75df</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree62c75dfcd97ba8dd14e281a3c983a5accfe82c69targetblank62c75dfa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/62c75dfcd97ba8dd14e281a3c983a5accfe82c69" target="_blank">62c75df</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    data/.Rhistory
+    Ignored:    data/Demo for WaveICA/
+
+Untracked files:
+    Untracked:  data/.Rprofile
+    Untracked:  data/.gitignore
+    Untracked:  data/NOREVA.2.1.1.tar.gz
+    Untracked:  data/TraceAge_bloodspots_t3_neg_clean.csv
+    Untracked:  data/TraceAge_bloodspots_t3_pos_clean.csv
+    Untracked:  data/bn_after_norm.rds
+    Untracked:  data/bn_before_norm.rds
+    Untracked:  data/bn_means.rds
+    Untracked:  data/bn_test.rds
+    Untracked:  data/combat_model.rds
+    Untracked:  data/data_for_BN.RData
+    Untracked:  data/error_glmnet
+    Untracked:  data/error_glmnet.RDS
+    Untracked:  data/error_glmnet_wave.RDS
+    Untracked:  data/error_init_glmnet
+    Untracked:  data/error_init_glmnet.RDS
+    Untracked:  data/error_init_rf
+    Untracked:  data/error_init_rf.RDS
+    Untracked:  data/error_models_GLMNET.RDS
+    Untracked:  data/error_models_RF.RDS
+    Untracked:  data/error_rf.RDS
+    Untracked:  data/error_rf_wave.RDS
+    Untracked:  data/mdf.rds
+    Untracked:  data/mdf_4throot.rds
+    Untracked:  data/mdf_MSBox.rds
+    Untracked:  data/mdf_Rcpm.rds
+    Untracked:  data/mdf_combat.rds
+    Untracked:  data/mdf_extreme_values_removed.rds
+    Untracked:  data/mdf_meansnorm.rds
+    Untracked:  data/mdf_original.rds
+    Untracked:  data/mdf_pca_outliers_removed.rds
+    Untracked:  data/mdf_processed.rds
+    Untracked:  data/mdf_qc_removed.rds
+    Untracked:  data/mdf_robustnorm.rds
+    Untracked:  data/mdf_sumtoone.rds
+    Untracked:  data/mdf_wave01good.rds
+    Untracked:  data/mdf_wave03good.rds
+    Untracked:  data/mdf_wave05good.rds
+    Untracked:  data/mdf_wave07good.rds
+    Untracked:  data/mdf_wave0good.rds
+    Untracked:  data/mdf_wave2good.rds
+    Untracked:  data/mdf_wave_0.rds
+    Untracked:  data/mdf_wave_01.rds
+    Untracked:  data/mdf_wave_02.rds
+    Untracked:  data/mdf_wave_03.rds
+    Untracked:  data/mdf_wave_04.rds
+    Untracked:  data/mdf_wave_05.rds
+    Untracked:  data/mdf_wave_06.rds
+    Untracked:  data/mdf_wave_07.rds
+    Untracked:  data/mdf_wave_08.rds
+    Untracked:  data/mdf_wave_09.rds
+    Untracked:  data/mdf_wave_1.rds
+    Untracked:  data/model_tests.rds
+    Untracked:  data/models.RData
+    Untracked:  data/models_ranger.RData
+    Untracked:  data/models_waveICA2.0.RData
+    Untracked:  data/packrat/
+    Untracked:  data/pqn_msbox.rds
+    Untracked:  data/pqn_rcpm.rds
+    Untracked:  data/sample_order_traceage_wp2_sample_overview.xlsx
+    Untracked:  data/test_peptides.txt
+    Untracked:  data/waveICA_models.rds
+    Untracked:  models.RData
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/rmse_vis_RF.Rmd</code>) and HTML (<code>docs/rmse_vis_RF.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/62c75dfcd97ba8dd14e281a3c983a5accfe82c69/analysis/rmse_vis_RF.Rmd" target="_blank">62c75df</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-05-01
+</td>
+<td>
+many things done
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="libraries" class="section level1">
+<h1>Libraries</h1>
+</div>
+<div id="model-loading" class="section level1">
+<h1>Model loading</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>WD <span class="ot">&lt;-</span> <span class="fu">getwd</span>()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(WD<span class="sc">!=</span><span class="st">&quot;C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data&quot;</span>){</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">setwd</span>(<span class="st">&quot;../workflowr/data&quot;</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;models_ranger.RData&quot;</span>)</span></code></pre></div>
+</div>
+<div id="errors-and-plot-from-the-original-data-until-extreme-values-removed" class="section level1">
+<h1>Errors and plot from the original data until extreme values removed</h1>
+<div id="original-data" class="section level2">
+<h2>Original Data</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">TrainRMSE =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainRsquared =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainMAE =</span> <span class="fu">as.numeric</span>(),<span class="at">method =</span> <span class="fu">as.character</span>(),<span class="at">Name =</span> <span class="fu">as.character</span>(),<span class="at">Details =</span> <span class="fu">as.character</span>())</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">1</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(A_Input_data), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;A_Input_Data&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;Original Raw Data&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span>A_Input_data<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> A_Input_data<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> A_Input_data<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> A_Input_data<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;A_Input_data&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;Original Raw Data&quot;</span>)</span></code></pre></div>
+</div>
+<div id="th-root" class="section level2">
+<h2>4th root</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">2</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(B_4th_root), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;B_4th_root&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;4th root transformed&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>B_4th_root<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> B_4th_root<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> B_4th_root<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> B_4th_root<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;B_4th_root&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;4th root transformed&quot;</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="pca-outliers-removed" class="section level2">
+<h2>PCA outliers removed</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">3</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(C_PCA_outliers_removed), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;C_PCA_outliers_removed&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;PCA outliers removed&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>C_PCA_outliers_removed<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> C_PCA_outliers_removed<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> C_PCA_outliers_removed<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> C_PCA_outliers_removed<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;C_PCA_outliers_removed&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;PCA outliers removed&quot;</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="extreme-values-removed" class="section level2">
+<h2>Extreme values removed</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">4</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(D_extreme_vals_removed), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;D_extreme_vals_removed&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;Extreme values removed&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>D_extreme_vals_removed<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> D_extreme_vals_removed<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> D_extreme_vals_removed<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> D_extreme_vals_removed<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;D_extreme_vals_removed&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;Extreme values removed&quot;</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="qc-cleanup" class="section level2">
+<h2>QC cleanup</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">5</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(E_QC_cleanup), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;E_QC_cleanup&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;QC Cleanup&quot;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>E_QC_cleanup<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> E_QC_cleanup<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> E_QC_cleanup<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> E_QC_cleanup<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;E_QC_cleanup&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;QC Cleanup&quot;</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="making-the-cool-plot" class="section level2">
+<h2>Making the cool plot</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#write_rds(error,&quot;error_init_rf.RDS&quot;)</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>error.p<span class="ot">&lt;-</span>error <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_inorder</span>(Details),<span class="at">y=</span>RMSE, <span class="at">color=</span>Model))<span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>)<span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>)<span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>table.p <span class="ot">&lt;-</span> <span class="fu">ggtexttable</span>(results, <span class="at">rows =</span> <span class="cn">NULL</span>, </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">theme =</span> <span class="fu">ttheme</span>(<span class="st">&quot;mOrange&quot;</span>, <span class="at">base_size =</span> <span class="dv">7</span>))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(error.p, table.p, </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="figure/rmse_vis_RF.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="errors-and-plot-from-the-normalization-methods" class="section level1">
+<h1>Errors and plot from the normalization methods</h1>
+<div id="extreme-values-again" class="section level2">
+<h2>Extreme values again</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">TrainRMSE =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainRsquared =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainMAE =</span> <span class="fu">as.numeric</span>(),<span class="at">method =</span> <span class="fu">as.character</span>(),<span class="at">Name =</span> <span class="fu">as.character</span>(),<span class="at">Details =</span> <span class="fu">as.character</span>())</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">1</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(D_extreme_vals_removed), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;D_extreme_vals_removed&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;Extreme values removed&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span>D_extreme_vals_removed<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> D_extreme_vals_removed<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> D_extreme_vals_removed<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> D_extreme_vals_removed<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;D_extreme_vals_removed&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;Extreme values removed&quot;</span>)</span></code></pre></div>
+</div>
+<div id="sum-to-1" class="section level2">
+<h2>Sum to 1</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">2</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(F_sum_to_1_norm), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;F_sum_to_1_norm&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;RowsSum to 1&quot;</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>F_sum_to_1_norm<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> F_sum_to_1_norm<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> F_sum_to_1_norm<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> F_sum_to_1_norm<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;F_sum_to_1_norm&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;RowsSum to 1&quot;</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="robust" class="section level2">
+<h2>Robust</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">3</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(G_og_norm), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;G_og_norm&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;Robust&quot;</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>G_og_norm<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> G_og_norm<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> G_og_norm<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> G_og_norm<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;G_og_norm&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;Robust&quot;</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="means" class="section level2">
+<h2>Means</h2>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">4</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(H_BN_means), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;H_BN_means&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;Mean Centering&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>H_BN_means<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> H_BN_means<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> H_BN_means<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> H_BN_means<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;H_BN_means&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;Mean Centering&quot;</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="combat" class="section level2">
+<h2>ComBat</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">5</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(I_ComBat), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;I_ComBat&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;ComBat&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>I_ComBat<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> I_ComBat<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> I_ComBat<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> I_ComBat<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;I_ComBat&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;ComBat&quot;</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0</h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">6</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0&quot;</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="pqn-rcpm" class="section level2">
+<h2>PQN Rcpm</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">7</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(J_PQN_Rcpm), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;J_PQN_Rcpm&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;PQN Rcpm&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>J_PQN_Rcpm<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> J_PQN_Rcpm<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> J_PQN_Rcpm<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> J_PQN_Rcpm<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;J_PQN_Rcpm&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;PQN Rcpm&quot;</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="pqn-msbox" class="section level2">
+<h2>PQN msBox</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">8</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(K_PQN_msBox), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;K_PQN_msBox&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;PQN msBox&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>K_PQN_msBox<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> K_PQN_msBox<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> K_PQN_msBox<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> K_PQN_msBox<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;K_PQN_msBox&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;PQN msBox&quot;</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="making-the-cool-plot-1" class="section level2">
+<h2>Making the cool plot</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(error,&quot;error_models_RF.RDS&quot;)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>error.p<span class="ot">&lt;-</span>error <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_inorder</span>(Details),<span class="at">y=</span>RMSE, <span class="at">color=</span>Model))<span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>)<span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">&quot;Set2&quot;</span>)<span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>table.p <span class="ot">&lt;-</span> <span class="fu">ggtexttable</span>(results, <span class="at">rows =</span> <span class="cn">NULL</span>, </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">theme =</span> <span class="fu">ttheme</span>(<span class="st">&quot;mOrange&quot;</span>, <span class="at">base_size =</span> <span class="dv">7</span>))</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(error.p, table.p, </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">heights =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>))</span></code></pre></div>
+<p><img src="figure/rmse_vis_RF.Rmd/unnamed-chunk-17-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="errors-and-plot-from-the-waveica2.0-cutoff-parameters" class="section level1">
+<h1>Errors and plot from the WaveICA2.0 Cutoff parameters</h1>
+<div id="waveica2.0-cutoff-of-0-1" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">TrainRMSE =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainRsquared =</span> <span class="fu">as.numeric</span>(),<span class="at">TrainMAE =</span> <span class="fu">as.numeric</span>(),<span class="at">method =</span> <span class="fu">as.character</span>(),<span class="at">Name =</span> <span class="fu">as.character</span>(),<span class="at">Details =</span> <span class="fu">as.character</span>())</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">1</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0&quot;</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span>wave_0<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0&quot;</span>)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.1" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.1</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">2</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.1</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.1&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.1&quot;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.1</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.1</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.1</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.1</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.1&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.1&quot;</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.2" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.2</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">3</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.2</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.2&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.2&quot;</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.2</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.2</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.2</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.2</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.2&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.2&quot;</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.3" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.3</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">4</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.3</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.3&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.3&quot;</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.3</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.3</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.3</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.3</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.3&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.3&quot;</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.4" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.4</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">5</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.4</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.4&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.4&quot;</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.4</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.4</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.4</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.4</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.4&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.4&quot;</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.5" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.5</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">6</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.5</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.5&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.5&quot;</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.5</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.5</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.5</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.5</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.5&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.5&quot;</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.6" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.6</h2>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">7</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.6</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.6&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.6&quot;</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.6</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.6</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.6</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.6</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.6&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.6&quot;</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.7" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.7</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">8</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.7</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.7&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.7&quot;</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.7</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.7</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.7</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.7</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.7&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.7&quot;</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.8" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.8</h2>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">9</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.8</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.8&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.8&quot;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.8</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.8</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.8</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.8</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.8&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.8&quot;</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-0.9" class="section level2">
+<h2>WaveICA2.0 Cutoff of 0.9</h2>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">10</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_0<span class="fl">.9</span>), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_0.9&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.9&quot;</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_0<span class="fl">.9</span><span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_0<span class="fl">.9</span><span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_0<span class="fl">.9</span><span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_0<span class="fl">.9</span><span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_0.9&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 0.9&quot;</span>)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="waveica2.0-cutoff-of-1" class="section level2">
+<h2>WaveICA2.0 Cutoff of 1</h2>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>results[<span class="dv">11</span>,] <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">getTrainPerf</span>(wave_1), <span class="at">Name =</span> <span class="fu">paste0</span>(<span class="st">&quot;wave_1&quot;</span>), <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 1&quot;</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>error1<span class="ot">&lt;-</span>wave_1<span class="sc">$</span>pred <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(mtry <span class="sc">==</span> wave_1<span class="sc">$</span>bestTune<span class="sc">$</span>mtry <span class="sc">&amp;</span> splitrule <span class="sc">==</span> wave_1<span class="sc">$</span>bestTune<span class="sc">$</span>splitrule <span class="sc">&amp;</span> min.node.size <span class="sc">==</span> wave_1<span class="sc">$</span>bestTune<span class="sc">$</span>min.node.size) <span class="sc">%&gt;%</span> <span class="co">#subset </span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(Resample, <span class="fu">c</span>(<span class="st">&quot;fold&quot;</span>, <span class="st">&quot;rep&quot;</span>), <span class="st">&quot;</span><span class="sc">\\</span><span class="st">.&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(rep) <span class="sc">%&gt;%</span> <span class="co">#group by replicate</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RMSE =</span> <span class="fu">RMSE</span>(obs, pred)) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Model =</span> <span class="st">&quot;wave_1&quot;</span>, <span class="at">Details =</span> <span class="st">&quot;WaveICA2.0 Cutoff 1&quot;</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>error<span class="ot">&lt;-</span><span class="fu">rbind</span>(error,error1)</span></code></pre></div>
+</div>
+<div id="making-the-cool-plots" class="section level2">
+<h2>Making the cool plots</h2>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>error.p<span class="ot">&lt;-</span>error <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_inorder</span>(Details),<span class="at">y=</span>RMSE, <span class="at">color=</span>Model))<span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>)<span class="sc">+</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>table.p <span class="ot">&lt;-</span> <span class="fu">ggtexttable</span>(results, <span class="at">rows =</span> <span class="cn">NULL</span>, </span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>                        <span class="at">theme =</span> <span class="fu">ttheme</span>(<span class="st">&quot;mOrange&quot;</span>, <span class="at">base_size =</span> <span class="dv">7</span>))</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(error.p, table.p, </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>))</span></code></pre></div>
+<p><img src="figure/rmse_vis_RF.Rmd/unnamed-chunk-29-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>error.p<span class="ot">&lt;-</span>error <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">26</span><span class="sc">:</span><span class="fu">nrow</span>(error)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_inorder</span>(Details),<span class="at">y=</span>RMSE, <span class="at">color=</span>Model))<span class="sc">+</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>)<span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>, <span class="at">position=</span><span class="fu">position_jitter</span>(<span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>resultstemp<span class="ot">&lt;-</span>results <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(results))</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>table.p <span class="ot">&lt;-</span> <span class="fu">ggtexttable</span>(resultstemp, <span class="at">rows =</span> <span class="cn">NULL</span>, </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>                        <span class="at">theme =</span> <span class="fu">ttheme</span>(<span class="st">&quot;mOrange&quot;</span>, <span class="at">base_size =</span> <span class="dv">7</span>))</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(resultstemp)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggarrange</span>(error.p, table.p, </span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">ncol =</span> <span class="dv">1</span>, <span class="at">nrow =</span> <span class="dv">2</span>,</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">heights =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>))</span></code></pre></div>
+<p><img src="figure/rmse_vis_RF.Rmd/unnamed-chunk-30-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#saveRDS(error, &quot;error_rf_wave.RDS&quot;)</span></span></code></pre></div>
+</div>
+</div>
+<div id="making-plots-combining-both-models" class="section level1">
+<h1>Making plots combining both models</h1>
+<div id="init" class="section level2">
+<h2>Init</h2>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>error_init_glmnet<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">&quot;error_init_glmnet.RDS&quot;</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>error_init_rf<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">&quot;error_init_rf.RDS&quot;</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>error_init_rf<span class="sc">$</span>Model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(error_init_rf<span class="sc">$</span>Model,<span class="st">&quot;_RF&quot;</span>)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>error_init_rf<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;Ranger&quot;</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>error_init_glmnet<span class="sc">$</span>Model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(error_init_glmnet<span class="sc">$</span>Model,<span class="st">&quot;_GLMNET&quot;</span>)</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>error_init_glmnet<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;GLMNET&quot;</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>error_init <span class="ot">&lt;-</span> <span class="fu">rbind</span>(error_init_rf,error_init_glmnet)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>error_init<span class="ot">&lt;-</span>error_init[<span class="fu">order</span>(error_init<span class="sc">$</span>Model),]</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>error.p<span class="ot">&lt;-</span>error_init <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_inorder</span>(Model),<span class="at">y=</span>RMSE, <span class="at">color=</span>type))<span class="sc">+</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>,<span class="at">alpha=</span><span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>,<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="dv">0</span>, <span class="at">width =</span> <span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">n.dodge=</span><span class="dv">2</span>))</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>error.p</span></code></pre></div>
+<p><img src="figure/rmse_vis_RF.Rmd/unnamed-chunk-33-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="models" class="section level2">
+<h2>Models</h2>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>error_models_RF<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">&quot;error_models_RF.RDS&quot;</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>error_models_GLMNET<span class="ot">&lt;-</span><span class="fu">readRDS</span>(<span class="st">&quot;error_models_GLMNET.RDS&quot;</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>error_models_RF<span class="sc">$</span>Model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(error_models_RF<span class="sc">$</span>Model,<span class="st">&quot;_RF&quot;</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>error_models_RF<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;Ranger&quot;</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>error_models_GLMNET<span class="sc">$</span>Model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(error_models_GLMNET<span class="sc">$</span>Model,<span class="st">&quot;_GLMNET&quot;</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>error_models_GLMNET<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;GLMNET&quot;</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>error_models <span class="ot">&lt;-</span> <span class="fu">rbind</span>(error_models_RF,error_models_GLMNET)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>error_models<span class="ot">&lt;-</span>error_models[<span class="fu">order</span>(error_models<span class="sc">$</span>Model),]</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>error.p<span class="ot">&lt;-</span>error_models <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_inorder</span>(Model),<span class="at">y=</span>RMSE, <span class="at">color=</span>type))<span class="sc">+</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>,<span class="at">alpha=</span><span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>,<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="dv">0</span>, <span class="at">width =</span> <span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">n.dodge=</span><span class="dv">3</span>))</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>error.p</span></code></pre></div>
+<p><img src="figure/rmse_vis_RF.Rmd/unnamed-chunk-35-1.png" width="1344" style="display: block; margin: auto;" /></p>
+</div>
+<div id="wave" class="section level2">
+<h2>Wave</h2>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>error_rf_wave <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;error_rf_wave.RDS&quot;</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>error_glmnet_wave <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;error_glmnet_wave.RDS&quot;</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>error_rf_wave<span class="sc">$</span>Model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(error_rf_wave<span class="sc">$</span>Model,<span class="st">&quot;_RF&quot;</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>error_rf_wave<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;Ranger&quot;</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>error_glmnet_wave<span class="sc">$</span>Model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(error_glmnet_wave<span class="sc">$</span>Model,<span class="st">&quot;_GLMNET&quot;</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>error_glmnet_wave<span class="sc">$</span>type <span class="ot">&lt;-</span> <span class="st">&quot;GLMNET&quot;</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>error_wave <span class="ot">&lt;-</span> <span class="fu">rbind</span>(error_rf_wave,error_glmnet_wave)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>error_wave<span class="ot">&lt;-</span>error_wave[<span class="fu">order</span>(error_wave<span class="sc">$</span>Model),]</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>error.p<span class="ot">&lt;-</span>error_wave <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">fct_inorder</span>(Model),<span class="at">y=</span>RMSE, <span class="at">color=</span>type))<span class="sc">+</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">outlier.colour=</span><span class="st">&quot;red&quot;</span>, <span class="at">outlier.shape=</span><span class="dv">1</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">outlier.size=</span><span class="dv">8</span>,<span class="at">alpha=</span><span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">shape=</span><span class="dv">16</span>,<span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="dv">0</span>, <span class="at">width =</span> <span class="dv">0</span>))<span class="sc">+</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;top&quot;</span>)<span class="sc">+</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">guide =</span> <span class="fu">guide_axis</span>(<span class="at">n.dodge=</span><span class="dv">3</span>))</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>error.p</span></code></pre></div>
+<p><img src="figure/rmse_vis_RF.Rmd/unnamed-chunk-37-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># resultstemp&lt;-results %&gt;% slice(2:nrow(results))</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># table.p &lt;- ggtexttable(resultstemp, rows = NULL, </span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                         theme = ttheme(&quot;mOrange&quot;, base_size = 7))</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># rm(resultstemp)</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ggarrange(error.p, table.p, </span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co">#           ncol = 1, nrow = 2,</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">#           heights = c(1, 0.5, 0.3))</span></span></code></pre></div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<pre><code>R version 4.1.3 (2022-03-10)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 22000)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=Catalan_Spain.1252  LC_CTYPE=Catalan_Spain.1252   
+[3] LC_MONETARY=Catalan_Spain.1252 LC_NUMERIC=C                  
+[5] LC_TIME=Catalan_Spain.1252    
+
+attached base packages:
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] forcats_0.5.1    gridExtra_2.3    tibble_3.1.6     reshape2_1.4.4  
+ [5] readxl_1.4.0     ggpubr_0.4.0     patchwork_1.1.1  ggrepel_0.9.1   
+ [9] purrr_0.3.4      dplyr_1.0.8      tidyr_1.2.0      readr_2.1.2     
+[13] caret_6.0-91     lattice_0.20-45  cowplot_1.1.1    plotly_4.10.0   
+[17] ggfortify_0.4.14 ggplot2_3.3.5   
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-155         fs_1.5.2             lubridate_1.8.0     
+ [4] RColorBrewer_1.1-2   httr_1.4.2           rprojroot_2.0.2     
+ [7] backports_1.4.1      tools_4.1.3          bslib_0.3.1         
+[10] utf8_1.2.2           R6_2.5.1             rpart_4.1.16        
+[13] DBI_1.1.2            lazyeval_0.2.2       colorspace_2.0-3    
+[16] nnet_7.3-17          withr_2.5.0          tidyselect_1.1.2    
+[19] compiler_4.1.3       git2r_0.30.1         cli_3.2.0           
+[22] labeling_0.4.2       sass_0.4.1           scales_1.1.1        
+[25] stringr_1.4.0        digest_0.6.29        rmarkdown_2.13      
+[28] pkgconfig_2.0.3      htmltools_0.5.2      parallelly_1.30.0   
+[31] fastmap_1.1.0        highr_0.9            htmlwidgets_1.5.4   
+[34] rlang_1.0.2          rstudioapi_0.13      farver_2.1.0        
+[37] jquerylib_0.1.4      generics_0.1.2       jsonlite_1.8.0      
+[40] car_3.0-12           ModelMetrics_1.2.2.2 magrittr_2.0.2      
+[43] Matrix_1.4-0         Rcpp_1.0.8.3         munsell_0.5.0       
+[46] fansi_1.0.3          abind_1.4-5          lifecycle_1.0.1     
+[49] stringi_1.7.6        whisker_0.4          pROC_1.18.0         
+[52] yaml_2.3.5           carData_3.0-5        MASS_7.3-55         
+[55] plyr_1.8.7           recipes_0.2.0        parallel_4.1.3      
+[58] listenv_0.8.0        promises_1.2.0.1     crayon_1.5.1        
+[61] splines_4.1.3        hms_1.1.1            knitr_1.38          
+[64] pillar_1.7.0         ggsignif_0.6.3       stats4_4.1.3        
+[67] future.apply_1.8.1   codetools_0.2-18     glue_1.6.2          
+[70] packrat_0.7.0        evaluate_0.15        data.table_1.14.2   
+[73] tzdb_0.3.0           vctrs_0.3.8          httpuv_1.6.5        
+[76] foreach_1.5.2        cellranger_1.1.0     gtable_0.3.0        
+[79] future_1.24.0        assertthat_0.2.1     xfun_0.30           
+[82] gower_1.0.0          prodlim_2019.11.13   broom_0.7.12        
+[85] rstatix_0.7.0        later_1.3.0          class_7.3-20        
+[88] survival_3.2-13      viridisLite_0.4.0    timeDate_3043.102   
+[91] iterators_1.0.14     hardhat_0.2.0        workflowr_1.7.0     
+[94] lava_1.6.10          globals_0.14.0       ellipsis_0.3.2      
+[97] ipred_0.9-12        </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

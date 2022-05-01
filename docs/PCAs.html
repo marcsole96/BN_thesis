@@ -431,6 +431,9 @@ div.tocify {
 <li>
   <a href="rmse_vis.html">RMSE</a>
 </li>
+<li>
+  <a href="rmse_vis_RF.html">RMSE_RF</a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -476,7 +479,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-04-18
+<strong>Last updated:</strong> 2022-05-01
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -591,16 +594,16 @@ C:/Users/mysit/Documents/Bioinformatica/Semestre_4/workflowr/data
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreeaf431159d33c418d7dc8c2185cb9b392b9755e9btargetblankaf43115a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/af431159d33c418d7dc8c2185cb9b392b9755e9b" target="_blank">af43115</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree62c75dfcd97ba8dd14e281a3c983a5accfe82c69targetblank62c75dfa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/marcsole96/BN_thesis/tree/62c75dfcd97ba8dd14e281a3c983a5accfe82c69" target="_blank">62c75df</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistreeaf431159d33c418d7dc8c2185cb9b392b9755e9btargetblankaf43115a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcommarcsole96BNthesistree62c75dfcd97ba8dd14e281a3c983a5accfe82c69targetblank62c75dfa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/af431159d33c418d7dc8c2185cb9b392b9755e9b" target="_blank">af43115</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/marcsole96/BN_thesis/tree/62c75dfcd97ba8dd14e281a3c983a5accfe82c69" target="_blank">62c75df</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -609,7 +612,6 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
     Ignored:    data/.Rhistory
     Ignored:    data/Demo for WaveICA/
 
@@ -625,6 +627,17 @@ Untracked files:
     Untracked:  data/bn_test.rds
     Untracked:  data/combat_model.rds
     Untracked:  data/data_for_BN.RData
+    Untracked:  data/error_glmnet
+    Untracked:  data/error_glmnet.RDS
+    Untracked:  data/error_glmnet_wave.RDS
+    Untracked:  data/error_init_glmnet
+    Untracked:  data/error_init_glmnet.RDS
+    Untracked:  data/error_init_rf
+    Untracked:  data/error_init_rf.RDS
+    Untracked:  data/error_models_GLMNET.RDS
+    Untracked:  data/error_models_RF.RDS
+    Untracked:  data/error_rf.RDS
+    Untracked:  data/error_rf_wave.RDS
     Untracked:  data/mdf.rds
     Untracked:  data/mdf_4throot.rds
     Untracked:  data/mdf_MSBox.rds
@@ -657,6 +670,7 @@ Untracked files:
     Untracked:  data/mdf_wave_1.rds
     Untracked:  data/model_tests.rds
     Untracked:  data/models.RData
+    Untracked:  data/models_ranger.RData
     Untracked:  data/models_waveICA2.0.RData
     Untracked:  data/packrat/
     Untracked:  data/pqn_msbox.rds
@@ -703,6 +717,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/marcsole96/BN_thesis/blob/62c75dfcd97ba8dd14e281a3c983a5accfe82c69/analysis/PCAs.Rmd" target="_blank">62c75df</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-05-01
+</td>
+<td>
+many things done
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/marcsole96/BN_thesis/54b42153ebdc97c4988950d79152d564e80f44f7/docs/PCAs.html" target="_blank">54b4215</a>
+</td>
+<td>
+marcsole96
+</td>
+<td>
+2022-04-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1173,7 +1221,7 @@ test
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>arrangement<span class="ot">&lt;-</span> <span class="fu">ggarrange</span>(pog,p4th,poutrm, pextrm, pqc, psm1, probu, pmeans, pcombat,pwave0,prcpm, pmsbox,</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Original data&quot;</span>, <span class="st">&quot;4th Root&quot;</span>, <span class="st">&quot;PCA outliers removed&quot;</span>, <span class="st">&quot;Extreme values removed&quot;</span>,<span class="st">&quot;Cleanup using QCs&quot;</span>,<span class="st">&quot;Norm - Sum to 1&quot;</span>,<span class="st">&quot;Norm - Robust&quot;</span>,<span class="st">&quot;Norm - Means&quot;</span>,<span class="st">&quot;Norm - ComBat&quot;</span>,<span class="st">&quot;Norm - WaveICA2.0 cf0&quot;</span>, <span class="st">&quot;Norm - PQN Rcpm&quot;</span>,<span class="st">&quot;Norm - PQN MSBox&quot;</span>  ),<span class="at">font.label =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>),<span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">4</span>,<span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">&quot;bottom&quot;</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">annotate_figure</span>(arrangement, <span class="at">top =</span> <span class="fu">text_grob</span>(<span class="st">&quot;PCAs showing how the batch effect changes&quot;</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>))</span></code></pre></div>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">annotate_figure</span>(arrangement, <span class="at">top =</span> <span class="fu">text_grob</span>(<span class="st">&quot;PCAs showing how the batch effect changes&quot;</span>,<span class="at">face =</span> <span class="st">&quot;italic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>), <span class="at">bottom =</span> <span class="fu">text_grob</span>(<span class="st">&quot;X axis shows PC1 and Y axis shows PC2&quot;</span>,<span class="at">face =</span> <span class="st">&quot;italic&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>))</span></code></pre></div>
 <p><img src="figure/PCAs.Rmd/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;" /></p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(arrangement)</span></code></pre></div>
 </div>
@@ -1530,52 +1578,124 @@ test
 <span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
 <span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tmp2, <span class="at">center =</span> T, <span class="at">scale. =</span> T, <span class="at">rank. =</span> <span class="dv">2</span>)</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>rotation<span class="ot">&lt;-</span>tmp3<span class="sc">$</span>rotation <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">&quot;compound&quot;</span>)</span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC2, <span class="at">y =</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)))) <span class="sc">+</span>  <span class="co"># Apply nrow function</span></span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F) <span class="sc">+</span> </span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Loadings of PC2 after extreme values removed&quot;</span>)</span></code></pre></div>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>tmp45<span class="ot">&lt;-</span><span class="fu">cbind</span>(tmp1,tmp2)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tmp2, <span class="at">center =</span> T, <span class="at">scale. =</span> T, <span class="at">rank. =</span> <span class="dv">2</span>)</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>rotation<span class="ot">&lt;-</span>tmp3<span class="sc">$</span>rotation <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">&quot;compound&quot;</span>)</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC2, <span class="at">y =</span> PC1)) <span class="sc">+</span>  <span class="co"># Apply nrow function</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F) <span class="sc">+</span> </span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Loadings of PC1 and PC2&quot;</span>)</span></code></pre></div>
 <pre><code>`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
 <p><img src="figure/PCAs.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>plot1<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(compound,PC2))<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)<span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F, <span class="fu">aes</span>(<span class="at">x=</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)),<span class="at">y=</span>PC2))</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking the high values</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>top100<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1000</span>, PC2)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC2, <span class="at">y =</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)))) <span class="sc">+</span>  <span class="co"># Apply nrow function</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F) <span class="sc">+</span> </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Loadings of PC2 after extreme values removed&quot;</span>)</span></code></pre></div>
+<pre><code>`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="figure/PCAs.Rmd/unnamed-chunk-32-2.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>plot1<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1,PC2))<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)<span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking the high values</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>top100<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1000</span>, PC2)</span></code></pre></div>
 <p>After WaveICA2.0 and a Cutoff of 0</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> wave_0</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(rowid, <span class="at">.before =</span> sample)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(rowid, sample, age, batch, type, sample_id)</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rowinfo)</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">7</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>]</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tmp2, <span class="at">center =</span> T, <span class="at">scale. =</span> T, <span class="at">rank. =</span> <span class="dv">2</span>)</span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>rotation<span class="ot">&lt;-</span>tmp3<span class="sc">$</span>rotation <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">&quot;compound&quot;</span>)</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC2, <span class="at">y =</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)))) <span class="sc">+</span>  <span class="co"># Apply nrow function</span></span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F) <span class="sc">+</span> </span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Loadings of PC2 after WaveICA2.0 Cutoff of 0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> wave_0</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(rowid, <span class="at">.before =</span> sample)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(rowid, sample, age, batch, type, sample_id)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rowinfo)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">7</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tmp2, <span class="at">center =</span> T, <span class="at">scale. =</span> T, <span class="at">rank. =</span> <span class="dv">2</span>)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>rotation<span class="ot">&lt;-</span>tmp3<span class="sc">$</span>rotation <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">&quot;compound&quot;</span>)</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC2, <span class="at">y =</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)))) <span class="sc">+</span>  <span class="co"># Apply nrow function</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F) <span class="sc">+</span> </span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Loadings of PC2 after WaveICA2.0 Cutoff of 0&quot;</span>)</span></code></pre></div>
 <pre><code>`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
 <p><img src="figure/PCAs.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>plot2<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(compound,PC2))<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)<span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F, <span class="fu">aes</span>(<span class="at">x=</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)),<span class="at">y=</span>PC2))</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking the high values</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>top100<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1000</span>, PC2)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>plot2<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1,PC2))<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)<span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking the high values</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>top100<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1000</span>, PC2)</span></code></pre></div>
+<p>After ComBat</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>mdf <span class="ot">&lt;-</span> I_mdf_combat</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(rowid, <span class="at">.before =</span> sample)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(rowid, sample, age, batch, type, sample_id)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rowinfo)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">7</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tmp2, <span class="at">center =</span> T, <span class="at">scale. =</span> T, <span class="at">rank. =</span> <span class="dv">2</span>)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>rotation<span class="ot">&lt;-</span>tmp3<span class="sc">$</span>rotation <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">&quot;compound&quot;</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC2, <span class="at">y =</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)))) <span class="sc">+</span>  <span class="co"># Apply nrow function</span></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F) <span class="sc">+</span> </span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Loadings of PC2 after WaveICA2.0 Cutoff of 0&quot;</span>)</span></code></pre></div>
+<pre><code>`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="figure/PCAs.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>plot3<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1,PC2))<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)<span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking the high values</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>top100<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1000</span>, PC2)</span></code></pre></div>
+<div id="th-root-3" class="section level2">
+<h2>4th root?</h2>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Imputing zeros</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>mdfrt<span class="ot">&lt;-</span>mdf</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>test_df<span class="ot">&lt;-</span>mdfrt <span class="sc">%&gt;%</span> <span class="fu">gather</span>(<span class="at">key=</span><span class="st">&quot;mz&quot;</span>,<span class="at">value=</span><span class="st">&quot;values&quot;</span>,<span class="dv">7</span><span class="sc">:</span><span class="fu">ncol</span>(mdfrt))</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>test_df<span class="sc">$</span>values[<span class="fu">is.na</span>(test_df<span class="sc">$</span>values)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co">#4th root transformation</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>root_transform <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span> (x<span class="sc">^</span><span class="fl">0.25</span>)}</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>mdfrt[<span class="dv">6</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdfrt))] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(mdfrt[<span class="dv">7</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdfrt))],root_transform)</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>mdfrt[<span class="fu">is.na</span>(mdfrt)] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>mdfrt</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>mdf<span class="ot">&lt;-</span>mdf <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(rowid, <span class="at">.before =</span> sample)</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf <span class="sc">%&gt;%</span> <span class="fu">select</span>(rowid, sample, age, batch, type, sample_id)</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(rowinfo)</span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>raw     <span class="ot">&lt;-</span>  mdf[<span class="dv">7</span><span class="sc">:</span>(<span class="fu">ncol</span>(mdf))]</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>rowinfo <span class="ot">&lt;-</span> mdf[<span class="dv">0</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>tmp1 <span class="ot">&lt;-</span> rowinfo <span class="sc">%&gt;%</span> <span class="fu">filter</span>(type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rowid2 =</span> <span class="fu">row_number</span>())</span>
+<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>tmp2 <span class="ot">&lt;-</span> raw[tmp1<span class="sc">$</span>rowid,]</span>
+<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>tmp3 <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tmp2, <span class="at">center =</span> T, <span class="at">scale. =</span> T, <span class="at">rank. =</span> <span class="dv">2</span>)</span>
+<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>rotation<span class="ot">&lt;-</span>tmp3<span class="sc">$</span>rotation <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">&quot;compound&quot;</span>)</span>
+<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC2, <span class="at">y =</span> (<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(rotation)))) <span class="sc">+</span>  <span class="co"># Apply nrow function</span></span>
+<span id="cb50-29"><a href="#cb50-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F) <span class="sc">+</span> </span>
+<span id="cb50-30"><a href="#cb50-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;Loadings of PC2 after WaveICA2.0 Cutoff of 0&quot;</span>)</span></code></pre></div>
+<pre><code>`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
+<p><img src="figure/PCAs.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>plot4<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(PC1,PC2))<span class="sc">+</span><span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">10</span>)<span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;gam&quot;</span>,<span class="at">se=</span>F)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Taking the high values</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>top100<span class="ot">&lt;-</span>rotation <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1000</span>, PC2)</span></code></pre></div>
 <p>Plotting both</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>arrangement<span class="ot">&lt;-</span> <span class="fu">ggarrange</span>(plot1,plot2,</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;After Extreme Values&quot;</span>, <span class="st">&quot;WaveICA2.0 Cut 0&quot;</span>, <span class="st">&quot;0.3&quot;</span>,<span class="st">&quot;0&quot;</span>),<span class="at">font.label =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>),<span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">nrow =</span> <span class="dv">1</span>,<span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>arrangement<span class="ot">&lt;-</span> <span class="fu">ggarrange</span>(plot1,plot2,plot3,</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;After Extreme Values&quot;</span>, <span class="st">&quot;WaveICA2.0 Cut 0&quot;</span>,<span class="st">&quot;ComBat&quot;</span>),<span class="at">font.label =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>),<span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">1</span>,<span class="at">common.legend =</span> <span class="cn">TRUE</span>, <span class="at">legend =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
 <pre><code>`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;
 `geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;
 `geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;
+`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;
+`geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;
 `geom_smooth()` using formula &#39;y ~ s(x, bs = &quot;cs&quot;)&#39;</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">annotate_figure</span>(arrangement, <span class="at">top =</span> <span class="fu">text_grob</span>(<span class="st">&quot;Plotting the PC2 Loadings&quot;</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>))</span></code></pre></div>
-<p><img src="figure/PCAs.Rmd/unnamed-chunk-34-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">annotate_figure</span>(arrangement, <span class="at">top =</span> <span class="fu">text_grob</span>(<span class="st">&quot;Plotting the Loadings&quot;</span>, <span class="at">face =</span> <span class="st">&quot;italic&quot;</span>, <span class="at">size =</span> <span class="dv">15</span>))</span></code></pre></div>
+<p><img src="figure/PCAs.Rmd/unnamed-chunk-36-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -1583,7 +1703,7 @@ test
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>R version 4.1.3 (2022-03-10)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
 Running under: Windows 10 x64 (build 22000)
@@ -1638,6 +1758,7 @@ loaded via a namespace (and not attached):
 [91] viridisLite_0.4.0    timeDate_3043.102    iterators_1.0.14    
 [94] hardhat_0.2.0        workflowr_1.7.0      lava_1.6.10         
 [97] globals_0.14.0       ellipsis_0.3.2       ipred_0.9-12        </code></pre>
+</div>
 </div>
 </div>
 
