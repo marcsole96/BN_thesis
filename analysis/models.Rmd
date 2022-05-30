@@ -610,7 +610,7 @@ order <- merged$`Injection order positive`
 
 ## Running WaveICA2.0 (using different parameters)
 
-```{r}
+```{r echo=T, results='hide'}
 library(WaveICA2.0)
 
 #Cutoff of 1
