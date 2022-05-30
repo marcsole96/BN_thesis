@@ -90,6 +90,15 @@ wave_09<-readRDS("../data/mdf_wave_09.rds")
 wave_1<-readRDS("../data/mdf_wave_1.rds")
 ```
 
+```{r}
+df<-A_mdf_original%>%gather("mz","intensity",6:ncol(A_mdf_original))
+
+df %>% filter(sample=="18071_12_1") %>% 
+  select("mz", "intensity") %>%
+  ggplot(aes(x=mz, y=intensity)) + geom_bar(stat="identity") + ggtitle("Strike 1 Spectrometry View") + theme(axis.title=element_text(size=6),axis.text=element_text(size=6),plot.title = element_text(hjust = 0.5, size=10),axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + labs(y="Intensity", x = "m/z")
+```
+
+
 # Outliers PCAs
 
 ## Original Data
