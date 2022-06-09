@@ -129,9 +129,10 @@ error<-rbind(error,error1)
 
 
 ## Making the cool plot
-```{r fig.asp = 0.9, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 #write_rds(error,"error_init_glmnet.RDS")
-
+error<-error %>% filter(Details!="QC Cleanup")
+results<-results %>% filter(Details!="QC Cleanup")
 error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   geom_boxplot(outlier.colour = "red", alpha = 0.3)+
   geom_boxplot(outlier.colour="red", outlier.shape=1,
@@ -142,9 +143,10 @@ error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   theme(axis.title.x = element_blank())
 
 table.p <- ggtexttable(results, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2)
+table.p
 ```
 
 
@@ -294,10 +296,12 @@ error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   theme(axis.title.x = element_blank())
 
 table.p <- ggtexttable(results, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2,
           heights = c(0.8, 0.5, 0.3))
+results_glmnet<-results
+
 ```
 
 
@@ -491,7 +495,7 @@ error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   theme(axis.title.x = element_blank())
 
 table.p <- ggtexttable(results, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2,
           heights = c(1, 0.5, 0.3))
@@ -508,7 +512,7 @@ error.p<-error %>% slice(26:nrow(error)) %>% ggplot(aes(x=fct_inorder(Details),y
 
 resultstemp<-results %>% slice(2:nrow(results))
 table.p <- ggtexttable(resultstemp, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 rm(resultstemp)
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2,
@@ -516,6 +520,8 @@ ggarrange(error.p, table.p,
 ```
 
 ```{r}
+#saveRDS(results_glmnet,"results_glmnet.RDS")
 #saveRDS(error,"error_glmnet_wave.RDS")
+#saveRDS(results,"results_wave_glmnet.RDS")
 ```
 

@@ -50,6 +50,7 @@ plot_pca <- function(tmp1, tmp2, color_label, ranks = 6){
     geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
     facet_grid(~name, scales = "free")+
     labs(x = "", y = "")+
+    scale_fill_brewer(palette = "Set2") 
     NULL
   return(pca_plot)
 }
@@ -90,20 +91,20 @@ wave_09<-readRDS("../data/mdf_wave_09.rds")
 wave_1<-readRDS("../data/mdf_wave_1.rds")
 ```
 
-```{r}
+```{r fig.asp = 0.65, fig.width = 6}
 df<-A_mdf_original%>%gather("mz","intensity",6:ncol(A_mdf_original))
+mypalette<-c("#A6CEE3","#c5dfed","#B2DF8A","#c9eda8","#dbf2c7","#fc9e56","#ffc191","#FDBF6F")
 
-df %>% filter(sample=="18071_12_1") %>% 
-  select("mz", "intensity") %>%
-  ggplot(aes(x=mz, y=intensity)) + geom_bar(stat="identity") + ggtitle("Strike 1 Spectrometry View") + theme(axis.title=element_text(size=6),axis.text=element_text(size=6),plot.title = element_text(hjust = 0.5, size=10),axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + labs(y="Intensity", x = "m/z")
+ggplot(A_mdf_original, aes(x=sample, y=M45T88, fill=batch)) +
+  geom_bar(stat="identity") + theme(axis.text.x=element_blank()) + ggtitle("Feature M45T88 intensity by sample") + theme(plot.title = element_text(face = "italic")) +
+  xlab("Samples") + ylab("Intensity") + labs(fill = "Batch") + scale_fill_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) 
 ```
-
 
 # Outliers PCAs
 
 ## Original Data
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 raw     <-  A_mdf_original[6:(ncol(A_mdf_original))]
 rowinfo <- A_mdf_original[0:5]
 rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
@@ -151,12 +152,14 @@ for(i in 1:(ncol(r$x)/2)) {
   rm(p1)
 }
 
-cowplot::plot_grid(plotlist = plotlist)
+
+cowplot::plot_grid(plotlist = plotlist) +
+  plot_annotation(title = "Outliers in the Original Data",theme = theme(plot.title = element_text(face = "italic")))
 ```
 
 ## 4th root
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 raw     <-  B_mdf_4throot[6:(ncol(B_mdf_4throot))]
 rowinfo <- B_mdf_4throot[0:5]
 rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
@@ -204,12 +207,13 @@ for(i in 1:(ncol(r$x)/2)) {
   rm(p1)
 }
 
-cowplot::plot_grid(plotlist = plotlist)
+cowplot::plot_grid(plotlist = plotlist) +
+  plot_annotation(title = "Outliers after 4th root transformation",theme = theme(plot.title = element_text(face = "italic")))
 ```
 
 ## PCA outliers removed
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 raw     <-  C_mdf_pca_outliers_removed[6:(ncol(C_mdf_pca_outliers_removed))]
 rowinfo <- C_mdf_pca_outliers_removed[0:5]
 rowinfo <- tibble::rowid_to_column(rowinfo, "rowid")
@@ -257,14 +261,15 @@ for(i in 1:(ncol(r$x)/2)) {
   rm(p1)
 }
 
-cowplot::plot_grid(plotlist = plotlist)
+cowplot::plot_grid(plotlist = plotlist) +
+  plot_annotation(title = "Outliers removed",theme = theme(plot.title = element_text(face = "italic")))
 ```
 
 # PCAs showing the batch effect
 
 ## Original data
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- A_mdf_original
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -281,7 +286,7 @@ pog + ggtitle("Original Data") + theme(plot.title = element_text(face = "italic"
 
 ## 4th Root
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- B_mdf_4throot
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -298,7 +303,7 @@ p4th + ggtitle("4th Root transformed data") + theme(plot.title = element_text(fa
 
 ## PCA outliers removed (rows)
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- C_mdf_pca_outliers_removed
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -315,7 +320,7 @@ poutrm + ggtitle("PCA outliers removed") + theme(plot.title = element_text(face 
 
 ## Extreme values removed (columns)
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- D_mdf_extreme_values_removed
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -327,12 +332,12 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 pextrm<-plot_pca(tmp1,tmp2,color_label = "batch") + labs(fill = "Batch") 
-pextrm + ggtitle("Extreme values removed") + theme(plot.title = element_text(face = "italic"))
+pextrm + ggtitle("PCA showing Batches") + theme(plot.title = element_text(face = "italic"))
 ```
 
 ## Cleanup with QC samples as guide
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- E_mdf_qc_removed
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -347,9 +352,9 @@ pqc<-plot_pca(tmp1,tmp2,color_label = "batch") + labs(fill = "Batch")
 pqc + ggtitle("QC cleanup") + theme(plot.title = element_text(face = "italic"))
 ```
 
-## Normalization Sum To One
+## normalisation Sum To One
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- F_mdf_sumtoone
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -361,12 +366,12 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 psm1<-plot_pca(tmp1,tmp2,color_label = "batch") + labs(fill = "Batch") 
-psm1 + ggtitle("Normalization Summing rows to One") + theme(plot.title = element_text(face = "italic"))
+psm1 + ggtitle("Row normalisation", subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"), plot.subtitle = element_text(size=7))
 ```
 
-## Normalization "Robust"
+## normalisation "Robust"
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- G_mdf_robustnorm
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -378,12 +383,12 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 probu<-plot_pca(tmp1,tmp2,color_label = "batch") + labs(fill = "Batch") 
-probu + ggtitle("Normalization 'Robust method' using ranks") + theme(plot.title = element_text(face = "italic"))
+probu + ggtitle("Quantile normalisation", subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
 ```
 
-## Normalization Using Means
+## normalisation Using Means
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- H_mdf_meansnorm
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -395,12 +400,12 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 pmeans<-plot_pca(tmp1,tmp2,color_label = "batch") + labs(fill = "Batch") 
-pmeans + ggtitle("Normalization using mean centering") + theme(plot.title = element_text(face = "italic"))
+pmeans + ggtitle("Mean normalisation",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
 ```
 
-## Normalization ComBat
+## normalisation ComBat
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- I_mdf_combat
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -412,12 +417,12 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 pcombat<-plot_pca(tmp1,tmp2,color_label = "batch") + labs(fill = "Batch") 
-pcombat + ggtitle("Normalization using mean centering") + theme(plot.title = element_text(face = "italic"))
+pcombat + ggtitle("ComBat",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
 ```
 
-## Normalization WaveICA2.0 Cutoff of 0
+## normalisation WaveICA2.0 Cutoff of 0
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- J_mdf_wave_0
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -429,12 +434,12 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 pwave0<-plot_pca(tmp1,tmp2,color_label = "batch") + labs(fill = "Batch") 
-pwave0 + ggtitle("Normalization using WaveICA2.0 Cutoff of 0") + theme(plot.title = element_text(face = "italic"))
+pwave0 + ggtitle("WaveICA2.0 (cutoff 0)",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
 ```
 
-## Normalization (Probabilistic Quotient Normalization) using Rcpm
+## normalisation (Probabilistic Quotient normalisation) using Rcpm
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- K_mdf_Rcpm
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -446,12 +451,12 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 prcpm<-plot_pca(tmp1,tmp2,color_label = "batch") 
-prcpm + labs(fill = "Batch") + ggtitle("PQN using Rpcm") + theme(plot.title = element_text(face = "italic"))
+prcpm + labs(fill = "Batch") + ggtitle("PQN using Rcpm",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
 ```
 
-## Normalization (Probabilistic Quotient Normalization) using MSBox
+## normalisation (Probabilistic Quotient normalisation) using MSBox
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 mdf <- L_mdf_MSBox
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
 rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
@@ -463,218 +468,32 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 pmsbox<-plot_pca(tmp1,tmp2,color_label = "batch") 
-pmsbox + labs(fill = "Batch") + ggtitle("PQN using MSBox") + theme(plot.title = element_text(face = "italic"))
+pmsbox + labs(fill = "Batch") + ggtitle("PQN using MSBox",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
 ```
 
 # Whole Plot
 
-```{r fig.asp = 0.6, fig.width = 10}
-arrangement<- ggarrange(pog,p4th,poutrm, pextrm, pqc, psm1, probu, pmeans, pcombat,pwave0,prcpm, pmsbox,
-                    labels = c("Original data", "4th Root", "PCA outliers removed", "Extreme values removed","Cleanup using QCs","Norm - Sum to 1","Norm - Robust","Norm - Means","Norm - ComBat","Norm - WaveICA2.0 cf0", "Norm - PQN Rcpm","Norm - PQN MSBox"  ),font.label = list(size = 8, color = "black"),ncol = 3, nrow = 4,common.legend = TRUE, legend = "bottom")
+```{r fig.asp = 0.7, fig.width = 12}
+arrangement<- ggarrange(pextrm, psm1, probu, pmeans, pcombat,pwave0,prcpm, pmsbox,
+                    labels = c("Original processed data","Row normalisation","Quantile normalisation","Mean normalisation","ComBat","WaveICA2.0 cut.0", "PQN Rcpm","PQN MSBox"),font.label = list(size = 8, color = "black",face="bold.italic"),ncol = 3, nrow = 3,common.legend = TRUE, legend = "bottom")
 
-annotate_figure(arrangement, top = text_grob("PCAs showing how the batch effect changes",face = "italic", size = 15), bottom = text_grob("X axis shows PC1 and Y axis shows PC2",face = "italic", size = 12))
+annotate_figure(arrangement, top = text_grob("PCAs showing how the batch effect changes",face = "italic", size = 15), bottom = text_grob(" X axis shows PC1,PC3,and PC5. Y axis shows PC2, PC4 and PC6.",face = "italic", size = 12))
 rm(arrangement)
 ```
 
+# Smol plot
 
+```{r fig.asp = 0.65, fig.width = 6}
+arrangement<- ggarrange(pextrm, psm1,# probu, pmeans, pcombat,pwave0,prcpm, pmsbox,
+                    labels = c("Extreme values removed","Norm - Sum to 1","Norm - Robust","Norm - Means","Norm - ComBat","Norm - WaveICA2.0 cf0", "Norm - PQN Rcpm","Norm - PQN MSBox"  ),font.label = list(size = 8, color = "black"),ncol = 2, nrow = 1,common.legend = TRUE, legend = "bottom")
 
-# PCAs showing the age effect
-
-## Original data
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- A_mdf_original
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Original Data") + theme(plot.title = element_text(face = "italic"))
-```
-
-## 4th Root
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- B_mdf_4throot
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("4th Root transformed data") + theme(plot.title = element_text(face = "italic"))
-```
-
-## PCA outliers removed (rows)
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- C_mdf_pca_outliers_removed
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("PCA outliers removed") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Extreme values removed (columns)
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- D_mdf_extreme_values_removed
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Extreme values removed") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Cleanup with QC samples as guide
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- E_mdf_qc_removed
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("QC cleanup") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Normalization Sum To One
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- F_mdf_sumtoone
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Normalization Summing rows to One") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Normalization "Robust"
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- G_mdf_robustnorm
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Normalization 'Robust method' using ranks") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Normalization Using Means
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- H_mdf_meansnorm
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Normalization using mean centering") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Normalization ComBat
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- I_mdf_combat
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Normalization using mean centering") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Normalization WaveICA2.0 Cutoff of 0
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- J_mdf_wave_0
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Normalization using WaveICA2.0 Cutoff of 0") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Normalization (Probabilistic Quotient Normalization) using Rpcm
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- K_mdf_Rcpm
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("PQN using Rpcm") + theme(plot.title = element_text(face = "italic"))
-```
-
-## Normalization (Probabilistic Quotient Normalization) using MSBox
-
-```{r fig.asp = 0.5, fig.width = 7}
-mdf <- L_mdf_MSBox
-mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
-rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
-
-rm(rowinfo)
-raw     <-  mdf[7:(ncol(mdf))]
-rowinfo <- mdf[0:6]
-
-tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
-tmp2 <- raw[tmp1$rowid,]
-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("PQN using MSBox") + theme(plot.title = element_text(face = "italic"))
+annotate_figure(arrangement, top = text_grob("PCAs showing how the batch effect changes",face = "italic", size = 15), bottom = text_grob(" X axis shows PC1,PC3,and PC5. Y axis shows PC2, PC4 and PC6.",face = "italic", size = 8))
+rm(arrangement)
 ```
 
 # WaveICA2.0 Cutoff parameters effect on batches
 
-```{r fig.asp = 0.6, fig.width = 10}
+```{r fig.asp = 0.65, fig.width = 6}
 #Cutoff of 1
 mdf <- wave_1
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
@@ -687,6 +506,8 @@ rowinfo <- mdf[0:6]
 tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
 tmp2 <- raw[tmp1$rowid,]
 Wavecut1<-plot_pca(tmp1,tmp2,color_label = "batch")
+
+Wavecut1 + labs(fill = "Batch") + ggtitle("WaveICA2.0 Cutoff of 1",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
 
 #Cutoff of 0.9
 mdf <- wave_09
@@ -754,6 +575,9 @@ tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number
 tmp2 <- raw[tmp1$rowid,]
 Wavecut0.5<-plot_pca(tmp1,tmp2,color_label = "batch")
 
+Wavecut0.5 + labs(fill = "Batch") + ggtitle("WaveICA2.0 Cutoff of 0.5",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+
+
 #After WaveICA2.0 Cutoff of 0.4
 mdf <- wave_04
 mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
@@ -820,12 +644,273 @@ tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number
 tmp2 <- raw[tmp1$rowid,]
 Wavecut0<-plot_pca(tmp1,tmp2,color_label = "batch")
 
+Wavecut0 + labs(fill = "Batch") + ggtitle("WaveICA2.0 Cutoff of 0",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+```{r fig.asp = 0.7, fig.width = 12}
 #Plot
 
-arrangement<- ggarrange(Wavecut1,Wavecut0.9,Wavecut0.7,Wavecut0.6,Wavecut0.5,Wavecut0.4,Wavecut0.3,Wavecut0.2,Wavecut0.1,Wavecut0,
+arrangement<- ggarrange(Wavecut1,Wavecut0.9,Wavecut0.8,Wavecut0.7,Wavecut0.6,Wavecut0.5,Wavecut0.4,Wavecut0.3,Wavecut0.2,Wavecut0.1,Wavecut0,
                     labels = c("1","0.9","0.8","0.7","0.6","0.5","0.4", "0.3","0.2","0.1","0"),font.label = list(size = 8, color = "black"),ncol = 4, nrow = 3,common.legend = TRUE, legend = "bottom")
 
-annotate_figure(arrangement, top = text_grob("Testing WaveICA2.0's Cutoffs", face = "italic", size = 15))
+annotate_figure(arrangement, top = text_grob("WaveICA2.0's cutoff parameter", face = "italic", size = 15),bottom = text_grob(" X axis shows PC1,PC3,and PC5. Y axis shows PC2, PC4 and PC6.",face = "italic", size = 8))
+rm(arrangement)
+```
+
+
+
+# PCAs showing the age effect
+## Function
+```{r}
+library(RColorBrewer)
+mypalette<-c("#a6cee3",
+"#1f78b4",
+"#b2df8a",
+"#33a02c",
+"#fb9a99",
+"#e31a1c",
+"#fdbf6f",
+"#ff7f00",
+"#cab2d6",
+"#6a3d9a")
+plot_pca <- function(tmp1, tmp2, color_label, ranks = 6){
+  
+  tmp3 <- prcomp(tmp2, center = T, scale. = T, rank. = ranks)
+
+  pdata <- 
+    tmp3$x %>% 
+    as_tibble() %>% 
+    bind_cols(tmp1 %>% select(all_of(color_label)) %>% mutate_all(as.factor)) %>% 
+    pivot_longer(cols = seq(1, ncol(.)-length(color_label), by=2)) %>% 
+    select(x_val = value, x_name = name, everything()) %>% 
+    pivot_longer(cols = starts_with("PC")) %>% 
+    select(x_name, y_name = name,x_val, y_val = value, everything()) %>%
+    mutate(name = paste(x_name, "vs", y_name),
+           name = factor(name, levels = sort(name) %>% unique())) %>% 
+    filter(as.numeric(gsub("PC", "", x_name)) + 1 == as.numeric(gsub("PC", "", y_name)))
+  
+  pca_plot <- pdata %>% 
+    ggplot(aes(x=x_val, y=y_val))+
+    geom_point(aes_string(fill = color_label), shape = 21, color = "white")+
+    facet_grid(~name, scales = "free")+
+    labs(x = "", y = "")+
+    scale_fill_manual(values = mypalette) 
+    NULL
+  return(pca_plot)
+}
+
+```
+
+## Original data
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- A_mdf_original
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+pog<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age")
+pog + ggtitle("Original Data") + theme(plot.title = element_text(face = "italic"))
+```
+
+## 4th Root
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- B_mdf_4throot
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+p4th<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+p4th + ggtitle("4th Root transformed data") + theme(plot.title = element_text(face = "italic"))
+```
+
+## PCA outliers removed (rows)
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- C_mdf_pca_outliers_removed
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+poutrm<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+poutrm + ggtitle("PCA outliers removed") + theme(plot.title = element_text(face = "italic"))
+```
+
+## Extreme values removed (columns)
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- D_mdf_extreme_values_removed
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+pextrm<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+pextrm + ggtitle("PCA showing Age") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+## Cleanup with QC samples as guide
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- E_mdf_qc_removed
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+pqc<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age")
+pqc + ggtitle("QC cleanup") + theme(plot.title = element_text(face = "italic"))
+```
+
+## normalisation Sum To One
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- F_mdf_sumtoone
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+psm1<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") + ggtitle("Row normalisation",subtitle = "Principal Component Analysis")
+psm1 + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+## normalisation "Robust"
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- G_mdf_robustnorm
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+probu<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+probu + ggtitle("Quantile normalisation",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+## normalisation Using Means
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- H_mdf_meansnorm
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+pmeans<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+pmeans + ggtitle("Mean normalisation",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+## normalisation ComBat
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- I_mdf_combat
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+pcombat<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+pcombat + ggtitle("ComBat",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+## normalisation WaveICA2.0 Cutoff of 0
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- J_mdf_wave_0
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+pwave0<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age")
+pwave0 + ggtitle("WaveICA2.0 (cutoff 0)",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+## normalisation (Probabilistic Quotient normalisation) using Rpcm
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- K_mdf_Rcpm
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+prcpm<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+prcpm + ggtitle("PQN using Rcpm",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+## normalisation (Probabilistic Quotient normalisation) using MSBox
+
+```{r fig.asp = 0.65, fig.width = 6}
+mdf <- L_mdf_MSBox
+mdf<-mdf %>% mutate(rowid = row_number()) %>% relocate(rowid, .before = sample)
+rowinfo <- mdf %>% select(rowid, sample, age, batch, type, sample_id)
+
+rm(rowinfo)
+raw     <-  mdf[7:(ncol(mdf))]
+rowinfo <- mdf[0:6]
+
+tmp1 <- rowinfo %>% filter(type %in% c("sample")) %>% mutate(rowid2 = row_number())
+tmp2 <- raw[tmp1$rowid,]
+pmsbox<-plot_pca(tmp1,tmp2,color_label = "age") + labs(fill = "Age") 
+pmsbox + ggtitle("PQN using MSBox",subtitle = "Principal Component Analysis") + theme(plot.title = element_text(face = "italic"),plot.subtitle = element_text(size=7))
+```
+
+# Whole age plot
+```{r fig.asp = 0.7, fig.width = 12}
+arrangement<- ggarrange(pextrm, psm1, probu, pmeans, pcombat,pwave0,prcpm, pmsbox,
+                    labels = c("Original processed data","Row normalisation","Quantile normalisation","Mean normalisation","ComBat","WaveICA2.0 cut.0", "PQN Rcpm","PQN MSBox"),font.label = list(size = 8, color = "black",face="bold.italic"),ncol = 3, nrow = 3,common.legend = TRUE, legend = "bottom")
+
+annotate_figure(arrangement, top = text_grob("PCAs showing how the age changes",face = "italic", size = 15), bottom = text_grob(" X axis shows PC1,PC3,and PC5. Y axis shows PC2, PC4 and PC6.",face = "italic", size = 12))
 rm(arrangement)
 ```
 

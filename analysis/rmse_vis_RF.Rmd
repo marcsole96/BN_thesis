@@ -133,6 +133,8 @@ error<-rbind(error,error1)
 ## Making the cool plot
 ```{r fig.asp = 0.9, fig.width = 7}
 #write_rds(error,"error_init_rf.RDS")
+error<-error %>% filter(Details!="QC Cleanup")
+results<-results %>% filter(Details!="QC Cleanup")
 error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   geom_boxplot(outlier.colour = "red", alpha = 0.3)+
   geom_boxplot(outlier.colour="red", outlier.shape=1,
@@ -143,12 +145,15 @@ error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   theme(axis.title.x = element_blank())
 
 table.p <- ggtexttable(results, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2)
+
 ```
 
-
+```{r fig.asp = 0.65, fig.width = 6}
+table.p
+```
 
 
 # Errors and plot from the normalization methods
@@ -295,10 +300,14 @@ error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   theme(axis.title.x = element_blank())
 
 table.p <- ggtexttable(results, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2,
           heights = c(0.8, 0.5, 0.3))
+
+ggtexttable(results, rows = NULL, 
+                        theme = ttheme("light"))
+results_rf<-results
 ```
 
 
@@ -492,7 +501,7 @@ error.p<-error %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=Model))+
   theme(axis.title.x = element_blank())
 
 table.p <- ggtexttable(results, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2,
           heights = c(1, 0.5, 0.3))
@@ -509,7 +518,7 @@ error.p<-error %>% slice(26:nrow(error)) %>% ggplot(aes(x=fct_inorder(Details),y
 
 resultstemp<-results %>% slice(2:nrow(results))
 table.p <- ggtexttable(resultstemp, rows = NULL, 
-                        theme = ttheme("mOrange", base_size = 7))
+                        theme = ttheme("light", base_size = 7))
 rm(resultstemp)
 ggarrange(error.p, table.p, 
           ncol = 1, nrow = 2,
@@ -526,6 +535,7 @@ ggarrange(error.p, table.p,
 ```{r}
 error_init_glmnet<-readRDS("error_init_glmnet.RDS")
 error_init_rf<-readRDS("error_init_rf.RDS")
+results_glmnet<-readRDS("results_glmnet.RDS")
 
 error_init_rf$Model <- paste0(error_init_rf$Model,"_RF")
 error_init_rf$type <- "Ranger"
@@ -536,17 +546,23 @@ error_init <- rbind(error_init_rf,error_init_glmnet)
 error_init<-error_init[order(error_init$Model),]
 ```
 
-```{r fig.asp = 0.5, fig.width = 11}
-error.p<-error_init %>% ggplot(aes(x=fct_inorder(Model),y=RMSE, color=type))+
-  geom_boxplot(outlier.colour = "red", alpha = 0.3)+
-  geom_boxplot(outlier.colour="red", outlier.shape=1,
-                outlier.size=8,alpha=0.3)+
-  geom_jitter(shape=16,position = position_jitter(height = 0, width = 0))+
-  theme(legend.position="top")+
-  theme(axis.title.x = element_blank()) +
-  scale_x_discrete(guide = guide_axis(n.dodge=2))
+```{r fig.asp = 0.65, fig.width = 6}
+error_init<-error_init %>% filter(Details!="QC Cleanup")
 
-error.p
+error_init %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=type))+
+  stat_boxplot(geom ='errorbar', width = 0.6)+
+  geom_jitter(shape=16,position = position_jitterdodge(jitter.width = 0,
+  jitter.height = 0,dodge.width = 0.6),alpha=0.4,size=2)+
+  geom_boxplot(width = 0.6,outlier.colour = "red", alpha = 0.6, outlier.shape = 18, outlier.size = 3)+
+  geom_boxplot(width = 0.6,outlier.shape=1,
+                outlier.size=6,alpha=.5,outlier.colour="red")+
+  theme(axis.title.x = element_blank()) +
+  scale_x_discrete(guide = guide_axis(n.dodge=2))+
+  scale_color_brewer(palette = "Set2")+ 
+  labs(color='Model')+
+  theme(plot.title = element_text(face = "italic"))+
+  theme(legend.position="right")+
+  ggtitle("Data preparation", subtitle = "CARET model performance, Boxplot")
 ```
 
 ## Models
@@ -564,18 +580,60 @@ error_models <- rbind(error_models_RF,error_models_GLMNET)
 error_models<-error_models[order(error_models$Model),]
 ```
 
-```{r fig.asp = 0.5, fig.width = 14}
-error.p<-error_models %>% ggplot(aes(x=fct_inorder(Model),y=RMSE, color=type))+
+### Original data
+
+```{r fig.asp = 0.65, fig.width = 6}
+full_results<-rbind(results_glmnet,results_rf)
+full_results<-full_results[order(full_results$Name),]
+
+
+error.p<-error_models %>% slice(1:50) %>% ggplot(aes(x=fct_inorder(Model),y=RMSE, color=type))+
   geom_boxplot(outlier.colour = "red", alpha = 0.3)+
   geom_boxplot(outlier.colour="red", outlier.shape=1,
                 outlier.size=8,alpha=0.3)+
   geom_jitter(shape=16,position = position_jitter(height = 0, width = 0))+
+  theme(legend.position="right")+
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())+
+  scale_x_discrete(guide = guide_axis(n.dodge=3))+ 
+  ggtitle("Model performance on original data")+
+  theme(plot.title = element_text(face = "italic"))+ labs(color = "Model")+scale_color_brewer(palette="Set2")
+
+table.p <- ggtexttable(full_results[1:2,], rows = NULL, 
+                        theme = ttheme("light", base_size = 7))
+
+ggarrange(error.p, table.p, 
+          ncol = 1, nrow = 2,
+          heights = c(1, 0.5, 1))
+
+```
+
+### Whole plot
+
+```{r fig.asp = 0.6, fig.width = 8}
+error_models %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=type))+
+  stat_boxplot(geom ='errorbar', width = 0.6)+
+  geom_jitter(shape=16,position = position_jitterdodge(jitter.width = 0,
+  jitter.height = 0,dodge.width = 0.6),alpha=0.4,size=2)+
+  geom_boxplot(width = 0.6,outlier.colour = "red", alpha = 0.6, outlier.shape = 18, outlier.size = 3)+
+  geom_boxplot(width = 0.6,outlier.shape=1,
+                outlier.size=6,alpha=.5,outlier.colour="red")+
   theme(legend.position="top")+
   theme(axis.title.x = element_blank()) +
-  scale_x_discrete(guide = guide_axis(n.dodge=3))
-
-error.p
+  scale_x_discrete(guide = guide_axis(n.dodge=2))+
+  scale_color_brewer(palette = "Set2")+ 
+  labs(color='Model')+
+  theme(plot.title = element_text(face = "italic"))+
+  theme(legend.position="right")+
+  ggtitle("All batch correction methods", subtitle = "CARET model performance, Boxplot")
 ```
+
+```{r fig.asp = 0.65, fig.width = 6}
+ggtexttable(full_results, rows = NULL, 
+                        theme = ttheme("light", base_size = 7))
+```
+
 
 ## Wave
 
@@ -593,24 +651,43 @@ error_wave <- rbind(error_rf_wave,error_glmnet_wave)
 error_wave<-error_wave[order(error_wave$Model),]
 ```
 
-```{r fig.asp = 0.5, fig.width = 12}
-error.p<-error_wave %>% ggplot(aes(x=fct_inorder(Model),y=RMSE, color=type))+
-  geom_boxplot(outlier.colour = "red", alpha = 0.3)+
-  geom_boxplot(outlier.colour="red", outlier.shape=1,
-                outlier.size=8,alpha=0.3)+
-  geom_jitter(shape=16,position = position_jitter(height = 0, width = 0))+
+```{r fig.asp = 0.6, fig.width = 8}
+error_wave <- error_wave %>% 
+        mutate(Details = sub(".*? ", "", error_wave$Details))
+error_wave <- error_wave %>% 
+        mutate(Details = sub(".*? ", "", error_wave$Details))
+
+error_wave %>% ggplot(aes(x=fct_inorder(Details),y=RMSE, color=type))+
+  stat_boxplot(geom ='errorbar', width = 0.6)+
+  geom_jitter(shape=16,position = position_jitterdodge(jitter.width = 0,
+  jitter.height = 0,dodge.width = 0.6),alpha=0.4,size=2)+
+  geom_boxplot(width = 0.6,outlier.colour = "red", alpha = 0.6, outlier.shape = 18, outlier.size = 3)+
+  geom_boxplot(width = 0.6,outlier.shape=1,
+                outlier.size=6,alpha=.5,outlier.colour="red")+
   theme(legend.position="top")+
   theme(axis.title.x = element_blank()) +
-  scale_x_discrete(guide = guide_axis(n.dodge=3))
+  scale_x_discrete(guide = guide_axis(n.dodge=2))+
+  scale_color_brewer(palette = "Set2")+ 
+  labs(color='Model')+
+  theme(plot.title = element_text(face = "italic"))+
+  theme(legend.position="right")+
+  ggtitle("WaveICA2.0 cutoff study", subtitle = "CARET model performance, Boxplot")
 
-error.p
+results_wave_glmnet<-read_rds("../data/results_wave_glmnet.RDS")
+
+full_results_wave<-rbind(results_wave_glmnet,results)
+full_results_wave<-full_results_wave[order(full_results_wave$Name),]
 
 # resultstemp<-results %>% slice(2:nrow(results))
 # table.p <- ggtexttable(resultstemp, rows = NULL, 
-#                         theme = ttheme("mOrange", base_size = 7))
+#                         theme = ttheme("light", base_size = 7))
 # rm(resultstemp)
 # ggarrange(error.p, table.p, 
 #           ncol = 1, nrow = 2,
 #           heights = c(1, 0.5, 0.3))
 ```
 
+```{r fig.asp = 1, fig.width = 6}
+ggtexttable(full_results_wave, rows = NULL, 
+                        theme = ttheme("light", base_size = 7))
+```

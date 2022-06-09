@@ -8,4 +8,16 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website. Things
+Hi, Marc here. Welcome to my research website! On this website you will see the results and data analysis for my thesis on batch normalisation.
+
+You can use the links above to access the different markdown files or you can click the following links:
+
+The code with the data processing, batch correction and caret modelling can be found on [this link](models.html)
+
+Visualisations using principal component analysis can be found [here](PCAs.html)
+
+Visualisations on how a specific feature's intensity varies after the application of the methods can be found [here](metabolites_visualizations.html)
+
+Visualisations on the error can be found [here](rmse_vis.html) for glmnet and [here](rmse_vis_RF.html) for ranger. 
+
+Furthermore the code for the source code for this page can be found by clicking [here](https://github.com/marcsole96/BN_thesis) or by clicking on the GitHub icon on the top right corner.

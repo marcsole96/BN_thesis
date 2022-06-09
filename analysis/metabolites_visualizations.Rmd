@@ -81,14 +81,21 @@ L_mdf_MSBox<-readRDS("../data/mdf_MSBox.rds")
 
 
 wave_0<-readRDS("../data/mdf_wave_0.rds")
+wave_01<-readRDS("../data/mdf_wave_01.rds")
+wave_02<-readRDS("../data/mdf_wave_02.rds")
 wave_03<-readRDS("../data/mdf_wave_03.rds")
+wave_04<-readRDS("../data/mdf_wave_04.rds")
 wave_05<-readRDS("../data/mdf_wave_05.rds")
+wave_06<-readRDS("../data/mdf_wave_06.rds")
 wave_07<-readRDS("../data/mdf_wave_07.rds")
+wave_08<-readRDS("../data/mdf_wave_08.rds")
+wave_09<-readRDS("../data/mdf_wave_09.rds")
 wave_1<-readRDS("../data/mdf_wave_1.rds")
 
 sampleorder <- read_excel("../data/sample_order_traceage_wp2_sample_overview.xlsx") %>% as.data.frame()
 sampleorder<-sampleorder %>% select(Sample, `Injection order positive`) 
 names(sampleorder)[1]<-"sample"
+mypalette<-c("#1296db","#c5dfed","#98e356","#8fb56d","#c4dead","#f77c1e","#ffc191","#FDBF6F")
 ```
 
 # Identifying metabolites with high variance on the "before normalization" data
@@ -102,120 +109,222 @@ names(D_mdf_extreme_values_removed[, sorted])
 # Plotting how the normalization methods change the batch effect
 
 ## Original data
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 original <- merge(A_mdf_original,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-poriginal<-original %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+poriginal<-original %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
 
 
-original %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order on original unprocessed data") + theme(plot.title = element_text(face = "italic"))
+original %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("M91T29 intensity against injection order and batch on original unprocessed data") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")  +  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After removing extreme values and applying 4th root transformation
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 extremes <- merge(D_mdf_extreme_values_removed,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-pextremes<-extremes %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+pextremes<-extremes %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
 
 
-extremes %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order with processed data") + theme(plot.title = element_text(face = "italic"))
+extremes %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("Original data",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After sum to 1 normalization
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 sumto1 <- merge(F_mdf_sumtoone,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-psumto1<-sumto1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+psumto1<-sumto1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
 
-sumto1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order Sum to 1 Normalization") + theme(plot.title = element_text(face = "italic"))
+sumto1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("Row normalisation",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After "Rowbust" normalization
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 robustnorm <- merge(G_mdf_robustnorm,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-probust<-robustnorm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + theme(axis.title.x = element_blank(),
+probust<-robustnorm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
 
-robustnorm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order Robust Normalization") + theme(plot.title = element_text(face = "italic"))
+robustnorm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("Quantile normalisation",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After mean centering normalization
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 means <- merge(H_mdf_meansnorm,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-pmeans<-means %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+pmeans<-means %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
 
 
-means %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order Mean Centering Normalization") + theme(plot.title = element_text(face = "italic"))
+means %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("Mean normalisation",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After ComBat normalization
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 combat <- merge(I_mdf_combat,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-pcombat<-combat %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+pcombat<-combat %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
-combat %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order ComBat Normalization") + theme(plot.title = element_text(face = "italic"))
+combat %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("ComBat",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After WaveICA using 0
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 wave <- merge(J_mdf_wave_0,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-pwave<-wave %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+pwave<-wave %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
-wave %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order WaveICA2.0 cutoff of 0 Normalization") + theme(plot.title = element_text(face = "italic"))
+wave %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("WaveICA2.0 cutoff 0",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After PQN Rcpm
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 rcpm <- merge(K_mdf_Rcpm,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-prcpm<-rcpm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+prcpm<-rcpm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
 
-rcpm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order PQN Rcpm Normalization") + theme(plot.title = element_text(face = "italic"))
+rcpm %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("PQN Rcpm",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 ## After PQN MSBox
 
-```{r fig.asp = 0.5, fig.width = 7}
+```{r fig.asp = 0.65, fig.width = 6}
 msbox <- merge(L_mdf_MSBox,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
 
-pmsbox<-msbox %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+pmsbox<-msbox %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
           axis.title.y = element_blank())
-msbox %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_brewer(palette = "Paired") +labs(color = "Batch") + ggtitle("Metabolite intensity and injection order PQN MSBox Normalization") + theme(plot.title = element_text(face = "italic"))
+msbox %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("PQN MSBox",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
 ```
 
 
-```{r fig.asp = 0.6, fig.width = 10}
+```{r fig.asp = 0.7, fig.width = 12}
 y.grob <- textGrob("Metabolite (M91T29) Intensity", 
                    gp=gpar(), rot=90)
 
 x.grob <- textGrob("Injection Order", 
                    gp=gpar())
-arrangement<-ggarrange(poriginal, pextremes, psumto1, probust,pmeans,pcombat, pwave,prcpm,pmsbox,
-                    labels = c("Original", "Extreme values removed", "Sum To One Normalization", "Robust Normalization","Means Normalization","ComBat Normalization","WaveICA2.0 CF0","pRcpm","pMSBox"),font.label = list(size = 8, color = "black"),
+arrangement<-ggarrange(pextremes, psumto1, probust,pmeans,pcombat, pwave,prcpm,pmsbox,
+                    labels = c("Original data processed", "Row normalisation", "Quotient normalisation","Means normalisation","ComBat","WaveICA2.0 cut.0","PQN Rcpm","PQN MSBox"),font.label = list(size = 8, color = "black"),
                     ncol = 3, nrow = 3,common.legend = TRUE, legend = "right")
 
 
 
 arrangement<-grid.arrange(arrangeGrob(arrangement, left = y.grob, bottom = x.grob))
-annotate_figure(arrangement, top = text_grob("Injection order and intensity of a specific metabolite", face = "italic", size = 15))
+annotate_figure(arrangement, top = text_grob("Injection order and intensity of a specific feature (M91T29)", face = "italic", size = 15))
+
+rm(arrangement)
+```
+
+# WaveICA cutoff
+
+```{r}
+iwave0 <- merge(wave_0,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave0<-iwave0 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+
+iwave0 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("WaveICA2.0 cutoff of 0",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
+
+###
+iwave01 <- merge(wave_01,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave01<-iwave01 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave02 <- merge(wave_02,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave02<-iwave02 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave03 <- merge(wave_03,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave03<-iwave03 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave04 <- merge(wave_04,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave04<-iwave04 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave05 <- merge(wave_05,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave05<-iwave05 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+iwave05 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("WaveICA2.0 cutoff of 0.5",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
+###
+iwave06 <- merge(wave_06,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave06<-iwave06 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave07 <- merge(wave_07,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave07<-iwave07 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave08 <- merge(wave_08,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave08<-iwave08 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave09 <- merge(wave_09,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave09<-iwave09 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+###
+iwave1 <- merge(wave_1,sampleorder,by=c("sample"), all = F) %>% relocate(`Injection order positive`, .before = sample)
+
+pwave1<-iwave1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch")+ theme(axis.title.x = element_blank(),
+          axis.title.y = element_blank())
+
+iwave1 %>% ggplot(aes(`Injection order positive`,M91T29)) + geom_point(aes(colour = factor(batch))) + scale_color_manual(values = mypalette,breaks=c('1', 'b', '2','2b','b2','3','b3')) +labs(color = "Batch") + ggtitle("WaveICA2.0 cutoff of 1",subtitle = "M91T29 intensity by injection order and Batchs") + theme(plot.title = element_text(face = "italic"))+  xlab("Injection Order") + ylab("Intensity")
+```
+
+```{r fig.asp = 0.7, fig.width = 12}
+y.grob <- textGrob("Metabolite (M91T29) Intensity", 
+                   gp=gpar(), rot=90)
+
+x.grob <- textGrob("Injection Order", 
+                   gp=gpar())
+arrangement<-ggarrange(pwave1, pwave09, pwave08,pwave07, pwave06,pwave05,pwave04,pwave03,pwave02,pwave01,pwave0,
+                    labels = c("Cut = 1", "Cut = 0.9", "Cut = 0.8","Cut = 0.7","Cut = 0.6","Cut = 0.5","Cut = 0.4","Cut = 0.3","Cut = 0.2","Cut = 0.1","Cut = 0"),font.label = list(size = 8, color = "black"),
+                    ncol = 4, nrow = 3,common.legend = TRUE, legend = "right")
+
+
+
+arrangement<-grid.arrange(arrangeGrob(arrangement, left = y.grob, bottom = x.grob))
+annotate_figure(arrangement, top = text_grob("Injection order and intensity of a specific feature (M91T29) by WaveICA2.0 cutoff parameter", face = "italic", size = 15))
 
 rm(arrangement)
 ```
 
 
+```{r fig.asp = 0.7, fig.width = 12}
+y.grob <- textGrob("Metabolite (M91T29) Intensity", 
+                   gp=gpar(), rot=90)
+
+x.grob <- textGrob("Injection Order", 
+                   gp=gpar())
+arrangement<-ggarrange(pwave1,pwave05,pwave0,
+                    labels = c("Cut = 1","Cut = 0.5","Cut = 0"),font.label = list(size = 8, color = "black"),
+                    ncol = 2, nrow = 2,common.legend = TRUE, align = "hv",legend = "right")
+
+
+
+arrangement<-grid.arrange(arrangeGrob(arrangement, left = y.grob, bottom = x.grob))
+annotate_figure(arrangement, top = text_grob("Injection order and intensity of a specific feature (M91T29) by WaveICA2.0 cutoff parameter", face = "italic", size = 15))
+
+rm(arrangement)
+```
